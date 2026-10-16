@@ -58,7 +58,11 @@ def extract(request: ExtractRequest) -> ExtractResponse:
     try:
         opportunity = Opportunity.model_validate(data)
     except ValueError as exc:
-        raise HTTPException(status_code=422, detail="Model output failed schema validation. Review the source and try again.") from exc
+        raise HTTPException(
+            status_code=422,
+            detail=f"Model output failed schema validation: {exc}"
+        ) from exc
+
     warnings = []
     if opportunity.deadline is None:
         warnings.append("No deadline was extracted. Confirm it on the original source.")

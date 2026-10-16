@@ -5,7 +5,26 @@ export type Opportunity = {
   source_url: string; source_name: string; last_verified: string | null; status: string; notes: string;
 }
 export type Profile = {
+  name?: string;
   year: string; field: string; skills: string[]; interests: string[]; preferred_categories: string[];
   preferred_mode: string; location: string; team_size: number | null;
 }
 export type MatchResult = { opportunity: Opportunity; score: number; eligibility: string; reasons: string[]; skill_gaps: string[]; explanation: string }
+
+export type FilterState = {
+  category: string
+  searchQuery: string
+  quickClosingSoon: boolean
+  quickRemote: boolean
+  quickEligibleForMe: boolean
+  quickFreeToEnter: boolean
+  mode: string
+  deadlinePreset: string
+  deadlineFrom: string
+  deadlineTo: string
+  location: string
+  eligibility: string
+  selectedSkills: string[]
+  freeProgramsOnly: boolean
+  sortBy: 'Best match' | 'Deadline soon' | 'Recently added'
+}

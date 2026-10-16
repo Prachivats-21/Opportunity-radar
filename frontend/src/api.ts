@@ -7,7 +7,12 @@ export async function getOpportunities(): Promise<Opportunity[]> {
   return response.json()
 }
 export async function getMatches(profile: Profile, opportunities: Opportunity[]): Promise<MatchResult[]> {
-  const response = await fetch(`${API_URL}/api/match`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ profile, opportunities }) })
+  const { name: _name, ...profilePayload } = profile
+  const response = await fetch(`${API_URL}/api/match`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ profile: profilePayload, opportunities })
+  })
   if (!response.ok) throw new Error('Could not calculate matches. Check that the API is running.')
   return response.json()
 }
