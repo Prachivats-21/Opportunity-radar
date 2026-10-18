@@ -1,67 +1,86 @@
 from datetime import date
 from typing import Literal
-from pydantic import BaseModel, Field, HttpUrl, ConfigDict
+from pydantic import BaseModel, Field, HttpUrl, ConfigDict, StrictInt, StrictStr, model_validator
 
 OpportunityCategory = Literal["Hackathon", "Internship", "Competition", "Fellowship", "Scholarship", "Workshop", "Other"]
 Eligibility = Literal["eligible", "potentially_eligible", "not_eligible", "unknown", "expired"]
 
 
 class Opportunity(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-    id: str
-    title: str = Field(min_length=2, max_length=180)
-    organization: str = "Unknown organizer"
+    model_config = ConfigDict(extra="forbid")
+    id: StrictStr = Field(min_length=1, max_length=160)
+    title: StrictStr = Field(min_length=2, max_length=180)
+    organization: StrictStr = Field(default="Unknown organizer", max_length=180)
     category: OpportunityCategory = "Other"
-    summary: str = ""
-    description: str = ""
-    skills: list[str] = Field(default_factory=list)
-    eligible_years: list[str] = Field(default_factory=list)
-    eligible_fields: list[str] = Field(default_factory=list)
-    location: str = "Not specified"
-    mode: str = "Not specified"
-    team_min: int | None = Field(default=None, ge=1, le=100)
-    team_max: int | None = Field(default=None, ge=1, le=100)
+    summary: StrictStr = Field(default="", max_length=1000)
+    description: StrictStr = Field(default="", max_length=12000)
+    skills: list[StrictStr] = Field(default_factory=list, strict=True, max_length=100)
+    eligible_years: list[StrictStr] = Field(default_factory=list, strict=True, max_length=30)
+    eligible_fields: list[StrictStr] = Field(default_factory=list, strict=True, max_length=100)
+    location: StrictStr = Field(default="Not specified", max_length=240)
+    mode: StrictStr = Field(default="Not specified", max_length=120)
+    team_min: StrictInt | None = Field(default=None, ge=1, le=100)
+    team_max: StrictInt | None = Field(default=None, ge=1, le=100)
     deadline: date | None = None
     start_date: date | None = None
     source_url: HttpUrl
-    source_name: str = "Source"
+    source_name: StrictStr = Field(default="Source", max_length=240)
     last_verified: date | None = None
-    status: str = "needs_recheck"
-    notes: str = ""
+    status: StrictStr = Field(default="needs_recheck", max_length=80)
+    notes: StrictStr = Field(default="", max_length=2000)
+
+    @model_validator(mode="after")
+    def validate_team_bounds(self) -> "Opportunity":
+        if self.team_min is not None and self.team_max is not None and self.team_min > self.team_max:
+            raise ValueError("team_min must not exceed team_max")
+        return self
 
 
 class StudentProfile(BaseModel):
-    year: str = "Not specified"
-    field: str = "Not specified"
-    skills: list[str] = Field(default_factory=list)
-    interests: list[str] = Field(default_factory=list)
-    preferred_categories: list[OpportunityCategory] = Field(default_factory=list)
-    preferred_mode: str = "Any"
-    location: str = "India"
-    team_size: int | None = Field(default=None, ge=1, le=100)
+    model_config = ConfigDict(extra="forbid")
+    year: StrictStr = "Not specified"
+    field: StrictStr = "Not specified"
+    skills: list[StrictStr] = Field(default_factory=list, strict=True, max_length=100)
+    interests: list[StrictStr] = Field(default_factory=list, strict=True, max_length=100)
+    preferred_categories: list[OpportunityCategory] = Field(default_factory=list, max_length=20)
+    preferred_mode: StrictStr = Field(default="Any", max_length=80)
+    location: StrictStr = Field(default="India", max_length=240)
+    team_size: StrictInt | None = Field(default=None, ge=1, le=100)
 
 
 class MatchResult(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     opportunity: Opportunity
-    score: int = Field(ge=0, le=100)
+    score: StrictInt = Field(ge=0, le=100)
     eligibility: Eligibility
-    reasons: list[str] = Field(default_factory=list)
-    skill_gaps: list[str] = Field(default_factory=list)
-    explanation: str = ""
+    reasons: list[StrictStr] = Field(default_factory=list, strict=True, max_length=50)
+    skill_gaps: list[StrictStr] = Field(default_factory=list, strict=True, max_length=100)
+    explanation: StrictStr = Field(default="", max_length=12000)
 
 
 class MatchRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     profile: StudentProfile
-    opportunities: list[Opportunity] | None = None
+    opportunities: list[Opportunity] | None = Field(default=None, max_length=200)
+
+    @model_validator(mode="after")
+    def validate_unique_opportunity_ids(self) -> "MatchRequest":
+        if self.opportunities is not None:
+            ids = [opportunity.id for opportunity in self.opportunities]
+            if len(ids) != len(set(ids)):
+                raise ValueError("opportunity ids must be unique")
+        return self
 
 
 class ExtractRequest(BaseModel):
-    title_hint: str = ""
+    model_config = ConfigDict(extra="forbid")
+    title_hint: StrictStr = Field(default="", max_length=180)
     source_url: HttpUrl
-    raw_text: str = Field(min_length=80, max_length=20000)
+    raw_text: StrictStr = Field(min_length=80, max_length=20000)
 
 
 class ExtractResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     opportunity: Opportunity
-    warnings: list[str] = Field(default_factory=list)
+    warnings: list[StrictStr] = Field(default_factory=list, strict=True, max_length=20)
     ai_used: bool = False

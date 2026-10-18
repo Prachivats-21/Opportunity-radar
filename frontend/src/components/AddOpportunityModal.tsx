@@ -102,7 +102,7 @@ export const AddOpportunityModal: React.FC<AddOpportunityModalProps> = ({
   // Switch to manual review mode if Ollama is not installed/running
   const handleSwitchToManualReview = () => {
     setReviewData({
-      id: `curator-added-${Date.now()}`,
+      id: `user-added-curator-${Date.now()}`,
       title: titleHint || 'New Opportunity',
       organization: 'Organizer',
       category: 'Hackathon',
@@ -149,7 +149,7 @@ export const AddOpportunityModal: React.FC<AddOpportunityModalProps> = ({
     e.preventDefault()
 
     const finalOpp: Opportunity = {
-      id: reviewData.id || `curator-added-${Date.now()}`,
+      id: reviewData.id || `user-added-curator-${Date.now()}`,
       title: reviewData.title?.trim() || 'Untitled Opportunity',
       organization: reviewData.organization?.trim() || 'Independent Organizer',
       category: reviewData.category || 'Hackathon',

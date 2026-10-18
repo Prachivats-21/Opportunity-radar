@@ -1,6 +1,12 @@
 import type { MatchResult, Opportunity, Profile } from './types'
 const API_URL = (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, '') || 'http://127.0.0.1:8000'
 
+export async function healthCheck(): Promise<{ status: string }> {
+  const response = await fetch(`${API_URL}/health`)
+  if (!response.ok) throw new Error('Backend health check failed.')
+  return response.json()
+}
+
 export async function getOpportunities(): Promise<Opportunity[]> {
   const response = await fetch(`${API_URL}/api/opportunities`)
   if (!response.ok) throw new Error('Could not load opportunities from the API.')

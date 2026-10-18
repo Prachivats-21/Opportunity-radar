@@ -1,18 +1,20 @@
 import { useEffect, useMemo, useState, useCallback } from 'react'
 import { Navbar } from './components/Navbar'
-import { Sidebar } from './components/Sidebar'
 import { AppFooter } from './components/AppFooter'
 import { WelcomeHero } from './components/WelcomeHero'
 import { CategoryExplore } from './components/CategoryExplore'
 import { FiltersBar } from './components/FiltersBar'
 import { OpportunityCard } from './components/OpportunityCard'
-import { RightPanel } from './components/RightPanel'
 import { ProfileModal } from './components/ProfileModal'
 import { AddOpportunityModal } from './components/AddOpportunityModal'
 import { AdvancedFilterDrawer } from './components/AdvancedFilterDrawer'
-import { getOpportunities, getMatches } from './api'
+import { ProfileView } from './components/ProfileView'
+import { TuneRadarView } from './components/TuneRadarView'
+import { SettingsView } from './components/SettingsView'
+import { SavedView } from './components/SavedView'
+import { getOpportunities, getMatches, healthCheck } from './api'
 import type { Opportunity, Profile, MatchResult, FilterState } from './types'
-import { AlertCircle, Search, Check, RefreshCw } from 'lucide-react'
+import { Search, Check, RefreshCw, Wifi, WifiOff, X } from 'lucide-react'
 
 const DEFAULT_PROFILE: Profile = {
   name: 'Prachi Vats',
@@ -186,7 +188,7 @@ export function App() {
   })
 
   const [matches, setMatches] = useState<MatchResult[]>([])
-  const [activeTab, setActiveTab] = useState('Dashboard')
+  const [activeTab, setActiveTab] = useState<'Dashboard' | 'Explore' | 'Saved' | 'Profile' | 'Tune' | 'Settings'>('Dashboard')
 
   // Unified Filter State
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS)
@@ -195,24 +197,28 @@ export function App() {
   const [showProfileModal, setShowProfileModal] = useState(false)
   const [showAddModal, setShowAddModal] = useState(false)
   const [showAdvancedDrawer, setShowAdvancedDrawer] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   // Status & Feedback
   const [loadingMatches, setLoadingMatches] = useState(false)
   const [loadingData, setLoadingData] = useState(false)
+  const [apiConnected, setApiConnected] = useState<boolean | null>(null)
   const [errorMessage, setErrorMessage] = useState('')
   const [toastMessage, setToastMessage] = useState('')
 
-  // Sync to localStorage
+  // Debounced search query
+  const [debouncedQuery, setDebouncedQuery] = useState(filters.searchQuery)
+
+  // Sync custom opportunities to localStorage
   useEffect(() => {
     try {
-      const custom = opportunities.filter((o) => o.id.startsWith('user-added-'))
+      const custom = opportunities.filter((o) => o.id.startsWith('user-added-') || o.id.startsWith('curator-added-'))
       window.localStorage.setItem('opportunity-radar-custom', JSON.stringify(custom))
     } catch {
       // Storage unavailable
     }
   }, [opportunities])
 
+  // Sync profile to localStorage
   useEffect(() => {
     try {
       window.localStorage.setItem('opportunity-radar-profile', JSON.stringify(profile))
@@ -221,6 +227,7 @@ export function App() {
     }
   }, [profile])
 
+  // Sync saved IDs to localStorage
   useEffect(() => {
     try {
       window.localStorage.setItem('opportunity-radar-saved', JSON.stringify(saved))
@@ -232,7 +239,7 @@ export function App() {
   // Toast auto-clear
   useEffect(() => {
     if (toastMessage) {
-      const t = setTimeout(() => setToastMessage(''), 2800)
+      const t = setTimeout(() => setToastMessage(''), 3000)
       return () => clearTimeout(t)
     }
   }, [toastMessage])
@@ -242,21 +249,20 @@ export function App() {
     setLoadingData(true)
     try {
       const apiItems = await getOpportunities()
+      setApiConnected(true)
       if (apiItems && apiItems.length > 0) {
         setOpportunities((prev) => {
-          const custom = prev.filter((o) => o.id.startsWith('user-added-'))
+          const custom = prev.filter((o) => o.id.startsWith('user-added-') || o.id.startsWith('curator-added-'))
           const map = new Map<string, Opportunity>()
-          // Add seed fallbacks for category coverage
-          SEED_FALLBACKS.forEach((item) => map.set(item.id, item))
-          // Overlay API data
+          // API data is authoritative; custom items overlay
           apiItems.forEach((item) => map.set(item.id, item))
-          // Add custom listings
           custom.forEach((item) => map.set(item.id, item))
           return Array.from(map.values())
         })
       }
     } catch {
-      // Graceful fallback to seed records
+      // Graceful fallback to seed records when backend is unavailable
+      setApiConnected(false)
     } finally {
       setLoadingData(false)
     }
@@ -266,6 +272,27 @@ export function App() {
     fetchOpportunitiesFromApi()
   }, [fetchOpportunitiesFromApi])
 
+  // Backend connectivity check
+  useEffect(() => {
+    let cancelled = false
+    healthCheck()
+      .then(() => {
+        if (!cancelled) setApiConnected(true)
+      })
+      .catch(() => {
+        if (!cancelled) setApiConnected(false)
+      })
+    return () => { cancelled = true }
+  }, [])
+
+  // Debounce search input to avoid excessive re-renders
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(filters.searchQuery)
+    }, 250)
+    return () => clearTimeout(timer)
+  }, [filters.searchQuery])
+
   // Calculate matches from API (or local fallback if API offline)
   const calculateMatches = useCallback(async () => {
     setLoadingMatches(true)
@@ -273,7 +300,6 @@ export function App() {
     try {
       const results = await getMatches(profile, opportunities)
       setMatches(results)
-      setToastMessage('Opportunity matches evaluated')
     } catch {
       // Client-side rule & keyword based fallback
       const userTerms = [...profile.skills, ...profile.interests, profile.field]
@@ -313,13 +339,12 @@ export function App() {
 
       fallbackMatches.sort((a, b) => b.score - a.score)
       setMatches(fallbackMatches)
-      setToastMessage('Local fit analysis calculated')
     } finally {
       setLoadingMatches(false)
     }
   }, [profile, opportunities])
 
-  // Automatically run matching on mount or when profile updates
+  // Automatically recalculate matches when profile or opportunities update
   useEffect(() => {
     calculateMatches()
   }, [calculateMatches])
@@ -332,6 +357,17 @@ export function App() {
       setToastMessage(isAlreadySaved ? 'Removed from saved' : 'Opportunity saved for later')
       return next
     })
+  }
+
+  // Clear custom listings
+  const handleClearCustomOpportunities = () => {
+    setOpportunities((prev) => prev.filter((o) => !o.id.startsWith('user-added-') && !o.id.startsWith('curator-added-')))
+    try {
+      window.localStorage.removeItem('opportunity-radar-custom')
+    } catch {
+      // Storage error
+    }
+    setToastMessage('Custom listings cleared')
   }
 
   // Calculate category counts
@@ -379,7 +415,7 @@ export function App() {
     [matches],
   )
 
-  // All available unique skills across listings
+  // Unique skills across listings
   const availableSkills = useMemo(() => {
     const set = new Set<string>()
     opportunities.forEach((o) => {
@@ -388,7 +424,7 @@ export function App() {
     return Array.from(set).sort((a, b) => a.localeCompare(b))
   }, [opportunities])
 
-  // All available locations
+  // Unique locations
   const availableLocations = useMemo(() => {
     const set = new Set<string>()
     opportunities.forEach((o) => {
@@ -412,15 +448,10 @@ export function App() {
     return count
   }, [filters])
 
-  // Filter and sort opportunities based on all criteria working together
+  // Filter and sort opportunities
   const filteredOpportunities = useMemo(() => {
     let list = [...opportunities]
     const now = Date.now()
-
-    // Tab filter (Saved)
-    if (activeTab === 'Saved') {
-      list = list.filter((o) => saved.includes(o.id))
-    }
 
     // Category filter
     if (filters.category !== 'All') {
@@ -445,7 +476,7 @@ export function App() {
       })
     }
 
-    // Quick Filter: Eligible for Me (derived from real backend match response)
+    // Quick Filter: Eligible for Me
     if (filters.quickEligibleForMe) {
       list = list.filter((o) => {
         const m = matchMap.get(o.id)
@@ -454,7 +485,6 @@ export function App() {
     }
 
     // Quick Filter: Free to Enter
-    // Checks that the listing does not explicitly state entry fees in its description/notes
     if (filters.quickFreeToEnter || filters.freeProgramsOnly) {
       list = list.filter((o) => {
         const text = `${o.description} ${o.notes}`.toLowerCase()
@@ -502,7 +532,7 @@ export function App() {
       })
     }
 
-    // Skills filter (opportunity must contain at least one of selected skills)
+    // Skills filter
     if (filters.selectedSkills.length > 0) {
       list = list.filter((o) => {
         const oppSkills = o.skills.map((s) => s.toLowerCase().trim())
@@ -510,9 +540,9 @@ export function App() {
       })
     }
 
-    // Search query filter
-    if (filters.searchQuery.trim()) {
-      const q = filters.searchQuery.toLowerCase().trim()
+    // Search query filter (debounced)
+    if (debouncedQuery.trim()) {
+      const q = debouncedQuery.toLowerCase().trim()
       list = list.filter((o) => {
         const hay = [o.title, o.organization, o.category, o.summary, o.description, o.location, o.mode, ...o.skills]
           .join(' ')
@@ -527,7 +557,7 @@ export function App() {
     } else if (filters.sortBy === 'Recently added') {
       list.sort((a, b) => (b.last_verified || '').localeCompare(a.last_verified || ''))
     } else {
-      // Best match (derived from real backend match score)
+      // Best match
       list.sort((a, b) => {
         const scoreA = matchMap.get(a.id)?.score || 0
         const scoreB = matchMap.get(b.id)?.score || 0
@@ -538,9 +568,8 @@ export function App() {
     return list
   }, [
     opportunities,
-    activeTab,
-    saved,
     filters,
+    debouncedQuery,
     matchMap,
   ])
 
@@ -556,83 +585,81 @@ export function App() {
 
   return (
     <div className="app-shell" id="top">
-      {/* Sidebar Navigation */}
-      <Sidebar
+      {/* Shared Responsive Header */}
+      <Navbar
         activeTab={activeTab}
         onSelectTab={(tab) => {
-          setActiveTab(tab)
+          setActiveTab(tab as any)
           if (tab === 'Explore') {
             handleFilterUpdate({ category: 'All' })
           }
         }}
-        savedCount={saved.length}
-        opportunitiesCount={opportunities.length}
+        query={filters.searchQuery}
+        onQueryChange={(q) => handleFilterUpdate({ searchQuery: q })}
         profileName={profile.name || 'Prachi Vats'}
-        profileYear={profile.year}
         profileField={profile.field}
-        onOpenProfile={() => setShowProfileModal(true)}
-        isOpen={mobileMenuOpen}
-        onClose={() => setMobileMenuOpen(false)}
+        profileYear={profile.year}
+        onOpenAddOpportunity={() => setShowAddModal(true)}
+        onResetProfile={() => {
+          setProfile(DEFAULT_PROFILE)
+          setToastMessage('Profile reset to default')
+        }}
+        opportunitiesCount={opportunities.length}
+        savedCount={saved.length}
+        apiConnected={apiConnected}
+        onRetryConnection={fetchOpportunitiesFromApi}
       />
 
-      {/* Main Content Area */}
-      <div className="main-wrapper">
-        <Navbar
-          query={filters.searchQuery}
-          onQueryChange={(q) => handleFilterUpdate({ searchQuery: q })}
-          onOpenMobileMenu={() => setMobileMenuOpen(true)}
-          onOpenProfile={() => setShowProfileModal(true)}
-          profileName={profile.name || 'Prachi Vats'}
-          profileField={profile.field}
-          onSelectTab={setActiveTab}
-          onResetProfile={() => {
-            setProfile(DEFAULT_PROFILE)
-            setToastMessage('Profile reset to default')
-          }}
-          opportunitiesCount={opportunities.length}
-        />
+      {/* Main Single Central Workspace */}
+      <main className="central-workspace" role="main">
+        {/* Backend Connectivity Status Banners */}
+        {apiConnected === false && (
+          <div className="error-banner" style={{ backgroundColor: 'var(--terracotta-bg)', borderColor: 'var(--terracotta-border)', color: 'var(--terracotta-dark)', margin: '16px 0 0' }}>
+            <WifiOff size={16} />
+            <span style={{ flex: 1 }}>Backend unreachable — showing verified local listings. Match scoring is running client-side.</span>
+            <button onClick={fetchOpportunitiesFromApi} style={{ color: 'var(--terracotta-dark)', fontWeight: 700, textDecoration: 'underline' }}>
+              Retry connection
+            </button>
+          </div>
+        )}
+        {apiConnected === true && loadingData === false && errorMessage === '' && (
+          <div className="error-banner" style={{ backgroundColor: 'var(--status-eligible-bg)', borderColor: 'var(--sage-border)', color: 'var(--status-eligible)', fontSize: '11px', padding: '10px 18px', margin: '16px 0 0' }}>
+            <Wifi size={14} style={{ marginTop: '1px' }} />
+            <span style={{ flex: 1 }}>Connected to backend — live opportunity data loaded.</span>
+          </div>
+        )}
 
-        <div className="dashboard-layout">
-          {/* Main Dashboard Center */}
-          <main className="dashboard-center">
-            {/* Error Banner */}
-            {errorMessage && (
-              <div className="error-banner">
-                <AlertCircle size={16} />
-                <span>{errorMessage}</span>
-                <button onClick={calculateMatches}>Retry</button>
-              </div>
-            )}
-
-            {/* Welcome Hero (Shown on Dashboard & Explore) */}
-            {activeTab !== 'Saved' && (
-              <WelcomeHero
-                userName={profile.name || 'Prachi Vats'}
-                academicYear={profile.year}
-                fieldOfStudy={profile.field}
-                closingSoonCount={closingSoonCount}
-                eligibleCount={eligibleCount}
-                topMatch={topMatch}
-                totalCount={opportunities.length}
-                onExploreClick={() => {
-                  setActiveTab('Explore')
-                  handleFilterUpdate({ category: 'All' })
-                }}
-                onTuneClick={() => setShowProfileModal(true)}
-                loading={loadingMatches}
-              />
-            )}
+        {/* 1. DASHBOARD / DISCOVER VIEW */}
+        {activeTab === 'Dashboard' && (
+          <div className="dashboard-view-content">
+            {/* Student Radar Summary Hero */}
+            <WelcomeHero
+              userName={profile.name || 'Prachi Vats'}
+              academicYear={profile.year}
+              fieldOfStudy={profile.field}
+              closingSoonCount={closingSoonCount}
+              eligibleCount={eligibleCount}
+              topMatch={topMatch}
+              totalCount={opportunities.length}
+              onExploreClick={() => {
+                setActiveTab('Explore')
+                handleFilterUpdate({ category: 'All' })
+              }}
+              onTuneClick={() => setActiveTab('Tune')}
+              loading={loadingMatches}
+            />
 
             {/* Explore by Category Tracks */}
-            {activeTab !== 'Saved' && (
-              <CategoryExplore
-                counts={categoryCounts as any}
-                selectedCategory={filters.category}
-                onSelectCategory={(cat) => handleFilterUpdate({ category: cat })}
-              />
-            )}
+            <CategoryExplore
+              counts={categoryCounts as any}
+              selectedCategory={filters.category}
+              onSelectCategory={(cat) => {
+                handleFilterUpdate({ category: cat })
+                setActiveTab('Explore')
+              }}
+            />
 
-            {/* Opportunity Filter Bar with Quick Filters and Active Chips */}
+            {/* Filter Bar */}
             <FiltersBar
               filters={filters}
               onFilterChange={handleFilterUpdate}
@@ -644,7 +671,7 @@ export function App() {
               advancedFilterCount={advancedFilterCount}
             />
 
-            {/* Opportunity Grid */}
+            {/* Opportunities Grid */}
             <section className="opportunity-grid" aria-label="Opportunities list">
               {loadingData && opportunities.length === 0 ? (
                 <div className="loading-indicator">
@@ -669,9 +696,7 @@ export function App() {
                   </div>
                   <h3 className="empty-state-title">No opportunities found</h3>
                   <p className="empty-state-text">
-                    {activeTab === 'Saved'
-                      ? 'You have not bookmarked any opportunities yet. Click the bookmark icon on any card to save it for later.'
-                      : 'No signals match your current combination of filters. Try clearing some filters or searching for broader terms.'}
+                    No signals match your current combination of filters. Try clearing some filters or searching for broader terms.
                   </p>
                   <button className="btn-secondary" onClick={resetFilters}>
                     <RefreshCw size={14} />
@@ -680,19 +705,126 @@ export function App() {
                 </div>
               )}
             </section>
-          </main>
+          </div>
+        )}
 
-          {/* Right Information Panel (Desktop/Tablet) */}
-          <RightPanel
-            profile={profile}
-            savedCount={saved.length}
-            onEditProfile={() => setShowProfileModal(true)}
-            onSelectTab={setActiveTab}
-            onOpenAddOpportunity={() => setShowAddModal(true)}
+        {/* 2. EXPLORE FULL CATALOG VIEW */}
+        {activeTab === 'Explore' && (
+          <div className="explore-view-content">
+            <div className="view-header">
+              <div className="view-header-title-group">
+                <div className="view-badge">EXPLORATION CATALOG</div>
+                <h1 className="view-title">All Opportunities</h1>
+                <p className="view-subtitle">
+                  Browse {opportunities.length} verified student opportunities. Filter by tracks, participation formats, eligibility, and deadlines.
+                </p>
+              </div>
+            </div>
+
+            <FiltersBar
+              filters={filters}
+              onFilterChange={handleFilterUpdate}
+              categoryCounts={categoryCounts}
+              totalCount={opportunities.length}
+              resultCount={filteredOpportunities.length}
+              onResetFilters={resetFilters}
+              onOpenAdvancedDrawer={() => setShowAdvancedDrawer(true)}
+              advancedFilterCount={advancedFilterCount}
+            />
+
+            <section className="opportunity-grid" aria-label="Opportunities explore catalog">
+              {filteredOpportunities.length > 0 ? (
+                filteredOpportunities.map((opp) => (
+                  <OpportunityCard
+                    key={opp.id}
+                    opportunity={opp}
+                    match={matchMap.get(opp.id)}
+                    isSaved={saved.includes(opp.id)}
+                    onToggleSave={toggleSave}
+                    userSkills={profile.skills}
+                  />
+                ))
+              ) : (
+                <div className="empty-state-card">
+                  <div className="empty-state-icon">
+                    <Search size={24} />
+                  </div>
+                  <h3 className="empty-state-title">No opportunities found</h3>
+                  <p className="empty-state-text">
+                    No signals match your filters. Try clearing search or resetting filters.
+                  </p>
+                  <button className="btn-secondary" onClick={resetFilters}>
+                    <RefreshCw size={14} />
+                    <span>Reset all filters</span>
+                  </button>
+                </div>
+              )}
+            </section>
+          </div>
+        )}
+
+        {/* 3. SAVED OPPORTUNITIES VIEW */}
+        {activeTab === 'Saved' && (
+          <SavedView
+            opportunities={opportunities}
+            savedIds={saved}
+            matchMap={matchMap}
+            onToggleSave={toggleSave}
+            userSkills={profile.skills}
+            onNavigateToExplore={() => {
+              setActiveTab('Explore')
+              handleFilterUpdate({ category: 'All' })
+            }}
+            onNavigateToDashboard={() => setActiveTab('Dashboard')}
           />
-        </div>
-        <AppFooter />
-      </div>
+        )}
+
+        {/* 4. MY PROFILE VIEW */}
+        {activeTab === 'Profile' && (
+          <ProfileView
+            profile={profile}
+            onSave={(updated) => {
+              setProfile(updated)
+              setToastMessage('Student profile updated')
+            }}
+            onNavigateToTune={() => setActiveTab('Tune')}
+            onNavigateToDashboard={() => setActiveTab('Dashboard')}
+          />
+        )}
+
+        {/* 5. TUNE RADAR PREFERENCES VIEW */}
+        {activeTab === 'Tune' && (
+          <TuneRadarView
+            profile={profile}
+            onSave={(updated) => {
+              setProfile(updated)
+              setToastMessage('Preferences calibrated and matches recalculated')
+            }}
+            onNavigateToDashboard={() => setActiveTab('Dashboard')}
+            totalOpportunities={opportunities.length}
+          />
+        )}
+
+        {/* 6. SETTINGS VIEW */}
+        {activeTab === 'Settings' && (
+          <SettingsView
+            apiConnected={apiConnected}
+            onRetryConnection={fetchOpportunitiesFromApi}
+            opportunities={opportunities}
+            savedIds={saved}
+            profile={profile}
+            onResetProfile={() => {
+              setProfile(DEFAULT_PROFILE)
+              setToastMessage('Profile reset to default')
+            }}
+            onClearCustomOpportunities={handleClearCustomOpportunities}
+            onNavigateToDashboard={() => setActiveTab('Dashboard')}
+          />
+        )}
+      </main>
+
+      {/* Shared Minimal Footer */}
+      <AppFooter />
 
       {/* Advanced Filter Drawer */}
       <AdvancedFilterDrawer
@@ -706,7 +838,7 @@ export function App() {
         resultCount={filteredOpportunities.length}
       />
 
-      {/* Edit Profile Modal */}
+      {/* Quick Edit Profile Modal (callable from any view) */}
       {showProfileModal && (
         <ProfileModal
           profile={profile}
@@ -718,22 +850,30 @@ export function App() {
         />
       )}
 
-      {/* Add Custom Opportunity Modal (AI Extraction) */}
+      {/* Add Opportunity Modal (Curation & Gemma AI Extraction) */}
       {showAddModal && (
         <AddOpportunityModal
           onSuccess={(newOpp) => {
-            setOpportunities((prev) => [newOpp, ...prev])
-            setToastMessage('Opportunity extracted and added to radar!')
+            setOpportunities((prev) => [newOpp, ...prev.filter((o) => o.id !== newOpp.id)])
+            setToastMessage('Opportunity added to radar feed!')
           }}
           onClose={() => setShowAddModal(false)}
         />
       )}
 
-      {/* Toast Notification */}
+      {/* Accessible Toast Notification */}
       {toastMessage && (
         <div className="toast-notice" role="status" aria-live="polite">
           <Check size={15} />
           <span>{toastMessage}</span>
+          <button
+            type="button"
+            className="toast-dismiss"
+            onClick={() => setToastMessage('')}
+            aria-label="Dismiss notification"
+          >
+            <X size={13} />
+          </button>
         </div>
       )}
     </div>

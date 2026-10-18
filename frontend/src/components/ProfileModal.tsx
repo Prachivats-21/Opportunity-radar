@@ -202,23 +202,28 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
           {/* Preferences Row */}
           <div className="form-row-2">
             <div className="form-group">
-              <label htmlFor="pref-category">Target Track</label>
-              <select
-                id="pref-category"
-                value={formData.preferred_categories[0] || 'Any'}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    preferred_categories: e.target.value === 'Any' ? [] : [e.target.value],
-                  })
-                }
-              >
-                <option value="Any">All Categories</option>
-                <option value="Hackathon">Hackathons</option>
-                <option value="Internship">Internships</option>
-                <option value="Competition">Competitions</option>
-                <option value="Fellowship">Fellowships</option>
-              </select>
+              <label>Target Tracks</label>
+              <div className="chips-container" style={{ minHeight: 'auto', padding: '8px' }}>
+                {['Hackathon', 'Internship', 'Competition', 'Fellowship'].map((cat) => {
+                  const isSelected = formData.preferred_categories.includes(cat)
+                  return (
+                    <span key={cat} className={`interactive-chip ${isSelected ? 'chip-selected' : ''}`}>
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={(e) => {
+                          const next = e.target.checked
+                            ? [...formData.preferred_categories, cat]
+                            : formData.preferred_categories.filter((c) => c !== cat)
+                          setFormData({ ...formData, preferred_categories: next })
+                        }}
+                        style={{ margin: 0, width: 16, height: 16, accentColor: 'var(--sage)' }}
+                      />
+                      <span style={{ marginLeft: 6 }}>{cat}</span>
+                    </span>
+                  )
+                })}
+              </div>
             </div>
 
             <div className="form-group">

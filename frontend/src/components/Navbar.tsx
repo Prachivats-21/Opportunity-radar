@@ -1,35 +1,57 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Search, Bell, X, Radar, Menu, Settings2, User, Bookmark, LogOut, Check } from 'lucide-react'
+import {
+  Search,
+  X,
+  Menu,
+  Settings2,
+  User,
+  Bookmark,
+  Sparkles,
+  Plus,
+  Compass,
+  LayoutDashboard,
+  RotateCcw,
+  Wifi,
+  WifiOff,
+  ChevronDown,
+} from 'lucide-react'
 import { RadarMark } from './RadarMark'
 
 interface NavbarProps {
+  activeTab: string
+  onSelectTab: (tab: string) => void
   query: string
   onQueryChange: (q: string) => void
-  onOpenMobileMenu: () => void
-  onOpenProfile: () => void
   profileName: string
   profileField: string
-  onSelectTab: (tab: string) => void
+  profileYear: string
+  onOpenAddOpportunity: () => void
   onResetProfile: () => void
   opportunitiesCount: number
+  savedCount: number
+  apiConnected?: boolean | null
+  onRetryConnection?: () => void
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
+  activeTab,
+  onSelectTab,
   query,
   onQueryChange,
-  onOpenMobileMenu,
-  onOpenProfile,
   profileName,
   profileField,
-  onSelectTab,
+  profileYear,
+  onOpenAddOpportunity,
   onResetProfile,
   opportunitiesCount,
+  savedCount,
+  apiConnected,
+  onRetryConnection,
 }) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false)
-  const [showNotifMenu, setShowNotifMenu] = useState(false)
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
   const profileMenuRef = useRef<HTMLDivElement>(null)
-  const notifMenuRef = useRef<HTMLDivElement>(null)
 
   // Keyboard shortcut Cmd+K / Ctrl+K
   useEffect(() => {
@@ -38,53 +60,108 @@ export const Navbar: React.FC<NavbarProps> = ({
         e.preventDefault()
         searchInputRef.current?.focus()
       }
+      if (e.key === 'Escape') {
+        setShowProfileMenu(false)
+        setMobileNavOpen(false)
+      }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  // Close menus when clicking outside
+  // Close profile dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (profileMenuRef.current && !profileMenuRef.current.contains(e.target as Node)) {
         setShowProfileMenu(false)
-      }
-      if (notifMenuRef.current && !notifMenuRef.current.contains(e.target as Node)) {
-        setShowNotifMenu(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const initials = profileName
+  const initials = (profileName || 'PV')
     .split(/\s+/)
     .slice(0, 2)
     .map((s) => s[0])
     .join('')
-    .toUpperCase() || 'PV'
+    .toUpperCase()
+
+  const handleNavClick = (tab: string) => {
+    onSelectTab(tab)
+    setShowProfileMenu(false)
+    setMobileNavOpen(false)
+  }
 
   return (
-    <header className="topbar">
-      <div className="topbar-left">
-        <button
-          className="mobile-menu-btn"
-          onClick={onOpenMobileMenu}
-          aria-label="Open sidebar navigation"
-        >
-          <Menu size={18} />
-        </button>
+    <header className="site-header" role="banner">
+      <div className="header-container">
+        {/* Brand Logo & Wordmark */}
+        <div className="header-brand-group">
+          <button
+            className="mobile-nav-toggle"
+            onClick={() => setMobileNavOpen(!mobileNavOpen)}
+            aria-label={mobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={mobileNavOpen}
+          >
+            {mobileNavOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
 
-        <a className="topbar-brand" href="#top" onClick={() => onSelectTab('Dashboard')}>
-          <RadarMark size={36} />
-          <span className="topbar-brand-text">
-            <span className="topbar-brand-title">Opportunity Radar</span>
-            <span className="topbar-brand-subtitle">STUDENT DISCOVERY</span>
-          </span>
-        </a>
+          <a
+            className="header-brand-link"
+            href="#top"
+            onClick={(e) => {
+              e.preventDefault()
+              handleNavClick('Dashboard')
+            }}
+            aria-label="Opportunity Radar Home"
+          >
+            <RadarMark size={32} />
+            <div className="brand-wordmark">
+              <span className="brand-name">Opportunity Radar</span>
+              <span className="brand-kicker">STUDENT DISCOVERY</span>
+            </div>
+          </a>
 
-        <div className="search-container">
-          <Search size={15} />
+          {/* Primary Desktop Navigation Links */}
+          <nav className="desktop-nav" aria-label="Main navigation">
+            <button
+              type="button"
+              className={`nav-link-btn ${activeTab === 'Dashboard' ? 'active' : ''}`}
+              onClick={() => handleNavClick('Dashboard')}
+              aria-current={activeTab === 'Dashboard' ? 'page' : undefined}
+            >
+              <LayoutDashboard size={15} />
+              <span>Discover</span>
+            </button>
+
+            <button
+              type="button"
+              className={`nav-link-btn ${activeTab === 'Explore' ? 'active' : ''}`}
+              onClick={() => handleNavClick('Explore')}
+              aria-current={activeTab === 'Explore' ? 'page' : undefined}
+            >
+              <Compass size={15} />
+              <span>Explore</span>
+              <span className="header-nav-badge">{opportunitiesCount}</span>
+            </button>
+
+            <button
+              type="button"
+              className={`nav-link-btn ${activeTab === 'Saved' ? 'active' : ''}`}
+              onClick={() => handleNavClick('Saved')}
+              aria-current={activeTab === 'Saved' ? 'page' : undefined}
+            >
+              <Bookmark size={15} />
+              <span>Saved</span>
+              {savedCount > 0 && <span className="header-nav-badge highlight">{savedCount}</span>}
+            </button>
+          </nav>
+        </div>
+
+        {/* Search Bar */}
+        <div className="header-search-wrap">
+          <Search size={15} className="search-icon-decor" />
           <input
             ref={searchInputRef}
             type="text"
@@ -92,123 +169,266 @@ export const Navbar: React.FC<NavbarProps> = ({
             onChange={(e) => onQueryChange(e.target.value)}
             placeholder="Search opportunities, skills, or organizations..."
             aria-label="Search opportunities"
+            className="header-search-input"
           />
           {query ? (
             <button
+              type="button"
               className="search-clear-btn"
               onClick={() => onQueryChange('')}
-              aria-label="Clear search"
+              aria-label="Clear search query"
             >
-              <X size={14} />
+              <X size={13} />
             </button>
           ) : (
-            <span className="search-kbd">⌘K</span>
+            <kbd className="search-kbd-shortcut">⌘K</kbd>
           )}
+        </div>
+
+        {/* Header Right Actions */}
+        <div className="header-actions-group">
+          {/* Add Opportunity CTA */}
+          <button
+            type="button"
+            className="btn-add-opportunity"
+            onClick={onOpenAddOpportunity}
+            aria-label="Submit an opportunity for curation"
+          >
+            <Plus size={14} />
+            <span className="add-opp-text">Add Opportunity</span>
+          </button>
+
+          {/* Backend Connectivity Status Button */}
+          {apiConnected !== null && (
+            <button
+              type="button"
+              className={`connection-status-btn ${apiConnected ? 'connected' : 'disconnected'}`}
+              onClick={onRetryConnection}
+              title={apiConnected ? 'Backend connected (click to verify)' : 'Backend unreachable (click to retry)'}
+              aria-label={apiConnected ? 'Backend connected' : 'Backend unreachable'}
+            >
+              {apiConnected ? <Wifi size={14} /> : <WifiOff size={14} />}
+              <span className="status-label-desktop">{apiConnected ? 'Live Feed' : 'Offline'}</span>
+            </button>
+          )}
+
+          {/* User Account / Profile Dropdown Control */}
+          <div className="profile-menu-container" ref={profileMenuRef}>
+            <button
+              type="button"
+              className={`account-menu-trigger ${showProfileMenu ? 'active' : ''}`}
+              onClick={() => setShowProfileMenu(!showProfileMenu)}
+              aria-label="Open student account menu"
+              aria-haspopup="true"
+              aria-expanded={showProfileMenu}
+            >
+              <div className="account-avatar">{initials}</div>
+              <span className="account-trigger-name">{profileName.split(/\s+/)[0] || 'Profile'}</span>
+              <ChevronDown size={14} className={`dropdown-chevron ${showProfileMenu ? 'open' : ''}`} />
+            </button>
+
+            {/* Profile Dropdown Popover */}
+            {showProfileMenu && (
+              <div className="account-dropdown-popover" role="menu">
+                {/* User Identity Header */}
+                <div className="dropdown-identity-block">
+                  <div className="dropdown-avatar-big">{initials}</div>
+                  <div className="dropdown-identity-meta">
+                    <strong className="dropdown-user-name">{profileName}</strong>
+                    <span className="dropdown-user-field">
+                      {profileYear !== 'Not specified' ? `Year ${profileYear} · ` : ''}
+                      {profileField}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="dropdown-divider" />
+
+                {/* Section 1: Workspace */}
+                <div className="dropdown-section-title">WORKSPACE</div>
+                <button
+                  type="button"
+                  className={`dropdown-item-btn ${activeTab === 'Dashboard' ? 'current' : ''}`}
+                  onClick={() => handleNavClick('Dashboard')}
+                  role="menuitem"
+                >
+                  <LayoutDashboard size={15} />
+                  <span>Dashboard / Discover</span>
+                </button>
+
+                <button
+                  type="button"
+                  className={`dropdown-item-btn ${activeTab === 'Explore' ? 'current' : ''}`}
+                  onClick={() => handleNavClick('Explore')}
+                  role="menuitem"
+                >
+                  <Compass size={15} />
+                  <span>Explore Catalog</span>
+                  <span className="dropdown-badge">{opportunitiesCount}</span>
+                </button>
+
+                <button
+                  type="button"
+                  className={`dropdown-item-btn ${activeTab === 'Saved' ? 'current' : ''}`}
+                  onClick={() => handleNavClick('Saved')}
+                  role="menuitem"
+                >
+                  <Bookmark size={15} />
+                  <span>Saved Opportunities</span>
+                  {savedCount > 0 && <span className="dropdown-badge accent">{savedCount}</span>}
+                </button>
+
+                <button
+                  type="button"
+                  className="dropdown-item-btn"
+                  onClick={() => {
+                    setShowProfileMenu(false)
+                    onOpenAddOpportunity()
+                  }}
+                  role="menuitem"
+                >
+                  <Plus size={15} />
+                  <span>Submit Opportunity</span>
+                </button>
+
+                <div className="dropdown-divider" />
+
+                {/* Section 2: Account & Tuning */}
+                <div className="dropdown-section-title">ACCOUNT & PREFERENCES</div>
+                <button
+                  type="button"
+                  className={`dropdown-item-btn ${activeTab === 'Profile' ? 'current' : ''}`}
+                  onClick={() => handleNavClick('Profile')}
+                  role="menuitem"
+                >
+                  <User size={15} />
+                  <span>My Profile</span>
+                </button>
+
+                <button
+                  type="button"
+                  className={`dropdown-item-btn ${activeTab === 'Tune' ? 'current' : ''}`}
+                  onClick={() => handleNavClick('Tune')}
+                  role="menuitem"
+                >
+                  <Sparkles size={15} />
+                  <span>Tune Radar Preferences</span>
+                </button>
+
+                <button
+                  type="button"
+                  className={`dropdown-item-btn ${activeTab === 'Settings' ? 'current' : ''}`}
+                  onClick={() => handleNavClick('Settings')}
+                  role="menuitem"
+                >
+                  <Settings2 size={15} />
+                  <span>Settings & System</span>
+                </button>
+
+                <div className="dropdown-divider" />
+
+                <button
+                  type="button"
+                  className="dropdown-item-btn danger"
+                  onClick={() => {
+                    setShowProfileMenu(false)
+                    onResetProfile()
+                  }}
+                  role="menuitem"
+                >
+                  <RotateCcw size={15} />
+                  <span>Reset Profile to Default</span>
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className="topbar-right">
-        {/* Notifications Dropdown */}
-        <div style={{ position: 'relative' }} ref={notifMenuRef}>
-          <button
-            className="icon-btn"
-            onClick={() => setShowNotifMenu(!showNotifMenu)}
-            aria-label="View notifications"
-          >
-            <Bell size={16} />
-            <span className="notif-badge" />
-          </button>
-
-          {showNotifMenu && (
-            <div className="dropdown-menu">
-              <div className="dropdown-header">
-                <strong>Signal Updates</strong>
-                <small>{opportunitiesCount} active listings verified</small>
-              </div>
-              <div style={{ padding: '8px 12px', fontSize: '11px', color: 'var(--text-secondary)' }}>
-                <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-                  <Radar size={14} style={{ color: 'var(--sage)', flexShrink: 0, marginTop: '2px' }} />
-                  <div>
-                    <strong>Radar Signal Active</strong>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '10px' }}>
-                      Verified listings loaded from local repository.
-                    </div>
-                  </div>
-                </div>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <Check size={14} style={{ color: 'var(--sage)', flexShrink: 0, marginTop: '2px' }} />
-                  <div>
-                    <strong>Deadline Check</strong>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '10px' }}>
-                      Upcoming application deadlines monitored.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* User Profile Menu */}
-        <div style={{ position: 'relative' }} ref={profileMenuRef}>
-          <button
-            className="topbar-profile-btn"
-            onClick={() => setShowProfileMenu(!showProfileMenu)}
-            aria-label="User account menu"
-          >
-            <div className="user-avatar" style={{ width: 28, height: 28, fontSize: 11 }}>
-              {initials}
-            </div>
-            <span className="topbar-profile-name">{profileName}</span>
-          </button>
-
-          {showProfileMenu && (
-            <div className="dropdown-menu">
-              <div className="dropdown-header">
+      {/* Mobile Drawer Navigation */}
+      {mobileNavOpen && (
+        <div className="mobile-nav-drawer" role="navigation" aria-label="Mobile navigation">
+          <div className="mobile-nav-inner">
+            <div className="mobile-user-card">
+              <div className="account-avatar">{initials}</div>
+              <div>
                 <strong>{profileName}</strong>
-                <small>{profileField}</small>
+                <div style={{ fontSize: '11px', color: 'var(--text-tertiary)' }}>{profileField}</div>
               </div>
+            </div>
+
+            <div className="mobile-nav-links">
               <button
-                className="dropdown-item"
-                onClick={() => {
-                  setShowProfileMenu(false)
-                  onOpenProfile()
-                }}
+                type="button"
+                className={`mobile-nav-item ${activeTab === 'Dashboard' ? 'active' : ''}`}
+                onClick={() => handleNavClick('Dashboard')}
               >
-                <User size={14} /> My Profile
+                <LayoutDashboard size={16} />
+                <span>Dashboard / Discover</span>
               </button>
+
               <button
-                className="dropdown-item"
-                onClick={() => {
-                  setShowProfileMenu(false)
-                  onSelectTab('Saved')
-                }}
+                type="button"
+                className={`mobile-nav-item ${activeTab === 'Explore' ? 'active' : ''}`}
+                onClick={() => handleNavClick('Explore')}
               >
-                <Bookmark size={14} /> Saved Opportunities
+                <Compass size={16} />
+                <span>Explore Catalog</span>
+                <span className="mobile-badge">{opportunitiesCount}</span>
               </button>
+
               <button
-                className="dropdown-item"
-                onClick={() => {
-                  setShowProfileMenu(false)
-                  onOpenProfile()
-                }}
+                type="button"
+                className={`mobile-nav-item ${activeTab === 'Saved' ? 'active' : ''}`}
+                onClick={() => handleNavClick('Saved')}
               >
-                <Settings2 size={14} /> Preferences
+                <Bookmark size={16} />
+                <span>Saved Opportunities</span>
+                {savedCount > 0 && <span className="mobile-badge accent">{savedCount}</span>}
               </button>
-              <div style={{ height: 1, backgroundColor: 'var(--divider)', margin: '4px 0' }} />
+
               <button
-                className="dropdown-item danger"
+                type="button"
+                className={`mobile-nav-item ${activeTab === 'Profile' ? 'active' : ''}`}
+                onClick={() => handleNavClick('Profile')}
+              >
+                <User size={16} />
+                <span>My Profile</span>
+              </button>
+
+              <button
+                type="button"
+                className={`mobile-nav-item ${activeTab === 'Tune' ? 'active' : ''}`}
+                onClick={() => handleNavClick('Tune')}
+              >
+                <Sparkles size={16} />
+                <span>Tune Radar Preferences</span>
+              </button>
+
+              <button
+                type="button"
+                className={`mobile-nav-item ${activeTab === 'Settings' ? 'active' : ''}`}
+                onClick={() => handleNavClick('Settings')}
+              >
+                <Settings2 size={16} />
+                <span>Settings</span>
+              </button>
+
+              <button
+                type="button"
+                className="mobile-nav-item add-btn"
                 onClick={() => {
-                  setShowProfileMenu(false)
-                  onResetProfile()
+                  setMobileNavOpen(false)
+                  onOpenAddOpportunity()
                 }}
               >
-                <LogOut size={14} /> Reset Profile
+                <Plus size={16} />
+                <span>Submit Opportunity</span>
               </button>
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
     </header>
   )
 }

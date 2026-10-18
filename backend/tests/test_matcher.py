@@ -30,6 +30,48 @@ def test_missing_eligibility_stays_potentially_eligible():
     assert evaluate_eligibility(opp, profile, date(2026, 10, 15)) == "potentially_eligible"
 
 
+def test_missing_profile_year_does_not_claim_eligibility():
+    opp = make_opportunity()
+    profile = StudentProfile(field="Computer Science", team_size=2)
+    assert evaluate_eligibility(opp, profile, date(2026, 10, 15)) == "potentially_eligible"
+
+
+def test_missing_profile_field_does_not_claim_eligibility():
+    opp = make_opportunity()
+    profile = StudentProfile(year="1", team_size=2)
+    assert evaluate_eligibility(opp, profile, date(2026, 10, 15)) == "potentially_eligible"
+
+
+def test_blank_profile_values_are_treated_as_unknown():
+    opp = make_opportunity()
+    profile = StudentProfile(year=" ", field="", team_size=2)
+    assert evaluate_eligibility(opp, profile, date(2026, 10, 15)) == "potentially_eligible"
+
+
+def test_missing_team_size_does_not_claim_eligibility():
+    opp = make_opportunity()
+    profile = StudentProfile(year="1", field="Computer Science")
+    assert evaluate_eligibility(opp, profile, date(2026, 10, 15)) == "potentially_eligible"
+
+
+def test_known_conflict_still_overrides_missing_profile_information():
+    opp = make_opportunity()
+    profile = StudentProfile(year="4")
+    assert evaluate_eligibility(opp, profile, date(2026, 10, 15)) == "not_eligible"
+
+
+def test_deadline_today_is_not_expired():
+    opp = make_opportunity(deadline="2026-10-15")
+    profile = StudentProfile(year="1", field="Computer Science", team_size=2)
+    assert evaluate_eligibility(opp, profile, date(2026, 10, 15)) == "eligible"
+
+
+def test_all_years_and_fields_are_not_treated_as_unknown():
+    opp = make_opportunity(eligible_years=["All"], eligible_fields=["All"])
+    profile = StudentProfile(team_size=2)
+    assert evaluate_eligibility(opp, profile, date(2026, 10, 15)) == "eligible"
+
+
 def test_expired_deadline_is_flagged():
     opp = make_opportunity(deadline="2026-10-01")
     profile = StudentProfile(year="1", field="Computer Science", skills=["Python"], team_size=2)

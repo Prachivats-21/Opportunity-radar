@@ -10,17 +10,27 @@ def evaluate_eligibility(opportunity: Opportunity, profile: StudentProfile, toda
     today = today or date.today()
     if opportunity.deadline and opportunity.deadline < today:
         return "expired"
-    if opportunity.eligible_years and profile.year != "Not specified" and profile.year not in opportunity.eligible_years:
+    year_known = profile.year.strip().casefold() not in {"", "not specified"}
+    field_known = profile.field.strip().casefold() not in {"", "not specified"}
+    allowed_years = {value.strip().casefold() for value in opportunity.eligible_years}
+    allowed_fields = {value.strip().casefold() for value in opportunity.eligible_fields}
+    constrained_years = allowed_years - {"all"}
+    constrained_fields = allowed_fields - {"all"}
+    if constrained_years and year_known and profile.year.strip().casefold() not in constrained_years:
         return "not_eligible"
-    if opportunity.eligible_fields and profile.field != "Not specified":
-        allowed = {v.casefold() for v in opportunity.eligible_fields}
-        if "all" not in allowed and profile.field.casefold() not in allowed:
-            return "not_eligible"
+    if constrained_fields and field_known and profile.field.strip().casefold() not in constrained_fields:
+        return "not_eligible"
     if opportunity.team_min and profile.team_size is not None and profile.team_size < opportunity.team_min:
         return "not_eligible"
     if opportunity.team_max and profile.team_size is not None and profile.team_size > opportunity.team_max:
         return "not_eligible"
-    has_unknowns = not opportunity.eligible_years or not opportunity.eligible_fields
+    has_unknowns = (
+        not allowed_years
+        or not allowed_fields
+        or (bool(constrained_years) and not year_known)
+        or (bool(constrained_fields) and not field_known)
+        or ((opportunity.team_min is not None or opportunity.team_max is not None) and profile.team_size is None)
+    )
     if has_unknowns:
         return "potentially_eligible"
     return "eligible"
