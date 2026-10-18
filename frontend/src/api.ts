@@ -22,3 +22,62 @@ export async function extractOpportunity(input: { title_hint: string; source_url
   if (!response.ok) { let detail = 'Could not extract the listing.'; try { const payload = await response.json(); detail = typeof payload.detail === 'string' ? payload.detail : detail } catch { /* Keep safe generic error. */ } throw new Error(detail) }
   return response.json()
 }
+
+ 
+export type SourceStatus = {
+  id: string
+  name: string
+  types: string[]
+  mode: string
+  docs_url: string
+  requirements: string[]
+  configured: boolean
+  status: string
+  note: string
+  cached_items: number
+}
+
+export type SourceOverview = {
+  synced_at: string | null
+  configured_count: number
+  cached_opportunity_count: number
+  sync_interval_minutes: number
+  automatic_sync_enabled: boolean
+  sources: SourceStatus[]
+}
+
+export type SourceSyncResult = {
+  status: string
+  synced_at: string | null
+  imported_count: number
+  results: Array<{
+    source_id: string
+    status: string
+    items_received: number
+    cached_items: number
+    error?: string
+  }>
+}
+
+export async function getSourceOverview(): Promise<SourceOverview> {
+  const response = await fetch(\`\${API_URL}/api/sources\`)
+  if (!response.ok) throw new Error('Could not load source connection status.')
+  return response.json()
+}
+
+export async function syncSourceFeeds(): Promise<SourceSyncResult> {
+  const response = await fetch(\`\${API_URL}/api/sources/sync\`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({})
+  })
+  if (!response.ok) {
+    let detail = 'Could not sync source feeds.'
+    try {
+      const payload = await response.json()
+      if (typeof payload.detail === 'string') detail = payload.detail
+    } catch { /* Keep the safe generic message. */ }
+    throw new Error(detail)
+  }
+  return response.json()
+}

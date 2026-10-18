@@ -9,3 +9,5 @@ __pycache__/
 node_modules/
 dist/
 .vite/
+backend/data/imported_opportunities.json
+backend/data/imported_opportunities.tmp
