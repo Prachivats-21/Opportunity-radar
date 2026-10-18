@@ -18,7 +18,7 @@ const STATUS_COPY: Record<string, string> = {
 }
 
 function statusLabel(source: SourceStatus): string {
-  return STATUS_COPY[source.status] || source.status.replaceAll('_', ' ')
+  return STATUS_COPY[source.status] || source.status.replace(/_/g, ' ')
 }
 
 export function SourceConnections({ onRefreshListings }: Props) {
@@ -66,8 +66,8 @@ export function SourceConnections({ onRefreshListings }: Props) {
         setNotice('Configured sources were checked. No new relevant listings were returned.')
       }
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : 'Could not sync source feeds.')
       await refreshStatus()
+      setError(caught instanceof Error ? caught.message : 'Could not sync source feeds.')
     } finally {
       setSyncing(false)
     }
