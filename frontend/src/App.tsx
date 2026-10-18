@@ -10,6 +10,7 @@ import { RightPanel } from './components/RightPanel'
 import { ProfileModal } from './components/ProfileModal'
 import { AddOpportunityModal } from './components/AddOpportunityModal'
 import { AdvancedFilterDrawer } from './components/AdvancedFilterDrawer'
+import { SourceConnections } from './components/SourceConnections'
 import { getOpportunities, getMatches } from './api'
 import type { Opportunity, Profile, MatchResult, FilterState } from './types'
 import { AlertCircle, Search, Check, RefreshCw } from 'lucide-react'
@@ -630,6 +631,11 @@ export function App() {
                 selectedCategory={filters.category}
                 onSelectCategory={(cat) => handleFilterUpdate({ category: cat })}
               />
+            )}
+
+            {/* Source connectors and manual refresh */}
+            {activeTab !== 'Saved' && (
+              <SourceConnections onRefreshListings={fetchOpportunitiesFromApi} />
             )}
 
             {/* Opportunity Filter Bar with Quick Filters and Active Chips */}
