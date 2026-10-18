@@ -83,8 +83,8 @@ def get_sources() -> dict:
 
 @app.post("/api/sources/sync")
 def sync_sources(
+    request: Request,
     payload: SourceSyncRequest | None = None,
-    request: Request = None,  # FastAPI injects the request; default keeps OpenAPI body optional.
     x_source_sync_token: str | None = Header(default=None),
 ) -> dict:
     """Synchronize configured sources. Protect remote deployments with a server-side token."""
