@@ -399,3 +399,26 @@ def maybe_auto_sync_sources() -> None:
     _SYNC_LOCK.release()
     _LAST_AUTO_SYNC = now
     sync_configured_sources()
+
+
+def source_overview() -> dict[str, Any]:
+    """Provider-safe source status including sync timestamps and cached record counts."""
+    try:
+        raw = json.loads(IMPORTS_FILE.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        raw = {}
+    cached = raw.get("sources", {}) if isinstance(raw, dict) else {}
+    statuses = source_statuses()
+    for item in statuses:
+        rows = cached.get(item["id"], []) if isinstance(cached, dict) else []
+        item["cached_items"] = len(rows) if isinstance(rows, list) else 0
+        if item["id"] in FETCHERS and item.get("configured") and item["cached_items"] > 0:
+            item["status"] = "connected_with_cached_data"
+    return {
+        "synced_at": raw.get("synced_at") if isinstance(raw, dict) else None,
+        "configured_count": len(configured_source_ids()),
+        "cached_opportunity_count": len(read_imported_opportunities()),
+        "sources": statuses,
+        "sync_interval_minutes": SYNC_INTERVAL_MINUTES,
+        "automatic_sync_enabled": _AUTO_SYNC_ENABLED,
+    }
