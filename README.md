@@ -11,9 +11,43 @@ Personalized discovery for student opportunities: hackathons, internships, compe
 - Validate structured model output with Pydantic and keep deterministic eligibility rules in Python.
 - Preserve source links and mark unknown or unverified fields instead of inventing them.
 
-## Important data note
+## Data sources and automated imports
 
-The included records are a tiny seed dataset, not a comprehensive live feed. Each record has a source URL and verification timestamp. The app does not claim to scrape or sync Unstop, LinkedIn, or other platforms. Re-check source pages before applying because dates and eligibility can change.
+The curated JSON file remains the seed set, not a comprehensive live feed. The backend now includes a provider adapter layer in `backend/app/sources.py`. Imported records are stored separately at `backend/data/imported_opportunities.json` (ignored by Git), merged into `GET /api/opportunities`, and deduplicated against curated listings. Source attribution and original application URLs are preserved.
+
+### Implemented adapter types
+
+- **The Muse API** — requires `THE_MUSE_API_KEY`; returns relevant student/early-career listings from the configured number of API pages.
+- **Adzuna API** — requires `ADZUNA_APP_ID` and `ADZUNA_APP_KEY`. Configure the country/query and confirm the provider actually supports that market for your account. Follow Adzuna's attribution and usage terms.
+- **Greenhouse public job boards** — configure comma-separated `GREENHOUSE_BOARD_TOKENS` for specific company boards whose published listings you are authorized to ingest. This is not a global jobs search API.
+- **Lever public postings** — configure comma-separated `LEVER_SITE_NAMES` for specific company boards. This is not a global jobs search API.
+- **RSS/Atom feeds** — configure comma-separated publisher-provided or otherwise authorized feed URLs in `OPPORTUNITY_RADAR_RSS_FEEDS`.
+
+The adapters only import records whose title/content clearly suggests an opportunity type. They do not guess dates or eligibility. Imported records start as `needs_recheck` and carry a note directing users to verify the original source. If a provider fails, the last successful cache for that provider is retained.
+
+### API endpoints
+
+- `GET /api/sources` returns provider readiness, configuration status, cached record counts, and last-sync time. It never returns API keys.
+- `POST /api/sources/sync` synchronizes configured adapters. For local development, this endpoint is allowed only from loopback when no sync token is set. For a remote deployment, set `OPPORTUNITY_RADAR_SYNC_TOKEN` in the backend environment and send it in the `X-Source-Sync-Token` header.
+- `GET /api/opportunities` returns curated records plus previously imported records. When enabled and adapters are configured, it schedules a background sync at most once per configured interval.
+
+Example local sync:
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/sources/sync \
+  -H 'Content-Type: application/json' \
+  -d '{}'
+```
+
+Copy `backend/.env.example` into a local environment file (do not commit secrets) and fill in keys/board names only after obtaining provider access. For remote deployments, place secrets in the host's environment/secret manager, never in frontend variables.
+
+### Sources awaiting approved access
+
+Unstop, Devfolio, Hack2Skill, Internshala, Major League Hacking, Devpost, Opportunity Desk and India's National Scholarship Portal are exposed in the source registry as pending partner/feed or government-data access. They are not falsely represented as live connectors. The Unstop integration needs a confirmed authorized catalogue/feed contract; MLH's documented API is not a universal event directory; and Devpost's terms prohibit automated scraping/crawling. Do not enable unofficial endpoints or scrape restricted sources.
+
+Source/API references: [The Muse API](https://www.themuse.com/developers/api/v2), [Adzuna API](https://developer.adzuna.com/overview), [Greenhouse Job Board API](https://developers.greenhouse.io/job-board.html), [Lever Postings API](https://github.com/lever/postings-api), [Devpost Terms](https://info.devpost.com/legal/terms-of-service), [Unstop partner programme](https://unstop.com/our-partners/become-a-partner/amp).
+
+This integration framework does not mean those providers have been activated yet: live imports start only after credentials, allowed board/feed identifiers, or partner approval are configured. Re-check source pages before applying because dates and eligibility can change.
 
 ## Stack
 
