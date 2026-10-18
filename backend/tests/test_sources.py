@@ -34,7 +34,7 @@ def test_normalizer_keeps_source_and_marks_imported_record_for_review():
     assert item is not None
     assert item.id == "example-board-123"
     assert item.source_name == "Example Board"
-    assert item.source_url == "https://jobs.example.org/roles/123"
+    assert str(item.source_url) == "https://jobs.example.org/roles/123"
     assert item.category == "Internship"
     assert item.status == "needs_recheck"
     assert "Build internal tools & learn" in item.description
