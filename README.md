@@ -100,3 +100,16 @@ pytest -q
 ## License
 
 MIT. See `LICENSE`.
+
+<!-- AUTO-README-AGENT:START -->
+### 🤖 Autonomous Agent Telemetry & Activity Log
+*Auto-updated after commands and executions via OpenCode Agent integration.*
+
+- **Last Command**: `npm test` (✅ Success)
+- **Last Sync**: `2026-10-19 10:27:04 UTC`
+- **Active Branch**: `master` (`bfd0d04`)
+
+| Timestamp (UTC) | Command | Status | Commit |
+|:---|:---|:---:|:---:|
+| 2026-10-19 10:27:04 | `npm test` | ✅ | `bfd0d04` |
+<!-- AUTO-README-AGENT:END -->
