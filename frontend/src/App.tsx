@@ -5,7 +5,6 @@ import { WelcomeHero } from './components/WelcomeHero'
 import { FiltersBar } from './components/FiltersBar'
 import { OpportunityCard } from './components/OpportunityCard'
 import { OpportunityDetailDrawer } from './components/OpportunityDetailDrawer'
-import { RadarScope } from './components/RadarScope'
 import { ProfileModal } from './components/ProfileModal'
 import { AdvancedFilterDrawer } from './components/AdvancedFilterDrawer'
 import { AuthModal } from './components/AuthModal'
@@ -666,19 +665,6 @@ export function App() {
               }}
               onEditProfile={() => setActiveTab('Profile')}
               loading={loadingMatches}
-            />
-
-            {/* Interactive Tactile Radar Scope Scanner */}
-            <RadarScope
-              opportunities={opportunities}
-              matchMap={matchMap}
-              onSelectOpportunity={(opp) => setSelectedOpportunityForDrawer(opp)}
-              activeCategory={filters.category}
-              onSelectCategory={(cat) => {
-                handleFilterUpdate({ category: cat })
-                const el = document.getElementById('opportunity-feed')
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              }}
             />
 
             {/* Filter Bar */}
