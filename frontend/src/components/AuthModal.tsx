@@ -43,6 +43,16 @@ const DEMO_PERSONAS: { name: string; email: string; year: string; field: string;
     preferred_categories: ['Competition', 'Fellowship', 'Internship'],
     description: '2nd Year Student focusing on global AI challenges, research fellowships, and Kaggle/Unstop competitions.',
   },
+  {
+    name: 'Rohan Mehta',
+    email: 'rohan.mehta@mgmt.edu.in',
+    year: '3',
+    field: 'Product Management & Business Analytics',
+    skills: ['Product Management', 'Wireframing', 'PRD', 'User Research', 'Figma', 'Metrics'],
+    interests: ['Product Management', 'Growth', 'Competitions', 'Case Studies', 'Productathons'],
+    preferred_categories: ['Competition', 'Internship', 'Hackathon', 'Fellowship'],
+    description: '3rd Year Undergraduate targeting APM cohorts (Google, Atlassian, Flipkart WiRED), case challenges, and productathons.',
+  },
 ]
 
 export const AuthModal: React.FC<AuthModalProps> = ({

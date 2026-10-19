@@ -46,9 +46,25 @@ def match_opportunity(opportunity: Opportunity, profile: StudentProfile, today: 
 
     score = 25
     reasons: list[str] = []
+
+    # Check multi-word phrase domain matches (e.g. "product management", "cybersecurity", "machine learning")
+    user_phrases = [
+        p.strip().lower() for p in profile.skills + profile.interests + [profile.field]
+        if len(p.strip()) > 3
+    ]
+    opp_full_text = f"{opportunity.title} {opportunity.summary} {opportunity.description} {' '.join(opportunity.skills)}".lower()
+    
+    phrase_matches = [
+        phrase for phrase in user_phrases
+        if phrase in opp_full_text
+    ]
+
     if overlap:
         score += min(35, 8 * len(overlap))
         reasons.append("Your profile overlaps with: " + ", ".join(overlap[:5]) + ".")
+    if phrase_matches:
+        score += min(25, 12 * len(phrase_matches))
+        reasons.append("High domain alignment with: " + ", ".join(phrase_matches[:3]) + ".")
     if profile.preferred_categories and opportunity.category in profile.preferred_categories:
         score += 20
         reasons.append(f"Matches your preferred {opportunity.category.lower()} category.")
@@ -79,3 +95,4 @@ def match_opportunity(opportunity: Opportunity, profile: StudentProfile, today: 
 def rank_opportunities(opportunities: list[Opportunity], profile: StudentProfile, today: date | None = None) -> list[MatchResult]:
     results = [match_opportunity(item, profile, today) for item in opportunities]
     return sorted(results, key=lambda result: (result.eligibility == "not_eligible", result.eligibility == "expired", -result.score))
+

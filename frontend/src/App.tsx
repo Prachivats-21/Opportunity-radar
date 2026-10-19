@@ -52,6 +52,226 @@ const INITIAL_FILTERS: FilterState = {
 
 const SEED_FALLBACKS: Opportunity[] = [
   {
+    id: 'unstop-productathon-2026',
+    title: 'Unstop National Productathon 2026',
+    organization: 'Unstop & PM School',
+    category: 'Hackathon',
+    summary: 'India premier 48-hour student product management hackathon: design, prototype, and build PRDs with wireframes for real-world user problems.',
+    description: 'Open to all undergraduate and postgraduate students interested in product management, UI/UX, and business strategy. Tracks include Consumer Tech, AI-First Products, and Fintech. Teams of 2 to 4 students submit PRDs, user journey maps, and Figma prototypes.',
+    skills: ['Product Management', 'Wireframing', 'PRD', 'User Research', 'Figma', 'Product Strategy', 'Metrics', 'Problem Solving'],
+    eligible_years: ['1', '2', '3', '4', 'Graduate'],
+    eligible_fields: [],
+    location: 'India',
+    mode: 'Online',
+    team_min: 2,
+    team_max: 4,
+    deadline: '2026-11-20',
+    start_date: '2026-11-25',
+    source_url: 'https://unstop.com/hackathons/productathon-2026',
+    source_name: 'Unstop Official',
+    last_verified: '2026-10-18',
+    status: 'verified',
+    notes: 'Wireframe submission via Figma or interactive prototype link.',
+  },
+  {
+    id: 'flipkart-wired-product-track-2026',
+    title: 'Flipkart WiRED 9.0 — Product Management Track',
+    organization: 'Flipkart',
+    category: 'Competition',
+    summary: 'Flagship business and product case challenge inviting campus students to solve real-world Indian e-commerce, consumer tech, and retail discovery problems.',
+    description: 'The Product Track tests problem identification, consumer persona design, solution wireframing, and go-to-market monetization strategy. National winners receive PPIs (Pre-Placement Interviews) for Flipkart APM roles.',
+    skills: ['Product Management', 'E-Commerce', 'PRD', 'Customer Journey', 'Monetization', 'Wireframing', 'Business Strategy'],
+    eligible_years: ['1', '2', '3', '4', 'Graduate'],
+    eligible_fields: [],
+    location: 'India',
+    mode: 'Online rounds + National Finals in Bengaluru',
+    team_min: 2,
+    team_max: 3,
+    deadline: '2026-11-18',
+    start_date: '2026-11-24',
+    source_url: 'https://unstop.com/competitions/flipkart-wired-90-product-track',
+    source_name: 'Flipkart Careers & Unstop',
+    last_verified: '2026-10-18',
+    status: 'verified',
+    notes: 'Pre-placement interviews (PPIs) awarded to top national product finalists.',
+  },
+  {
+    id: 'google-apm-internship-2026',
+    title: 'Google Associate Product Manager (APM) Summer Internship 2026',
+    organization: 'Google',
+    category: 'Internship',
+    summary: 'Google flagship 12-week APM internship for undergraduate students passionate about technology, user empathy, and product vision.',
+    description: 'APM interns guide products from conception to launch, collaborating with engineering, UX, and marketing teams to define product roadmaps and ship impactful features across Search, Android, Cloud, and Workspace.',
+    skills: ['Product Management', 'Product Strategy', 'Data Analysis', 'System Design', 'User Empathy', 'Roadmapping', 'Leadership'],
+    eligible_years: ['2', '3', '4'],
+    eligible_fields: ['Computer Science', 'Engineering', 'Business', 'Information Technology', 'Any'],
+    location: 'India',
+    mode: 'Hybrid (Bengaluru / Hyderabad)',
+    team_min: null,
+    team_max: null,
+    deadline: '2026-11-30',
+    start_date: '2027-05-15',
+    source_url: 'https://careers.google.com/jobs/results/apm-intern-2026',
+    source_name: 'Google Student Careers',
+    last_verified: '2026-10-18',
+    status: 'verified',
+    notes: 'Comprehensive summer mentorship with Google Senior Product Managers.',
+  },
+  {
+    id: 'atlassian-pm-internship-2026',
+    title: 'Atlassian Product Management Summer Internship 2026',
+    organization: 'Atlassian',
+    category: 'Internship',
+    summary: 'Join Atlassian product craft team to shape the future of team collaboration tools including Jira, Confluence, and Loom.',
+    description: 'Work directly alongside seasoned Product Managers and Principal Engineers. Conduct customer interviews, define PRDs, prioritize sprint backlogs, and launch experimental product features.',
+    skills: ['Product Management', 'Agile', 'PRD', 'Jira', 'User Research', 'Feature Prioritization', 'Stakeholder Management'],
+    eligible_years: ['2', '3', '4'],
+    eligible_fields: [],
+    location: 'India',
+    mode: 'Remote / Bengaluru',
+    team_min: null,
+    team_max: null,
+    deadline: '2026-11-25',
+    start_date: '2027-05-01',
+    source_url: 'https://www.atlassian.com/company/careers/students',
+    source_name: 'Atlassian Early Careers',
+    last_verified: '2026-10-18',
+    status: 'verified',
+    notes: 'Remote-first collaboration with global product teams.',
+  },
+  {
+    id: 'apm-product-hack-2026',
+    title: 'APM Global Product Sprint & Teardown 2026',
+    organization: 'The Product Folks (TPF)',
+    category: 'Hackathon',
+    summary: 'A fast-paced 72-hour product hackathon and app teardown challenge for aspiring Associate Product Managers (APMs).',
+    description: 'Tackle growth, retention, and onboarding friction for top consumer apps. Mentorship from senior product leaders at Swiggy, Razorpay, and CRED. Submit a detailed teardown deck and feature specification.',
+    skills: ['Product Management', 'Product Teardown', 'A/B Testing', 'Growth', 'User Experience', 'Metrics', 'Data Analysis'],
+    eligible_years: ['1', '2', '3', '4', 'Graduate'],
+    eligible_fields: [],
+    location: 'India',
+    mode: 'Online',
+    team_min: 1,
+    team_max: 3,
+    deadline: '2026-11-12',
+    start_date: '2026-11-15',
+    source_url: 'https://theproductfolks.com/product-hack-2026',
+    source_name: 'The Product Folks Official',
+    last_verified: '2026-10-18',
+    status: 'verified',
+    notes: 'Live teardown presentations before top tech venture partners.',
+  },
+  {
+    id: 'cred-curious-product-challenge-2026',
+    title: 'CRED Curious Product Challenge 2026',
+    organization: 'CRED',
+    category: 'Competition',
+    summary: 'An exclusive student product innovation challenge to design high-trust fintech and gamification loops for premium users.',
+    description: 'Analyze user psychology, friction points, and retention loops. Submit an end-to-end product proposal including PRD, wireframes, and business impact projections.',
+    skills: ['Product Management', 'Fintech', 'UX Teardown', 'Retention', 'Wireframing', 'Design Thinking', 'Behavioral Economics'],
+    eligible_years: ['1', '2', '3', '4', 'Graduate'],
+    eligible_fields: [],
+    location: 'India',
+    mode: 'Online',
+    team_min: 1,
+    team_max: 2,
+    deadline: '2026-11-14',
+    start_date: '2026-11-18',
+    source_url: 'https://unstop.com/competitions/cred-curious-product-2026',
+    source_name: 'CRED Campus Innovation',
+    last_verified: '2026-10-18',
+    status: 'verified',
+    notes: 'Winners receive direct APM interview fast-track.',
+  },
+  {
+    id: 'nextleap-product-fellowship-2026',
+    title: 'NextLeap Product Management Fellowship 2026',
+    organization: 'NextLeap',
+    category: 'Fellowship',
+    summary: 'A structured 12-week selective student fellowship with real-world product projects, live teardowns, and APM mentorship.',
+    description: 'Work on capstone products with user interviews, Figma wireframes, SQL metrics analysis, and 1-on-1 resume & mock interview prep with tech APMs.',
+    skills: ['Product Management', 'Product Discovery', 'PRD', 'Figma', 'SQL', 'Growth', 'User Interviews', 'Roadmapping'],
+    eligible_years: ['1', '2', '3', '4', 'Graduate'],
+    eligible_fields: [],
+    location: 'India',
+    mode: 'Online Cohort',
+    team_min: null,
+    team_max: null,
+    deadline: '2026-11-16',
+    start_date: '2026-11-22',
+    source_url: 'https://nextleap.app/product-fellowship',
+    source_name: 'NextLeap Academy',
+    last_verified: '2026-10-18',
+    status: 'verified',
+    notes: 'Cohort-based fellowship with portfolio capstone reviews.',
+  },
+  {
+    id: 'uber-apm-internship-2026',
+    title: 'Uber Associate Product Manager (APM) Internship 2026',
+    organization: 'Uber',
+    category: 'Internship',
+    summary: 'Build the next generation of global mobility and delivery products as part of Uber global APM program.',
+    description: 'Hands-on ownership over rider, driver, or merchant product surfaces. Analyze funnel drop-offs, design experimentation frameworks, and deliver feature specs.',
+    skills: ['Product Management', 'Market Research', 'Experimentation', 'Metrics', 'SQL', 'User Journey', 'Analytics'],
+    eligible_years: ['3', '4'],
+    eligible_fields: [],
+    location: 'India',
+    mode: 'Hybrid (Hyderabad)',
+    team_min: null,
+    team_max: null,
+    deadline: '2026-12-05',
+    start_date: '2027-05-10',
+    source_url: 'https://www.uber.com/us/en/careers/university/',
+    source_name: 'Uber University Programs',
+    last_verified: '2026-10-18',
+    status: 'verified',
+    notes: 'Mentorship from Global Product Directors.',
+  },
+  {
+    id: 'unstop-pm-school-national-case-2026',
+    title: 'National Product Management Case Challenge 2026',
+    organization: 'PM School & Unstop',
+    category: 'Competition',
+    summary: 'Comprehensive product teardown and growth case competition evaluating market sizing, product discovery, and user validation.',
+    description: 'Solve prompt cases curated by product managers at Zepto, Zomato, and Swiggy. Present live to product leaders during the national finale.',
+    skills: ['Product Management', 'Market Sizing', 'Go-To-Market', 'PRD', 'User Validation', 'Metrics', 'Presentation'],
+    eligible_years: ['1', '2', '3', '4'],
+    eligible_fields: [],
+    location: 'India',
+    mode: 'Online',
+    team_min: 1,
+    team_max: 3,
+    deadline: '2026-11-28',
+    start_date: '2026-12-04',
+    source_url: 'https://unstop.com/competitions/pm-school-national-case-2026',
+    source_name: 'PM School Official',
+    last_verified: '2026-10-18',
+    status: 'verified',
+    notes: 'National case championship with mentorship rounds.',
+  },
+  {
+    id: 'kaggle-unstop-ai-product-fellowship-2026',
+    title: 'Kaggle & Unstop AI Product Fellow Cohort 2026',
+    organization: 'Kaggle & Unstop',
+    category: 'Fellowship',
+    summary: 'Fellowship for students who want to build and manage AI/LLM products, covering prompt engineering, model evaluation, and product specs.',
+    description: 'Learn how to define PRDs for AI-driven applications, conduct user evaluations, and manage machine learning product lifecycles.',
+    skills: ['Product Management', 'AI Products', 'PRD', 'User Research', 'Prototyping', 'Strategy', 'Evaluation Metrics'],
+    eligible_years: ['2', '3', '4', 'Graduate'],
+    eligible_fields: [],
+    location: 'India',
+    mode: 'Online',
+    team_min: null,
+    team_max: null,
+    deadline: '2026-12-01',
+    start_date: '2026-12-15',
+    source_url: 'https://unstop.com/fellowships/ai-product-fellows-2026',
+    source_name: 'Kaggle Student Initiative',
+    last_verified: '2026-10-18',
+    status: 'verified',
+    notes: 'Hands-on AI product capstone project.',
+  },
+  {
     id: 'cyber-hackathon-bihar-2026',
     title: 'Cyber Hackathon 2026',
     organization: 'Government of Bihar Cyber Hackathon',
@@ -348,6 +568,15 @@ export function App() {
     return () => clearTimeout(timer)
   }, [filters.searchQuery])
 
+  // Handle profile / preferences update and immediately redirect to Dashboard
+  const handleProfileUpdate = useCallback((updated: Profile, toastText = 'Profile preferences updated! Redirected to Radar feed.') => {
+    setProfile(updated)
+    setActiveTab('Dashboard')
+    setShowProfileModal(false)
+    setToastMessage(toastText)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
+
   // Calculate matches from API (or local fallback if API offline)
   const calculateMatches = useCallback(async () => {
     setLoadingMatches(true)
@@ -367,24 +596,41 @@ export function App() {
           .join(' ')
 
         const overlapping = userTerms.filter((term) => oppTerms.includes(term))
-        let score = 30 + Math.min(45, overlapping.length * 12)
+        let score = 25 + Math.min(35, overlapping.length * 10)
+
+        // Multi-word phrase domain matches (e.g. "product management", "cybersecurity")
+        const userPhrases = userTerms.filter((t) => t.length > 3)
+        const phraseMatches = userPhrases.filter((phrase) => oppTerms.includes(phrase))
+        if (phraseMatches.length > 0) {
+          score += Math.min(25, phraseMatches.length * 12)
+        }
+
         if (profile.preferred_categories.includes(opp.category as any)) {
-          score += 15
+          score += 20
+        }
+        if (profile.preferred_mode !== 'Any' && opp.mode.toLowerCase().includes(profile.preferred_mode.toLowerCase())) {
+          score += 10
         }
 
         const deadlinePassed = opp.deadline && new Date(`${opp.deadline}T23:59:59`).getTime() < Date.now()
         const eligibility = deadlinePassed ? 'expired' : 'potentially_eligible'
-        const reasons = overlapping.length > 0
-          ? [`Profile matches keywords: ${overlapping.slice(0, 3).join(', ')}.`]
-          : ['General student opportunity match.']
-
+        const reasons: string[] = []
+        if (overlapping.length > 0) {
+          reasons.push(`Your profile overlaps with: ${overlapping.slice(0, 4).join(', ')}.`)
+        }
+        if (phraseMatches.length > 0) {
+          reasons.push(`High domain alignment with: ${phraseMatches.slice(0, 3).join(', ')}.`)
+        }
         if (opp.category && profile.preferred_categories.includes(opp.category as any)) {
           reasons.push(`Matches your preferred ${opp.category.toLowerCase()} track.`)
+        }
+        if (reasons.length === 0) {
+          reasons.push('General student opportunity match.')
         }
 
         return {
           opportunity: opp,
-          score: deadlinePassed ? 0 : Math.min(95, score),
+          score: deadlinePassed ? 0 : Math.min(100, score),
           eligibility,
           reasons,
           skill_gaps: opp.skills.filter((s) => !userTerms.includes(s.toLowerCase())).slice(0, 3),
@@ -549,10 +795,16 @@ export function App() {
   )
 
   const topMatch = useMemo(
-    () => matches.reduce<MatchResult | undefined>(
-      (best, match) => !best || match.score > best.score ? match : best,
-      undefined,
-    ),
+    () => {
+      const positiveMatches = matches.filter(
+        (m) => m.score >= 50 && m.eligibility !== 'not_eligible' && m.eligibility !== 'expired',
+      )
+      if (positiveMatches.length > 0) {
+        return positiveMatches.reduce((best, m) => (m.score > best.score ? m : best), positiveMatches[0])
+      }
+      const viable = matches.filter((m) => m.eligibility !== 'expired')
+      return viable.length > 0 ? viable[0] : matches[0]
+    },
     [matches],
   )
 
@@ -879,10 +1131,7 @@ export function App() {
         {activeTab === 'Profile' && (
           <ProfileView
             profile={profile}
-            onSave={(updated) => {
-              setProfile(updated)
-              setToastMessage('Student profile updated')
-            }}
+            onSave={(updated) => handleProfileUpdate(updated, 'Student profile updated! Redirected to Radar home.')}
             onNavigateToTune={() => setActiveTab('Tune')}
             onNavigateToDashboard={() => setActiveTab('Dashboard')}
           />
@@ -892,10 +1141,7 @@ export function App() {
         {activeTab === 'Tune' && (
           <TuneRadarView
             profile={profile}
-            onSave={(updated) => {
-              setProfile(updated)
-              setToastMessage('Preferences calibrated and matches recalculated')
-            }}
+            onSave={(updated) => handleProfileUpdate(updated, 'Preferences calibrated! Redirected to Radar feed.')}
             onNavigateToDashboard={() => setActiveTab('Dashboard')}
             totalOpportunities={opportunities.length}
           />
@@ -909,10 +1155,7 @@ export function App() {
             opportunities={opportunities}
             savedIds={saved}
             profile={profile}
-            onResetProfile={() => {
-              setProfile(DEFAULT_PROFILE)
-              setToastMessage('Profile reset to default')
-            }}
+            onResetProfile={() => handleProfileUpdate(DEFAULT_PROFILE, 'Profile reset to default — redirected to home.')}
             onClearCustomOpportunities={handleClearCustomOpportunities}
             onNavigateToDashboard={() => setActiveTab('Dashboard')}
           />
@@ -938,10 +1181,7 @@ export function App() {
       {showProfileModal && (
         <ProfileModal
           profile={profile}
-          onSave={(updated) => {
-            setProfile(updated)
-            setToastMessage('Student profile updated')
-          }}
+          onSave={(updated) => handleProfileUpdate(updated, 'Student profile updated! Redirected to Radar feed.')}
           onClose={() => setShowProfileModal(false)}
         />
       )}
@@ -954,16 +1194,16 @@ export function App() {
           isLoggedIn={isLoggedIn}
           userEmail={userEmail}
           onLoginSuccess={(newProfile, email) => {
-            setProfile(newProfile)
             setIsLoggedIn(true)
             setUserEmail(email)
-            setShowAuthModal(false)
-            setToastMessage(`Logged in as ${newProfile.name} — Radar calibrated!`)
+            handleProfileUpdate(newProfile, `Logged in as ${newProfile.name} — Radar calibrated!`)
           }}
           onLogout={() => {
             setIsLoggedIn(false)
             setShowAuthModal(false)
+            setActiveTab('Dashboard')
             setToastMessage('Signed out. Browsing as Guest Student.')
+            window.scrollTo({ top: 0, behavior: 'smooth' })
           }}
           onClose={() => setShowAuthModal(false)}
         />

@@ -21,13 +21,13 @@ interface NotificationCenterProps {
 const INITIAL_NOTIFICATIONS: RadarNotification[] = [
   {
     id: 'notif-1',
-    title: 'Cyber Hackathon 2026 Closing Soon',
-    message: 'Registration deadline on Bihar Cyber Hackathon portal closes in 7 days. Confirm team members (3–4).',
+    title: 'Registration Deadline Alert',
+    message: 'High-fit opportunities in your target tracks are closing soon. Confirm team requirements and submit your applications.',
     type: 'deadline',
     timestamp: '2 hours ago',
     read: false,
-    targetId: 'cyber-hackathon-bihar-2026',
-    platform: 'Govt of Bihar',
+    targetId: 'unstop-productathon-2026',
+    platform: 'Unstop',
   },
   {
     id: 'notif-2',
