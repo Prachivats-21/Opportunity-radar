@@ -28,3 +28,17 @@ export type FilterState = {
   freeProgramsOnly: boolean
   sortBy: 'Best match' | 'Deadline soon' | 'Recently added'
 }
+
+export type ApplicationStatus = 'Saved' | 'Applied' | 'Under Review' | 'Shortlisted' | 'Selected' | 'Rejected'
+
+export type ApplicationRecord = {
+  opportunityId: string
+  opportunity: Opportunity
+  status: ApplicationStatus
+  appliedDate: string
+  teamName?: string
+  teamMembers?: string[]
+  notes?: string
+  updatedAt: string
+}
+

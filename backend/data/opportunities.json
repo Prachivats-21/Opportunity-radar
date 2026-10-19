@@ -6,8 +6,20 @@
     "category": "Hackathon",
     "summary": "A student-focused cyber defence challenge with tracks including AI for cyber defence, digital forensics, threat intelligence, secure infrastructure, and open-source intelligence.",
     "description": "The official guidelines state that registration and development run from 12 October through 26 October 2026. The listed team requirement is three to four students. Review official guidelines and selected problem statements.",
-    "skills": ["cybersecurity", "AI", "Python", "digital forensics", "open-source intelligence"],
-    "eligible_years": ["1", "2", "3", "4", "Graduate"],
+    "skills": [
+      "cybersecurity",
+      "AI",
+      "Python",
+      "digital forensics",
+      "open-source intelligence"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
     "eligible_fields": [],
     "location": "India",
     "mode": "Online",
@@ -28,9 +40,22 @@
     "category": "Internship",
     "summary": "A one-month winter internship programme connected to ongoing National Highway projects, scheduled from December 2026 into January 2027.",
     "description": "The Press Information Bureau announced that applications are due by 20 October 2026 and that institute verification and recommendation are required. Open to undergraduate civil, engineering, and data disciplines.",
-    "skills": ["research", "engineering", "data analysis", "project work"],
-    "eligible_years": ["2", "3", "4"],
-    "eligible_fields": ["Civil Engineering", "Computer Science", "Infrastructure Planning"],
+    "skills": [
+      "research",
+      "engineering",
+      "data analysis",
+      "project work"
+    ],
+    "eligible_years": [
+      "2",
+      "3",
+      "4"
+    ],
+    "eligible_fields": [
+      "Civil Engineering",
+      "Computer Science",
+      "Infrastructure Planning"
+    ],
     "location": "India",
     "mode": "On-site / project-based; confirm location",
     "team_min": null,
@@ -50,7 +75,12 @@
     "category": "Hackathon",
     "summary": "A student-run hackathon scheduled for 31 October to 2 November 2026, with tracks including AI, healthcare, and smart cities.",
     "description": "The official event site lists event dates and directs applicants to an online form. Teams of 2 to 4 participants work on designated problem statements.",
-    "skills": ["AI", "software development", "problem solving", "teamwork"],
+    "skills": [
+      "AI",
+      "software development",
+      "problem solving",
+      "teamwork"
+    ],
     "eligible_years": [],
     "eligible_fields": [],
     "location": "Dehradun, India; confirm event format",
@@ -72,8 +102,21 @@
     "category": "Fellowship",
     "summary": "An international online mentoring program introducing post-secondary students and beginners to open source software development with stipend support.",
     "description": "Students work with an open source mentor organization on a 12-week programming project. Applications open in spring, followed by community bonding and active coding phases.",
-    "skills": ["open source", "Python", "Git", "C++", "Go", "software engineering"],
-    "eligible_years": ["1", "2", "3", "4", "Graduate"],
+    "skills": [
+      "open source",
+      "Python",
+      "Git",
+      "C++",
+      "Go",
+      "software engineering"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
     "eligible_fields": [],
     "location": "Global / Remote",
     "mode": "Online",
@@ -94,9 +137,25 @@
     "category": "Hackathon",
     "summary": "India's nationwide student initiative providing students a platform to solve pressing problems of ministries, departments, industries, and NGOs.",
     "description": "Teams of six students (with mandatory female representation) compete in hardware and software editions. College internal rounds nominate finalist teams for national grand finales.",
-    "skills": ["AI", "IoT", "web development", "mobile development", "cloud"],
-    "eligible_years": ["1", "2", "3", "4", "Graduate"],
-    "eligible_fields": ["Engineering", "Technology", "Computer Applications"],
+    "skills": [
+      "AI",
+      "IoT",
+      "web development",
+      "mobile development",
+      "cloud"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Engineering",
+      "Technology",
+      "Computer Applications"
+    ],
     "location": "India",
     "mode": "Hybrid (Internal rounds online, Grand Finale on-site)",
     "team_min": 6,
@@ -116,8 +175,21 @@
     "category": "Fellowship",
     "summary": "A 12-week remote internship alternative where software engineering students contribute to major open source projects under professional mentorship.",
     "description": "Fellows collaborate in small cohorts on real-world libraries used by millions, receive educational stipends, and attend technical masterclasses.",
-    "skills": ["Python", "JavaScript", "TypeScript", "Git", "open source", "APIs"],
-    "eligible_years": ["1", "2", "3", "4", "Graduate"],
+    "skills": [
+      "Python",
+      "JavaScript",
+      "TypeScript",
+      "Git",
+      "open source",
+      "APIs"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
     "eligible_fields": [],
     "location": "Global / Remote",
     "mode": "Online",
@@ -138,9 +210,25 @@
     "category": "Internship",
     "summary": "Structured remote mentorship opportunities for developers contributing to Linux Foundation projects like Kubernetes, Hyperledger, and Cloud Native.",
     "description": "Selected mentees work directly with experienced maintainers for 12 weeks, receiving stipends upon milestone completion and community recognition.",
-    "skills": ["Linux", "Go", "Rust", "Kubernetes", "cloud native", "systems"],
-    "eligible_years": ["2", "3", "4", "Graduate"],
-    "eligible_fields": ["Computer Science", "Information Technology", "Electrical Engineering"],
+    "skills": [
+      "Linux",
+      "Go",
+      "Rust",
+      "Kubernetes",
+      "cloud native",
+      "systems"
+    ],
+    "eligible_years": [
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Information Technology",
+      "Electrical Engineering"
+    ],
     "location": "Global / Remote",
     "mode": "Online",
     "team_min": null,
@@ -160,9 +248,25 @@
     "category": "Competition",
     "summary": "Flagship engineering campus challenge featuring real-world e-commerce problem statements in software development, robotics, and generative AI.",
     "description": "Multi-tiered competition with online quiz qualifiers, prototype development, and grand finale presentations before senior engineering leadership. Top teams receive pre-placement interviews.",
-    "skills": ["algorithms", "system design", "data structures", "machine learning", "Java", "Python"],
-    "eligible_years": ["2", "3", "4"],
-    "eligible_fields": ["B.Tech", "B.E.", "M.Tech", "Computer Science"],
+    "skills": [
+      "algorithms",
+      "system design",
+      "data structures",
+      "machine learning",
+      "Java",
+      "Python"
+    ],
+    "eligible_years": [
+      "2",
+      "3",
+      "4"
+    ],
+    "eligible_fields": [
+      "B.Tech",
+      "B.E.",
+      "M.Tech",
+      "Computer Science"
+    ],
     "location": "India",
     "mode": "Online qualifiers, Grand Finale hybrid",
     "team_min": 1,
@@ -182,8 +286,20 @@
     "category": "Competition",
     "summary": "Global student technology competition encouraging student founders and developers to build purpose-driven AI startups using Microsoft Azure.",
     "description": "Students submit technological prototypes leveraging AI and Azure cloud services. Category winners receive mentorship, global founder credits, and cash prizes.",
-    "skills": ["AI", "Azure", "cloud computing", "product development", "entrepreneurship"],
-    "eligible_years": ["1", "2", "3", "4", "Graduate"],
+    "skills": [
+      "AI",
+      "Azure",
+      "cloud computing",
+      "product development",
+      "entrepreneurship"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
     "eligible_fields": [],
     "location": "Global",
     "mode": "Online submission, Global Finals hybrid",
@@ -204,8 +320,14 @@
     "category": "Scholarship",
     "summary": "Merit-cum-means scholarship supporting up to 5,000 meritorious first-year undergraduate students in any stream of study across India.",
     "description": "Selected scholars receive financial grants up to INR 2 Lakhs over their degree duration, plus development workshops and mentorship alumni networks.",
-    "skills": ["academic excellence", "leadership", "community commitment"],
-    "eligible_years": ["1"],
+    "skills": [
+      "academic excellence",
+      "leadership",
+      "community commitment"
+    ],
+    "eligible_years": [
+      "1"
+    ],
     "eligible_fields": [],
     "location": "India",
     "mode": "Online application & Aptitude test",
@@ -226,8 +348,19 @@
     "category": "Competition",
     "summary": "India's largest business quiz for full-time college students, testing acumen in business, economics, technology, and emerging global markets.",
     "description": "Online cluster prelims followed by live regional finals and national championship, with cash prizes and national recognition.",
-    "skills": ["business strategy", "general awareness", "analytical reasoning", "technology trends"],
-    "eligible_years": ["1", "2", "3", "4", "Graduate"],
+    "skills": [
+      "business strategy",
+      "general awareness",
+      "analytical reasoning",
+      "technology trends"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
     "eligible_fields": [],
     "location": "India",
     "mode": "Online prelims, National Finals on-site",
@@ -248,9 +381,20 @@
     "category": "Scholarship",
     "summary": "Financial support and mentorship initiative for female first-year students pursuing computer science or related engineering degrees.",
     "description": "Scholars receive financial assistance of INR 50,000 per year, a personal laptop, and curated Amazon mentorship alongside skill-building sessions.",
-    "skills": ["computer science", "Python", "problem solving"],
-    "eligible_years": ["1"],
-    "eligible_fields": ["Computer Science", "Information Technology", "AI", "Data Science"],
+    "skills": [
+      "computer science",
+      "Python",
+      "problem solving"
+    ],
+    "eligible_years": [
+      "1"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Information Technology",
+      "AI",
+      "Data Science"
+    ],
     "location": "India",
     "mode": "Online application",
     "team_min": null,
@@ -270,9 +414,21 @@
     "category": "Scholarship",
     "summary": "Scholarship program recognizing outstanding female students demonstrating excellence in computing and technology.",
     "description": "Recipients receive tuition reimbursement, opportunity to interview for Adobe India internships, and mentorship from senior research scientists.",
-    "skills": ["computer science", "algorithms", "research", "machine learning"],
-    "eligible_years": ["2", "3"],
-    "eligible_fields": ["Computer Science", "Information Technology", "Mathematics and Computing"],
+    "skills": [
+      "computer science",
+      "algorithms",
+      "research",
+      "machine learning"
+    ],
+    "eligible_years": [
+      "2",
+      "3"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Information Technology",
+      "Mathematics and Computing"
+    ],
     "location": "India",
     "mode": "Online application",
     "team_min": null,
@@ -292,8 +448,20 @@
     "category": "Hackathon",
     "summary": "Global student hackathon challenging university students to develop solutions for one or more of the United Nations 17 Sustainable Development Goals.",
     "description": "Participants use Google technologies like Flutter, Android, Firebase, and Google Cloud. Top 100 teams receive mentoring, with finalists winning cash prizes.",
-    "skills": ["Flutter", "Firebase", "Google Cloud", "AI", "mobile development"],
-    "eligible_years": ["1", "2", "3", "4", "Graduate"],
+    "skills": [
+      "Flutter",
+      "Firebase",
+      "Google Cloud",
+      "AI",
+      "mobile development"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
     "eligible_fields": [],
     "location": "Global",
     "mode": "Online",
@@ -314,8 +482,21 @@
     "category": "Internship",
     "summary": "Remote diversity internship program providing three months of mentored open source work with USD 7,000 stipend support.",
     "description": "Interns contribute to free and open source software (FOSS) projects in software development, data science, documentation, user experience, and testing.",
-    "skills": ["Python", "open source", "Git", "documentation", "testing", "UI/UX"],
-    "eligible_years": ["1", "2", "3", "4", "Graduate"],
+    "skills": [
+      "Python",
+      "open source",
+      "Git",
+      "documentation",
+      "testing",
+      "UI/UX"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
     "eligible_fields": [],
     "location": "Global / Remote",
     "mode": "Online",
@@ -336,9 +517,23 @@
     "category": "Internship",
     "summary": "Nationwide hiring initiative identifying talent across engineering colleges in India for summer analyst internships and full-time engineering roles.",
     "description": "Candidates undergo multi-stage aptitude, programming, and system design assessments, leading to interview rounds with technology divisions in Bengaluru and Hyderabad.",
-    "skills": ["data structures", "algorithms", "C++", "Java", "quantitative reasoning"],
-    "eligible_years": ["3", "4"],
-    "eligible_fields": ["Engineering", "Computer Science", "Information Technology", "Mathematics"],
+    "skills": [
+      "data structures",
+      "algorithms",
+      "C++",
+      "Java",
+      "quantitative reasoning"
+    ],
+    "eligible_years": [
+      "3",
+      "4"
+    ],
+    "eligible_fields": [
+      "Engineering",
+      "Computer Science",
+      "Information Technology",
+      "Mathematics"
+    ],
     "location": "Bengaluru / Hyderabad, India",
     "mode": "Hybrid (Assessments online, Placement on-site)",
     "team_min": null,
@@ -358,8 +553,20 @@
     "category": "Competition",
     "summary": "The premier global collegiate algorithmic programming championship for teams of three university students representing their institution.",
     "description": "Teams solve 10-13 complex algorithmic challenges under strict five-hour timing constraints. Top regional teams qualify for the ICPC World Finals.",
-    "skills": ["competitive programming", "algorithms", "C++", "graph theory", "math"],
-    "eligible_years": ["1", "2", "3", "4", "Graduate"],
+    "skills": [
+      "competitive programming",
+      "algorithms",
+      "C++",
+      "graph theory",
+      "math"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
     "eligible_fields": [],
     "location": "India (Amritapuri / Kanpur / Gwalior)",
     "mode": "Preliminary online, Regional on-site",
@@ -380,8 +587,19 @@
     "category": "Internship",
     "summary": "Connects student developers with partner tech companies worldwide for paid, remote micro-internships solving production-grade issues.",
     "description": "Students work on real developer tasks, earn monthly stipends, and build verifiable public contributions on their GitHub portfolios.",
-    "skills": ["software engineering", "Git", "APIs", "full stack", "code review"],
-    "eligible_years": ["2", "3", "4", "Graduate"],
+    "skills": [
+      "software engineering",
+      "Git",
+      "APIs",
+      "full stack",
+      "code review"
+    ],
+    "eligible_years": [
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
     "eligible_fields": [],
     "location": "Global / Remote",
     "mode": "Online",
@@ -402,9 +620,22 @@
     "category": "Hackathon",
     "summary": "24-hour virtual hackathon where student teams develop technical solutions for leading non-profit organizations alongside expert technologists.",
     "description": "Students tackle social impact challenges. Participating students receive direct consideration for summer technology analyst internship programs.",
-    "skills": ["Python", "JavaScript", "React", "cloud", "problem solving"],
-    "eligible_years": ["2", "3"],
-    "eligible_fields": ["Computer Science", "Information Technology", "Engineering"],
+    "skills": [
+      "Python",
+      "JavaScript",
+      "React",
+      "cloud",
+      "problem solving"
+    ],
+    "eligible_years": [
+      "2",
+      "3"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Information Technology",
+      "Engineering"
+    ],
     "location": "Bengaluru / Mumbai / Hyderabad, India",
     "mode": "Online / Virtual",
     "team_min": 4,
@@ -424,9 +655,24 @@
     "category": "Internship",
     "summary": "Technical internship and curriculum project work for undergraduate engineering and science students at premier space research facilities.",
     "description": "Students engage in research projects under space scientists in satellite systems, remote sensing, telemetry, and avionics.",
-    "skills": ["embedded systems", "robotics", "signal processing", "aerospace", "C"],
-    "eligible_years": ["3", "4", "Graduate"],
-    "eligible_fields": ["Electronics", "Aerospace Engineering", "Mechanical", "Computer Science"],
+    "skills": [
+      "embedded systems",
+      "robotics",
+      "signal processing",
+      "aerospace",
+      "C"
+    ],
+    "eligible_years": [
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Electronics",
+      "Aerospace Engineering",
+      "Mechanical",
+      "Computer Science"
+    ],
     "location": "Bengaluru / Thiruvananthapuram, India",
     "mode": "On-site",
     "team_min": null,
@@ -446,8 +692,20 @@
     "category": "Competition",
     "summary": "Global student benchmark competition challenging university teams to build state-of-the-art predictive and generative machine learning models.",
     "description": "Teams compete on curated benchmark datasets with public and private leaderboards. Top entries share cash awards and receive GPU compute credits.",
-    "skills": ["machine learning", "data science", "Python", "PyTorch", "Pandas"],
-    "eligible_years": ["1", "2", "3", "4", "Graduate"],
+    "skills": [
+      "machine learning",
+      "data science",
+      "Python",
+      "PyTorch",
+      "Pandas"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
     "eligible_fields": [],
     "location": "Global / Remote",
     "mode": "Online",
@@ -460,5 +718,906 @@
     "last_verified": "2026-10-15",
     "status": "verified",
     "notes": "Submissions evaluated automatically against held-out validation test split."
+  },
+  {
+    "id": "unstop-https://unstop.com/hackathons/iot-hackathon-v-prayukti25-bannari-amman-institute-of-technology-1369976",
+    "title": "IoT Hackathon",
+    "organization": "Bannari Amman Institute of Technology",
+    "category": "Hackathon",
+    "summary": "National competition hosted by Bannari Amman Institute of Technology on Unstop.",
+    "description": "Official competition hosted by Bannari Amman Institute of Technology on Unstop. Check guidelines for eligibility and round details.",
+    "skills": [
+      "problem solving",
+      "programming",
+      "software engineering",
+      "innovation"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Technology"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": null,
+    "team_max": null,
+    "deadline": null,
+    "start_date": null,
+    "source_url": "https://unstop.com/hackathons/https://unstop.com/hackathons/iot-hackathon-v-prayukti25-bannari-amman-institute-of-technology-1369976",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Ingested from Unstop live platform feed."
+  },
+  {
+    "id": "unstop-https://unstop.com/hackathons/capture-the-flag-v-prayukti25-bannari-amman-institute-of-technology-1346649",
+    "title": "Capture the Flag",
+    "organization": "Bannari Amman Institute of Technology",
+    "category": "Hackathon",
+    "summary": "National competition hosted by Bannari Amman Institute of Technology on Unstop.",
+    "description": "Official competition hosted by Bannari Amman Institute of Technology on Unstop. Check guidelines for eligibility and round details.",
+    "skills": [
+      "problem solving",
+      "programming",
+      "software engineering",
+      "innovation"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Technology"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": null,
+    "team_max": null,
+    "deadline": null,
+    "start_date": null,
+    "source_url": "https://unstop.com/hackathons/https://unstop.com/hackathons/capture-the-flag-v-prayukti25-bannari-amman-institute-of-technology-1346649",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Ingested from Unstop live platform feed."
+  },
+  {
+    "id": "unstop-https://unstop.com/hackathons/webgators-techmarathon24-dduc-du-new-delhi-910797",
+    "title": "Webgators",
+    "organization": "Deen Dayal Upadhaya College (DDUC), University of Delhi (DU), New Delhi",
+    "category": "Hackathon",
+    "summary": "National competition hosted by Deen Dayal Upadhaya College (DDUC), University of Delhi (DU), New Delhi on Unstop.",
+    "description": "Official competition hosted by Deen Dayal Upadhaya College (DDUC), University of Delhi (DU), New Delhi on Unstop. Check guidelines for eligibility and round details.",
+    "skills": [
+      "problem solving",
+      "programming",
+      "software engineering",
+      "innovation"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Technology"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": null,
+    "team_max": null,
+    "deadline": null,
+    "start_date": null,
+    "source_url": "https://unstop.com/hackathons/https://unstop.com/hackathons/webgators-techmarathon24-dduc-du-new-delhi-910797",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Ingested from Unstop live platform feed."
+  },
+  {
+    "id": "unstop-https://unstop.com/hackathons/cyber-o-day-20-vit-chennai-783134",
+    "title": "Cyber-O-Day 2.0",
+    "organization": "Vellore Institute of Technology (VIT), Vellore",
+    "category": "Hackathon",
+    "summary": "National competition hosted by Vellore Institute of Technology (VIT), Vellore on Unstop.",
+    "description": "Official competition hosted by Vellore Institute of Technology (VIT), Vellore on Unstop. Check guidelines for eligibility and round details.",
+    "skills": [
+      "problem solving",
+      "programming",
+      "software engineering",
+      "innovation"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Technology"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": null,
+    "team_max": null,
+    "deadline": null,
+    "start_date": null,
+    "source_url": "https://unstop.com/hackathons/https://unstop.com/hackathons/cyber-o-day-20-vit-chennai-783134",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Ingested from Unstop live platform feed."
+  },
+  {
+    "id": "unstop-https://unstop.com/hackathons/password-vit-chennai-682926",
+    "title": "PASSWORD",
+    "organization": "Vellore Institute of Technology (VIT), Vellore",
+    "category": "Hackathon",
+    "summary": "National competition hosted by Vellore Institute of Technology (VIT), Vellore on Unstop.",
+    "description": "Official competition hosted by Vellore Institute of Technology (VIT), Vellore on Unstop. Check guidelines for eligibility and round details.",
+    "skills": [
+      "problem solving",
+      "programming",
+      "software engineering",
+      "innovation"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Technology"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": null,
+    "team_max": null,
+    "deadline": null,
+    "start_date": null,
+    "source_url": "https://unstop.com/hackathons/https://unstop.com/hackathons/password-vit-chennai-682926",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Ingested from Unstop live platform feed."
+  },
+  {
+    "id": "unstop-https://unstop.com/hackathons/waffle-hacks-belmont-data-collaborative-675134",
+    "title": "Waffle Hacks",
+    "organization": "Belmont Data Collaborative",
+    "category": "Hackathon",
+    "summary": "National competition hosted by Belmont Data Collaborative on Unstop.",
+    "description": "Official competition hosted by Belmont Data Collaborative on Unstop. Check guidelines for eligibility and round details.",
+    "skills": [
+      "problem solving",
+      "programming",
+      "software engineering",
+      "innovation"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Technology"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": null,
+    "team_max": null,
+    "deadline": null,
+    "start_date": null,
+    "source_url": "https://unstop.com/hackathons/https://unstop.com/hackathons/waffle-hacks-belmont-data-collaborative-675134",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Ingested from Unstop live platform feed."
+  },
+  {
+    "id": "unstop-https://unstop.com/hackathons/gpu-hackathon-2023-bengaluru-city-university-675122",
+    "title": "GPU Hackathon 2023",
+    "organization": "Bengaluru City University, Bengaluru, Karnataka",
+    "category": "Hackathon",
+    "summary": "National competition hosted by Bengaluru City University, Bengaluru, Karnataka on Unstop.",
+    "description": "Official competition hosted by Bengaluru City University, Bengaluru, Karnataka on Unstop. Check guidelines for eligibility and round details.",
+    "skills": [
+      "problem solving",
+      "programming",
+      "software engineering",
+      "innovation"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Technology"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": null,
+    "team_max": null,
+    "deadline": null,
+    "start_date": null,
+    "source_url": "https://unstop.com/hackathons/https://unstop.com/hackathons/gpu-hackathon-2023-bengaluru-city-university-675122",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Ingested from Unstop live platform feed."
+  },
+  {
+    "id": "unstop-https://unstop.com/hackathons/cyberheist-capture-the-flag-ctf-siws-college-593666",
+    "title": "Cyberheist - Capture the Flag (CTF)",
+    "organization": "S.I.W.S College",
+    "category": "Hackathon",
+    "summary": "National competition hosted by S.I.W.S College on Unstop.",
+    "description": "Official competition hosted by S.I.W.S College on Unstop. Check guidelines for eligibility and round details.",
+    "skills": [
+      "problem solving",
+      "programming",
+      "software engineering",
+      "innovation"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Technology"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": null,
+    "team_max": null,
+    "deadline": null,
+    "start_date": null,
+    "source_url": "https://unstop.com/hackathons/https://unstop.com/hackathons/cyberheist-capture-the-flag-ctf-siws-college-593666",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Ingested from Unstop live platform feed."
+  },
+  {
+    "id": "unstop-https://unstop.com/hackathons/12th-iacc-hackathon-2k23-cmr-college-of-engineering-and-technology-cmrcet-hyderabad-583694",
+    "title": "12th IACC HACKATHON -2K23",
+    "organization": "CMR College of Engineering and Technology (CMRCET), Hyderabad",
+    "category": "Hackathon",
+    "summary": "National competition hosted by CMR College of Engineering and Technology (CMRCET), Hyderabad on Unstop.",
+    "description": "Official competition hosted by CMR College of Engineering and Technology (CMRCET), Hyderabad on Unstop. Check guidelines for eligibility and round details.",
+    "skills": [
+      "problem solving",
+      "programming",
+      "software engineering",
+      "innovation"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Technology"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": null,
+    "team_max": null,
+    "deadline": null,
+    "start_date": null,
+    "source_url": "https://unstop.com/hackathons/https://unstop.com/hackathons/12th-iacc-hackathon-2k23-cmr-college-of-engineering-and-technology-cmrcet-hyderabad-583694",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Ingested from Unstop live platform feed."
+  },
+  {
+    "id": "unstop-https://unstop.com/hackathons/quant-a-maze-2022-nitte-meenakshi-institute-of-technology-nmit-yelahanka-432616",
+    "title": "Quant-A-Maze 2022",
+    "organization": "Nitte Meenakshi Institute of Technology (NMIT), Yelahanka",
+    "category": "Hackathon",
+    "summary": "National competition hosted by Nitte Meenakshi Institute of Technology (NMIT), Yelahanka on Unstop.",
+    "description": "Official competition hosted by Nitte Meenakshi Institute of Technology (NMIT), Yelahanka on Unstop. Check guidelines for eligibility and round details.",
+    "skills": [
+      "problem solving",
+      "programming",
+      "software engineering",
+      "innovation"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Technology"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": null,
+    "team_max": null,
+    "deadline": null,
+    "start_date": null,
+    "source_url": "https://unstop.com/hackathons/https://unstop.com/hackathons/quant-a-maze-2022-nitte-meenakshi-institute-of-technology-nmit-yelahanka-432616",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Ingested from Unstop live platform feed."
+  },
+  {
+    "id": "unstop-https://unstop.com/hackathons/google-code-jam-google-10587",
+    "title": "Google Code Jam",
+    "organization": "Google",
+    "category": "Hackathon",
+    "summary": "National competition hosted by Google on Unstop.",
+    "description": "Official competition hosted by Google on Unstop. Check guidelines for eligibility and round details.",
+    "skills": [
+      "problem solving",
+      "programming",
+      "software engineering",
+      "innovation"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Technology"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": null,
+    "team_max": null,
+    "deadline": null,
+    "start_date": null,
+    "source_url": "https://unstop.com/hackathons/https://unstop.com/hackathons/google-code-jam-google-10587",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Ingested from Unstop live platform feed."
+  },
+  {
+    "id": "unstop-https://unstop.com/hackathons/hack-for-cause-indian-institute-of-technology-iit-delhi-267240",
+    "title": "Hack-For-Cause",
+    "organization": "Indian Institute of Technology (IIT), Delhi",
+    "category": "Hackathon",
+    "summary": "National competition hosted by Indian Institute of Technology (IIT), Delhi on Unstop.",
+    "description": "Official competition hosted by Indian Institute of Technology (IIT), Delhi on Unstop. Check guidelines for eligibility and round details.",
+    "skills": [
+      "problem solving",
+      "programming",
+      "software engineering",
+      "innovation"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Technology"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": null,
+    "team_max": null,
+    "deadline": null,
+    "start_date": null,
+    "source_url": "https://unstop.com/hackathons/https://unstop.com/hackathons/hack-for-cause-indian-institute-of-technology-iit-delhi-267240",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Ingested from Unstop live platform feed."
+  },
+  {
+    "id": "unstop-https://unstop.com/hackathons/csi-hackathon-60-university-of-petroleum-energy-studies-upes-dehradun-257850",
+    "title": "CSI Hackathon 6.0",
+    "organization": "University of Petroleum & Energy Studies (UPES), Dehradun",
+    "category": "Hackathon",
+    "summary": "National competition hosted by University of Petroleum & Energy Studies (UPES), Dehradun on Unstop.",
+    "description": "Official competition hosted by University of Petroleum & Energy Studies (UPES), Dehradun on Unstop. Check guidelines for eligibility and round details.",
+    "skills": [
+      "problem solving",
+      "programming",
+      "software engineering",
+      "innovation"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Technology"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": null,
+    "team_max": null,
+    "deadline": null,
+    "start_date": null,
+    "source_url": "https://unstop.com/hackathons/https://unstop.com/hackathons/csi-hackathon-60-university-of-petroleum-energy-studies-upes-dehradun-257850",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Ingested from Unstop live platform feed."
+  },
+  {
+    "id": "unstop-https://unstop.com/hackathons/indigenous-mechanized-loading-and-unloading-of-food-grains-for-fci-indian-institute-of-technology-iit-delhi-253435",
+    "title": "Indigenous Mechanized Loading and Unloading of Food Grains for FCI",
+    "organization": "Indian Institute of Technology (IIT), Delhi",
+    "category": "Hackathon",
+    "summary": "National competition hosted by Indian Institute of Technology (IIT), Delhi on Unstop.",
+    "description": "Official competition hosted by Indian Institute of Technology (IIT), Delhi on Unstop. Check guidelines for eligibility and round details.",
+    "skills": [
+      "problem solving",
+      "programming",
+      "software engineering",
+      "innovation"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Technology"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": null,
+    "team_max": null,
+    "deadline": null,
+    "start_date": null,
+    "source_url": "https://unstop.com/hackathons/https://unstop.com/hackathons/indigenous-mechanized-loading-and-unloading-of-food-grains-for-fci-indian-institute-of-technology-iit-delhi-253435",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Ingested from Unstop live platform feed."
+  },
+  {
+    "id": "unstop-https://unstop.com/hackathons/devbhoomi-cyber-hackathon-university-of-petroleum-energy-studies-upes-dehradun-224760",
+    "title": "Devbhoomi Cyber Hackathon",
+    "organization": "University of Petroleum & Energy Studies (UPES), Dehradun",
+    "category": "Hackathon",
+    "summary": "National competition hosted by University of Petroleum & Energy Studies (UPES), Dehradun on Unstop.",
+    "description": "Official competition hosted by University of Petroleum & Energy Studies (UPES), Dehradun on Unstop. Check guidelines for eligibility and round details.",
+    "skills": [
+      "problem solving",
+      "programming",
+      "software engineering",
+      "innovation"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Technology"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": null,
+    "team_max": null,
+    "deadline": null,
+    "start_date": null,
+    "source_url": "https://unstop.com/hackathons/https://unstop.com/hackathons/devbhoomi-cyber-hackathon-university-of-petroleum-energy-studies-upes-dehradun-224760",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Ingested from Unstop live platform feed."
+  },
+  {
+    "id": "unstop-flipkart-grid-6",
+    "title": "Flipkart GRiD 6.0 - Software Development Track",
+    "organization": "Flipkart",
+    "category": "Hackathon",
+    "summary": "Flipkart flagship engineering campus challenge offering PPIs, internships, and cash prizes for students across tech domains.",
+    "description": "GRiD is Flipkart's flagship engineering campus challenge where students tackle real-world e-commerce problem statements in Robotics, Information Extraction, and Software Development.",
+    "skills": [
+      "algorithms",
+      "system design",
+      "data structures",
+      "Java",
+      "Python",
+      "problem solving"
+    ],
+    "eligible_years": [
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Information Technology",
+      "Electronics"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": 2,
+    "team_max": 3,
+    "deadline": "2026-11-15",
+    "start_date": "2026-10-01",
+    "source_url": "https://unstop.com/hackathons/flipkart-grid-60-software-development-challenge-flipkart-992140",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "PPIs and lucrative stipend/internships for finalists."
+  },
+  {
+    "id": "unstop-tata-crucible-campus-quiz-2026",
+    "title": "Tata Crucible Campus Hackathon & Quiz 2026",
+    "organization": "Tata Group",
+    "category": "Competition",
+    "summary": "Premier knowledge and technical innovation challenge by Tata Group for university undergraduates and postgraduates across India.",
+    "description": "Tata Crucible is India's most prestigious collegiate business and technology challenge offering grand cash prizes, networking with industry leaders, and recruitment prospects.",
+    "skills": [
+      "business analysis",
+      "critical thinking",
+      "technology",
+      "general awareness"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Any"
+    ],
+    "location": "India",
+    "mode": "Online + On-site Finals",
+    "team_min": 2,
+    "team_max": 2,
+    "deadline": "2026-11-20",
+    "start_date": "2026-10-10",
+    "source_url": "https://unstop.com/competitions/tata-crucible-campus-quiz-2026-tata-group",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Teams must be from the same collegiate institution."
+  },
+  {
+    "id": "unstop-amazon-ml-challenge-2026",
+    "title": "Amazon ML Challenge 2026",
+    "organization": "Amazon India",
+    "category": "Hackathon",
+    "summary": "Build machine learning models to extract multidimensional entity attributes from e-commerce imagery and text catalogues.",
+    "description": "Amazon ML Challenge is a student competition designed to test machine learning, deep learning, computer vision, and multimodal AI capabilities on massive scale real-world datasets.",
+    "skills": [
+      "machine learning",
+      "deep learning",
+      "PyTorch",
+      "NLP",
+      "computer vision",
+      "Python"
+    ],
+    "eligible_years": [
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Artificial Intelligence",
+      "Data Science",
+      "Mathematics"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": 2,
+    "team_max": 4,
+    "deadline": "2026-11-28",
+    "start_date": "2026-10-15",
+    "source_url": "https://unstop.com/hackathons/amazon-ml-challenge-2026-amazon-india",
+    "source_name": "Unstop",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Mentorship with Amazon Applied Scientists and direct interview rounds."
+  },
+  {
+    "id": "sih-2026-smart-india-hackathon",
+    "title": "Smart India Hackathon (SIH) 2026 - Software Edition",
+    "organization": "Ministry of Education & AICTE",
+    "category": "Hackathon",
+    "summary": "World's largest open-innovation student hackathon tackling problem statements from 50+ government ministries and departments.",
+    "description": "Smart India Hackathon is a nationwide initiative by AICTE and Ministry of Education to provide students with a platform to solve pressing problems of government ministries, departments, and public sector units.",
+    "skills": [
+      "fullstack development",
+      "AI",
+      "cloud computing",
+      "IoT",
+      "blockchain",
+      "cybersecurity"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Information Technology",
+      "Electronics",
+      "Engineering"
+    ],
+    "location": "India",
+    "mode": "Online Prelims + On-site Grand Finale",
+    "team_min": 6,
+    "team_max": 6,
+    "deadline": "2026-11-10",
+    "start_date": "2026-09-01",
+    "source_url": "https://www.sih.gov.in/",
+    "source_name": "AICTE / MoE Official Portal",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Team must have 6 members with at least 1 female teammate. College SPOC nomination required."
+  },
+  {
+    "id": "kavach-cyber-security-hackathon-2026",
+    "title": "KAVACH 2026 Cyber Security Hackathon",
+    "organization": "Ministry of Home Affairs & AICTE",
+    "category": "Hackathon",
+    "summary": "National cyber challenge to identify innovative concepts and technology solutions for addressing 21st-century cyber threats.",
+    "description": "KAVACH 2026 is conceived by AICTE, Bureau of Police Research and Development (BPR&D), and Indian Cyber Crime Coordination Centre (I4C) to foster indigenous cybersecurity tools.",
+    "skills": [
+      "cybersecurity",
+      "reverse engineering",
+      "network forensics",
+      "malware analysis",
+      "Python",
+      "cryptography"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Information Security",
+      "Electronics",
+      "Data Science"
+    ],
+    "location": "India",
+    "mode": "Online + 36h Grand Finale",
+    "team_min": 3,
+    "team_max": 6,
+    "deadline": "2026-11-25",
+    "start_date": "2026-10-05",
+    "source_url": "https://kavach.mic.gov.in/",
+    "source_name": "Ministry of Home Affairs",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Direct pilot projects with state police forces and national cyber defense agencies."
+  },
+  {
+    "id": "isro-antariksh-hackathon-2026",
+    "title": "ISRO Bharatiya Antariksh Hackathon 2026",
+    "organization": "Indian Space Research Organisation (ISRO)",
+    "category": "Hackathon",
+    "summary": "Student challenge to build geospatially-aware software, satellite imagery processing pipelines, and space data visualizers.",
+    "description": "ISRO invites undergraduate and postgraduate students to build cutting-edge solutions using Bhuvan, MOSDAC, and Indian Earth Observation satellite open datasets.",
+    "skills": [
+      "GIS",
+      "remote sensing",
+      "satellite data",
+      "Python",
+      "computer vision",
+      "machine learning"
+    ],
+    "eligible_years": [
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Geoinformatics",
+      "Physics",
+      "Aerospace",
+      "Electronics"
+    ],
+    "location": "India",
+    "mode": "Online",
+    "team_min": 3,
+    "team_max": 4,
+    "deadline": "2026-12-05",
+    "start_date": "2026-10-18",
+    "source_url": "https://www.isro.gov.in/hackathon.html",
+    "source_name": "ISRO Official Portal",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Includes cash awards and opportunity to present findings at ISRO centres."
+  },
+  {
+    "id": "drDO-dare-to-dream-student-2026",
+    "title": "DRDO Dare to Dream 5.0 - Student Innovators",
+    "organization": "Defence Research and Development Organisation",
+    "category": "Competition",
+    "summary": "National innovation contest to promote student researchers and startups in disruptive defence and dual-use aerospace technologies.",
+    "description": "Launched in memory of Dr. APJ Abdul Kalam, Dare to Dream invites innovative engineering ideas in autonomous systems, hypersonic tech, AI/ML in defence, and quantum communication.",
+    "skills": [
+      "embedded systems",
+      "robotics",
+      "aerospace engineering",
+      "AI",
+      "sensors",
+      "hardware"
+    ],
+    "eligible_years": [
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Mechanical",
+      "Aerospace",
+      "Computer Science",
+      "Electrical",
+      "Robotics"
+    ],
+    "location": "New Delhi, India",
+    "mode": "Hybrid",
+    "team_min": 1,
+    "team_max": 4,
+    "deadline": "2026-12-15",
+    "start_date": "2026-10-12",
+    "source_url": "https://drdo.gov.in/drdo/dare-to-dream",
+    "source_name": "DRDO Official Portal",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Up to Rs 10 Lakh grant funding for selected student prototypes."
+  },
+  {
+    "id": "devpost-hackmit-2026",
+    "title": "HackMIT 2026 - Student Innovation Hackathon",
+    "organization": "Massachusetts Institute of Technology",
+    "category": "Hackathon",
+    "summary": "MIT's annual premier undergraduate hackathon welcoming student hackers worldwide for 24 hours of rapid development.",
+    "description": "HackMIT brings together over a thousand students from universities globally to build hardware and software projects, featuring tech talks, mentorship, and sponsor bounties.",
+    "skills": [
+      "web development",
+      "mobile development",
+      "AI",
+      "hardware",
+      "APIs"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Any"
+    ],
+    "location": "Cambridge, MA / Global",
+    "mode": "Hybrid",
+    "team_min": 1,
+    "team_max": 4,
+    "deadline": "2026-11-05",
+    "start_date": "2026-10-25",
+    "source_url": "https://hackmit.org/",
+    "source_name": "Devpost / MIT",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Travel grants available for qualifying student teams."
+  },
+  {
+    "id": "devpost-calhacks-11",
+    "title": "CalHacks 11.0",
+    "organization": "UC Berkeley",
+    "category": "Hackathon",
+    "summary": "The world's largest collegiate hackathon hosted by UC Berkeley at the San Francisco Bay Area.",
+    "description": "CalHacks gathers collegiate developers to hack on AI agents, decentralized systems, bio-tech, and climate tech with direct access to Silicon Valley venture firms.",
+    "skills": [
+      "React",
+      "Python",
+      "cloud",
+      "AI",
+      "machine learning",
+      "distributed systems"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Data Science"
+    ],
+    "location": "San Francisco, CA / Online",
+    "mode": "Hybrid",
+    "team_min": 1,
+    "team_max": 4,
+    "deadline": "2026-11-12",
+    "start_date": "2026-11-01",
+    "source_url": "https://calhacks.io/",
+    "source_name": "Devpost / CalHacks",
+    "last_verified": "2026-10-19",
+    "status": "verified",
+    "notes": "Over $100k in prizes and incubator fast-tracks."
   }
 ]

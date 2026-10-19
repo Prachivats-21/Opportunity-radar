@@ -84,3 +84,13 @@ class ExtractResponse(BaseModel):
     opportunity: Opportunity
     warnings: list[StrictStr] = Field(default_factory=list, strict=True, max_length=20)
     ai_used: bool = False
+
+
+class SyncResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    status: StrictStr
+    total: StrictInt
+    added: StrictInt
+    sources: list[StrictStr] = Field(default_factory=list, strict=True, max_length=50)
+    message: StrictStr = Field(default="", max_length=500)
+

@@ -16,7 +16,7 @@ import {
   ArrowRight,
   BookOpen,
 } from 'lucide-react'
-import type { Opportunity, MatchResult } from '../types'
+import type { Opportunity, MatchResult, ApplicationStatus } from '../types'
 
 interface OpportunityDetailDrawerProps {
   opportunity: Opportunity | null
@@ -27,6 +27,8 @@ interface OpportunityDetailDrawerProps {
   onToggleSave: (id: string) => void
   userSkills: string[]
   onSelectCategory?: (category: string) => void
+  trackedStatus?: ApplicationStatus
+  onTrackApplication?: (opportunity: Opportunity, status: ApplicationStatus) => void
 }
 
 export const OpportunityDetailDrawer: React.FC<OpportunityDetailDrawerProps> = ({
@@ -38,6 +40,8 @@ export const OpportunityDetailDrawer: React.FC<OpportunityDetailDrawerProps> = (
   onToggleSave,
   userSkills,
   onSelectCategory,
+  trackedStatus,
+  onTrackApplication,
 }) => {
   // Close on Escape key
   useEffect(() => {
@@ -424,6 +428,23 @@ export const OpportunityDetailDrawer: React.FC<OpportunityDetailDrawerProps> = (
           >
             Close
           </button>
+
+          {onTrackApplication && (
+            <button
+              type="button"
+              className={`btn-track-action ${trackedStatus ? 'tracked' : ''}`}
+              onClick={() => onTrackApplication(opportunity, trackedStatus ? 'Under Review' : 'Applied')}
+              title={
+                trackedStatus
+                  ? `Tracked status: ${trackedStatus}. Click to cycle stage.`
+                  : 'Track this opportunity in My Applications'
+              }
+              style={{ padding: '8px 14px' }}
+            >
+              <CheckCircle2 size={14} />
+              <span>{trackedStatus ? `Tracked: ${trackedStatus}` : 'Track Application'}</span>
+            </button>
+          )}
 
           <a
             href={opportunity.source_url}

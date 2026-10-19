@@ -14,7 +14,7 @@ import {
   Clock,
   CheckCircle2,
 } from 'lucide-react'
-import type { Opportunity, MatchResult } from '../types'
+import type { Opportunity, MatchResult, ApplicationStatus } from '../types'
 
 interface OpportunityCardProps {
   opportunity: Opportunity
@@ -23,6 +23,8 @@ interface OpportunityCardProps {
   onToggleSave: (id: string) => void
   userSkills?: string[]
   onInspect?: (opportunity: Opportunity) => void
+  trackedStatus?: ApplicationStatus
+  onTrackApplication?: (opportunity: Opportunity, status: ApplicationStatus) => void
 }
 
 export const OpportunityCard: React.FC<OpportunityCardProps> = ({
@@ -32,6 +34,8 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
   onToggleSave,
   userSkills = [],
   onInspect,
+  trackedStatus,
+  onTrackApplication,
 }) => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false)
 
@@ -449,6 +453,25 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
         </div>
 
         <div className="card-footer-actions">
+          {onTrackApplication && (
+            <button
+              type="button"
+              className={`btn-track-action ${trackedStatus ? 'tracked' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation()
+                onTrackApplication(opportunity, trackedStatus ? 'Under Review' : 'Applied')
+              }}
+              title={
+                trackedStatus
+                  ? `Tracked status: ${trackedStatus}. Click to cycle stage.`
+                  : 'Track this opportunity in My Applications'
+              }
+            >
+              <CheckCircle2 size={13} />
+              <span>{trackedStatus || 'Track'}</span>
+            </button>
+          )}
+
           <button
             type="button"
             className="btn-inspect-signal"
@@ -460,6 +483,7 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
           >
             <span>View Details</span>
           </button>
+
 
           <a
             href={opportunity.source_url}

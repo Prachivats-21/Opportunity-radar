@@ -8,9 +8,10 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from .schemas import Opportunity, MatchRequest, MatchResult, ExtractRequest, ExtractResponse
+from .schemas import Opportunity, MatchRequest, MatchResult, ExtractRequest, ExtractResponse, SyncResponse
 from .matcher import rank_opportunities
 from .ai import AIServiceError, extract_opportunity, semantic_match_batch
+from .ingest import sync_all_opportunities
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_FILE = ROOT / "data" / "opportunities.json"
@@ -141,3 +142,14 @@ def extract(request: ExtractRequest) -> ExtractResponse:
     if not opportunity.eligible_years and not opportunity.eligible_fields:
         warnings.append("Eligibility was not explicit in the source text. Confirm it with the organizer.")
     return ExtractResponse(opportunity=opportunity, warnings=warnings, ai_used=True)
+
+
+@app.post("/api/sync", response_model=SyncResponse)
+def sync_opportunities() -> SyncResponse:
+    try:
+        result = sync_all_opportunities(DATA_FILE)
+        return SyncResponse.model_validate(result)
+    except Exception as exc:
+        logger.exception("Opportunity synchronization failed.")
+        raise HTTPException(status_code=500, detail="Failed to sync live opportunities.") from exc
+

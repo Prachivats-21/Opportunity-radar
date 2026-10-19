@@ -15,8 +15,9 @@ import { ProfileView } from './components/ProfileView'
 import { TuneRadarView } from './components/TuneRadarView'
 import { SettingsView } from './components/SettingsView'
 import { SavedView } from './components/SavedView'
-import { getOpportunities, getMatches, healthCheck } from './api'
-import type { Opportunity, Profile, MatchResult, FilterState } from './types'
+import { ApplicationsView } from './components/ApplicationsView'
+import { getOpportunities, getMatches, healthCheck, syncOpportunities } from './api'
+import type { Opportunity, Profile, MatchResult, FilterState, ApplicationRecord, ApplicationStatus } from './types'
 import { Search, Check, RefreshCw, Wifi, WifiOff, X } from 'lucide-react'
 
 const DEFAULT_PROFILE: Profile = {
@@ -191,7 +192,18 @@ export function App() {
   })
 
   const [matches, setMatches] = useState<MatchResult[]>([])
-  const [activeTab, setActiveTab] = useState<'Dashboard' | 'Saved' | 'Profile' | 'Tune' | 'Settings'>('Dashboard')
+  const [activeTab, setActiveTab] = useState<'Dashboard' | 'Saved' | 'Applications' | 'Profile' | 'Tune' | 'Settings'>('Dashboard')
+
+  // Applications Tracker State
+  const [applications, setApplications] = useState<ApplicationRecord[]>(() => {
+    try {
+      const stored = window.localStorage.getItem('opportunity-radar-applications')
+      return stored ? (JSON.parse(stored) as ApplicationRecord[]) : []
+    } catch {
+      return []
+    }
+  })
+  const [isSyncing, setIsSyncing] = useState(false)
 
   // Student Authentication & Session State
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
@@ -269,6 +281,15 @@ export function App() {
       // Storage unavailable
     }
   }, [saved])
+
+  // Sync applications to localStorage
+  useEffect(() => {
+    try {
+      window.localStorage.setItem('opportunity-radar-applications', JSON.stringify(applications))
+    } catch {
+      // Storage unavailable
+    }
+  }, [applications])
 
   // Toast auto-clear
   useEffect(() => {
@@ -392,6 +413,92 @@ export function App() {
       return next
     })
   }
+
+  // Map of tracked application status for O(1) lookups
+  const applicationStatusMap = useMemo(() => {
+    const map = new Map<string, ApplicationStatus>()
+    applications.forEach((a) => map.set(a.opportunityId, a.status))
+    return map
+  }, [applications])
+
+  const handleTrackApplication = (opp: Opportunity, initialStatus: ApplicationStatus = 'Applied') => {
+    setApplications((prev) => {
+      const existing = prev.find((a) => a.opportunityId === opp.id)
+      if (existing) {
+        const nextMap: Record<ApplicationStatus, ApplicationStatus> = {
+          Saved: 'Applied',
+          Applied: 'Under Review',
+          'Under Review': 'Shortlisted',
+          Shortlisted: 'Selected',
+          Selected: 'Saved',
+          Rejected: 'Applied',
+        }
+        const newStatus = nextMap[existing.status] || 'Applied'
+        setToastMessage(`Updated ${opp.title.slice(0, 30)}... status to ${newStatus}`)
+        return prev.map((a) =>
+          a.opportunityId === opp.id ? { ...a, status: newStatus, updatedAt: new Date().toISOString() } : a
+        )
+      } else {
+        const newRec: ApplicationRecord = {
+          opportunityId: opp.id,
+          opportunity: opp,
+          status: initialStatus,
+          appliedDate: new Date().toISOString().split('T')[0],
+          notes: '',
+          teamMembers: [],
+          updatedAt: new Date().toISOString(),
+        }
+        setToastMessage(`Added "${opp.title.slice(0, 25)}..." to My Applications as "${initialStatus}"`)
+        return [newRec, ...prev]
+      }
+    })
+  }
+
+  const handleUpdateApplicationStatus = (opportunityId: string, status: ApplicationStatus) => {
+    setApplications((prev) =>
+      prev.map((a) =>
+        a.opportunityId === opportunityId ? { ...a, status, updatedAt: new Date().toISOString() } : a
+      )
+    )
+    setToastMessage(`Application stage updated to ${status}`)
+  }
+
+  const handleUpdateApplicationDetails = (
+    opportunityId: string,
+    details: { teamName?: string; teamMembers?: string[]; notes?: string; appliedDate?: string }
+  ) => {
+    setApplications((prev) =>
+      prev.map((a) =>
+        a.opportunityId === opportunityId
+          ? {
+              ...a,
+              ...details,
+              updatedAt: new Date().toISOString(),
+            }
+          : a
+      )
+    )
+    setToastMessage('Application details saved')
+  }
+
+  const handleRemoveApplication = (opportunityId: string) => {
+    setApplications((prev) => prev.filter((a) => a.opportunityId !== opportunityId))
+    setToastMessage('Opportunity removed from applications pipeline')
+  }
+
+  const handleSyncFeeds = async () => {
+    setIsSyncing(true)
+    try {
+      const res = await syncOpportunities()
+      await fetchOpportunitiesFromApi()
+      setToastMessage(res.message || `Synced! ${res.added} new opportunities added (total: ${res.total}).`)
+    } catch (err: any) {
+      setToastMessage(err.message || 'Live sync encountered an issue.')
+    } finally {
+      setIsSyncing(false)
+    }
+  }
+
 
   // Clear custom listings
   const handleClearCustomOpportunities = () => {
@@ -642,6 +749,9 @@ export function App() {
         onOpenNotifications={() => setShowNotifications(true)}
         onOpenAuthModal={() => setShowAuthModal(true)}
         savedCount={saved.length}
+        applicationsCount={applications.length}
+        onSyncFeeds={handleSyncFeeds}
+        isSyncing={isSyncing}
         targetOpportunity={clockTargetOpp || selectedOpportunityForDrawer}
         onClearClockTarget={() => setClockTargetOpp(null)}
       />
@@ -706,6 +816,8 @@ export function App() {
                     isSaved={saved.includes(opp.id)}
                     onToggleSave={toggleSave}
                     userSkills={profile.skills}
+                    trackedStatus={applicationStatusMap.get(opp.id)}
+                    onTrackApplication={handleTrackApplication}
                     onInspect={(opp) => {
                       setSelectedOpportunityForDrawer(opp)
                       setClockTargetOpp(opp)
@@ -741,6 +853,21 @@ export function App() {
             userSkills={profile.skills}
             onNavigateToExplore={() => setActiveTab('Dashboard')}
             onNavigateToDashboard={() => setActiveTab('Dashboard')}
+            onInspect={(opp) => {
+              setSelectedOpportunityForDrawer(opp)
+              setClockTargetOpp(opp)
+            }}
+          />
+        )}
+
+        {/* 3. MY APPLICATIONS PIPELINE TRACKER */}
+        {activeTab === 'Applications' && (
+          <ApplicationsView
+            applications={applications}
+            onUpdateStatus={handleUpdateApplicationStatus}
+            onUpdateDetails={handleUpdateApplicationDetails}
+            onRemoveApplication={handleRemoveApplication}
+            onNavigateToExplore={() => setActiveTab('Dashboard')}
             onInspect={(opp) => {
               setSelectedOpportunityForDrawer(opp)
               setClockTargetOpp(opp)
@@ -862,6 +989,8 @@ export function App() {
         isSaved={selectedOpportunityForDrawer ? saved.includes(selectedOpportunityForDrawer.id) : false}
         onToggleSave={toggleSave}
         userSkills={profile.skills}
+        trackedStatus={selectedOpportunityForDrawer ? applicationStatusMap.get(selectedOpportunityForDrawer.id) : undefined}
+        onTrackApplication={handleTrackApplication}
         onSelectCategory={(cat) => {
           handleFilterUpdate({ category: cat })
           setSelectedOpportunityForDrawer(null)

@@ -28,3 +28,10 @@ export async function extractOpportunity(input: { title_hint: string; source_url
   if (!response.ok) { let detail = 'Could not extract the listing.'; try { const payload = await response.json(); detail = typeof payload.detail === 'string' ? payload.detail : detail } catch { /* Keep safe generic error. */ } throw new Error(detail) }
   return response.json()
 }
+
+export async function syncOpportunities(): Promise<{ status: string; total: number; added: number; sources: string[]; message: string }> {
+  const response = await fetch(`${API_URL}/api/sync`, { method: 'POST' })
+  if (!response.ok) throw new Error('Live opportunity sync failed.')
+  return response.json()
+}
+

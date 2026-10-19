@@ -11,6 +11,8 @@ import {
   LogIn,
   Bell,
   SlidersHorizontal,
+  FileCheck2,
+  RefreshCw,
 } from 'lucide-react'
 import { RadarMark } from './RadarMark'
 import { CyberClock } from './CyberClock'
@@ -31,6 +33,9 @@ interface NavbarProps {
   onOpenNotifications: () => void
   onOpenAuthModal: () => void
   savedCount: number
+  applicationsCount?: number
+  onSyncFeeds?: () => void
+  isSyncing?: boolean
   targetOpportunity?: Opportunity | null
   onClearClockTarget?: () => void
 }
@@ -49,6 +54,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenNotifications,
   onOpenAuthModal,
   savedCount,
+  applicationsCount = 0,
+  onSyncFeeds,
+  isSyncing = false,
   targetOpportunity,
   onClearClockTarget,
 }) => {
@@ -152,6 +160,17 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               type="button"
+              className={`nav-link-btn ${activeTab === 'Applications' ? 'active' : ''}`}
+              onClick={() => handleNavClick('Applications')}
+              aria-current={activeTab === 'Applications' ? 'page' : undefined}
+            >
+              <FileCheck2 size={14} />
+              <span>Applications</span>
+              {applicationsCount > 0 && <span className="header-nav-badge highlight">{applicationsCount}</span>}
+            </button>
+
+            <button
+              type="button"
               className={`nav-link-btn ${activeTab === 'Profile' ? 'active' : ''}`}
               onClick={() => handleNavClick('Profile')}
               aria-current={activeTab === 'Profile' ? 'page' : undefined}
@@ -190,11 +209,26 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Header Right Actions */}
         <div className="header-actions-group">
+          {/* Live Sync Trigger */}
+          {onSyncFeeds && (
+            <button
+              type="button"
+              className={`btn-sync-feeds ${isSyncing ? 'spinning' : ''}`}
+              onClick={onSyncFeeds}
+              disabled={isSyncing}
+              title="Sync live opportunities from Unstop, Government Portals & Devpost"
+            >
+              <RefreshCw size={13} />
+              <span className="hide-on-mobile">{isSyncing ? 'Syncing...' : 'Sync Feeds'}</span>
+            </button>
+          )}
+
           {/* Real-time Telemetry Cyber Clock with Opportunity Deadline Countdown */}
           <CyberClock
             targetOpportunity={targetOpportunity}
             onClearTarget={onClearClockTarget}
           />
+
 
           {/* Notification Center Trigger */}
           <button
@@ -264,6 +298,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <Bookmark size={14} />
                   <span>Saved Opportunities</span>
                   {savedCount > 0 && <span className="dropdown-badge accent">{savedCount}</span>}
+                </button>
+
+                <button
+                  type="button"
+                  className={`dropdown-item-btn ${activeTab === 'Applications' ? 'current' : ''}`}
+                  onClick={() => handleNavClick('Applications')}
+                  role="menuitem"
+                >
+                  <FileCheck2 size={14} />
+                  <span>My Applications Tracker</span>
+                  {applicationsCount > 0 && <span className="dropdown-badge accent">{applicationsCount}</span>}
                 </button>
 
                 <div className="dropdown-divider" />
@@ -342,12 +387,23 @@ export const Navbar: React.FC<NavbarProps> = ({
 
               <button
                 type="button"
+                className={`mobile-nav-item ${activeTab === 'Applications' ? 'active' : ''}`}
+                onClick={() => handleNavClick('Applications')}
+              >
+                <FileCheck2 size={15} />
+                <span>My Applications</span>
+                {applicationsCount > 0 && <span className="mobile-badge accent">{applicationsCount}</span>}
+              </button>
+
+              <button
+                type="button"
                 className={`mobile-nav-item ${activeTab === 'Profile' ? 'active' : ''}`}
                 onClick={() => handleNavClick('Profile')}
               >
                 <User size={15} />
                 <span>My Profile & Skills</span>
               </button>
+
 
               <button
                 type="button"
