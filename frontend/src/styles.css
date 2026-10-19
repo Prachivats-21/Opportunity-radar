@@ -6,29 +6,29 @@
 :root {
   /* Typography */
   --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Onest', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  /* Primary Palette */
-  --bg-main: #F8F6EF;
+  /* Primary Studio Palette (Lumora-inspired clean alabaster & crisp ink) */
+  --bg-main: #F7F6F2;
   --bg-surface: #FFFFFF;
-  --bg-surface-alt: #FAF8F2;
-  --bg-surface-subtle: #F2EFE6;
-  --bg-surface-hover: #ECE8DD;
+  --bg-surface-alt: #F1EFEA;
+  --bg-surface-subtle: #EAE7DC;
+  --bg-surface-hover: #E4E0D4;
 
-  /* Forest Charcoal (Primary Text) */
-  --text-primary: #193B38;
-  --text-secondary: #486360;
-  --text-tertiary: #718986;
-  --text-muted: #95A9A7;
+  /* Deep Ink (Primary Text) */
+  --text-primary: #0D1615;
+  --text-secondary: #3D4E4A;
+  --text-tertiary: #697B77;
+  --text-muted: #95A5A2;
   --text-inverse: #FFFFFF;
 
-  /* Sage Green (Primary Accent) */
-  --sage: #527D68;
-  --sage-dark: #3F6352;
-  --sage-hover: #486E5B;
-  --sage-light: #EDF3EE;
-  --sage-border: #BCD0C4;
-  --sage-subtle: rgba(82, 125, 104, 0.08);
+  /* Organic Sage Green */
+  --sage: #2D6A50;
+  --sage-dark: #1E4F3B;
+  --sage-hover: #245842;
+  --sage-light: #EBF3EF;
+  --sage-border: #B7D4C6;
+  --sage-subtle: rgba(45, 106, 80, 0.08);
 
   /* Dusty Blue (Secondary Accent) */
   --blue-soft: #DCE8EF;
@@ -51,16 +51,10 @@
   --border-dark: #BCB7AA;
   --divider: #ECE8DF;
 
-  /* Supporting Accents (Terracotta) */
-  --terracotta: #C85A32;
-  --terracotta-dark: #8F3D24;
-  --terracotta-bg: #FDECE7;
-  --terracotta-border: #E8C9BC;
-
-  /* Supporting Accents (Terracotta) */
-  --terracotta: #C85A32;
-  --terracotta-dark: #8F3D24;
-  --terracotta-bg: #FDECE7;
+  /* Supporting Burnt Orange Accent (Lumora-inspired) */
+  --terracotta: #B15F2C;
+  --terracotta-dark: #843F18;
+  --terracotta-bg: #FBF0EB;
   --terracotta-border: #E8C9BC;
 
   /* Status Colors */
