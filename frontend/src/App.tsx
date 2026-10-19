@@ -9,6 +9,7 @@ import { ProfileModal } from './components/ProfileModal'
 import { AddOpportunityModal } from './components/AddOpportunityModal'
 import { AdvancedFilterDrawer } from './components/AdvancedFilterDrawer'
 import { AuthModal } from './components/AuthModal'
+import { NotificationCenter } from './components/NotificationCenter'
 import { ProfileView } from './components/ProfileView'
 import { TuneRadarView } from './components/TuneRadarView'
 import { SettingsView } from './components/SettingsView'
@@ -218,6 +219,7 @@ export function App() {
   const [showAddModal, setShowAddModal] = useState(false)
   const [showAdvancedDrawer, setShowAdvancedDrawer] = useState(false)
   const [showAuthModal, setShowAuthModal] = useState(false)
+  const [showNotifications, setShowNotifications] = useState(false)
 
   // Status & Feedback
   const [loadingMatches, setLoadingMatches] = useState(false)
@@ -628,6 +630,8 @@ export function App() {
         profileYear={profile.year}
         isLoggedIn={isLoggedIn}
         userEmail={userEmail}
+        unreadNotificationsCount={closingSoonCount > 0 ? closingSoonCount : 2}
+        onOpenNotifications={() => setShowNotifications(true)}
         onOpenAuthModal={() => setShowAuthModal(true)}
         onOpenAddOpportunity={() => setShowAddModal(true)}
         onResetProfile={() => {
@@ -855,6 +859,17 @@ export function App() {
           onClose={() => setShowAuthModal(false)}
         />
       )}
+
+      {/* Notification Center Popover */}
+      <NotificationCenter
+        isOpen={showNotifications}
+        onClose={() => setShowNotifications(false)}
+        onSelectOpportunity={(oppId) => {
+          handleFilterUpdate({ searchQuery: oppId })
+          const el = document.getElementById('opportunity-feed')
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }}
+      />
 
       {/* Accessible Toast Notification */}
       {toastMessage && (

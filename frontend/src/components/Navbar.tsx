@@ -14,6 +14,7 @@ import {
   WifiOff,
   ChevronDown,
   LogIn,
+  Bell,
 } from 'lucide-react'
 import { RadarMark } from './RadarMark'
 
@@ -27,6 +28,8 @@ interface NavbarProps {
   profileYear: string
   isLoggedIn?: boolean
   userEmail?: string
+  unreadNotificationsCount?: number
+  onOpenNotifications: () => void
   onOpenAuthModal: () => void
   onOpenAddOpportunity: () => void
   onResetProfile: () => void
@@ -46,6 +49,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   profileYear,
   isLoggedIn = true,
   userEmail = 'prachi.vats@student.edu.in',
+  unreadNotificationsCount = 2,
+  onOpenNotifications,
   onOpenAuthModal,
   onOpenAddOpportunity,
   onResetProfile,
@@ -217,6 +222,20 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="status-label-desktop">{apiConnected ? 'Live Feed' : 'Offline'}</span>
             </button>
           )}
+
+          {/* Notification Center Trigger */}
+          <button
+            type="button"
+            className="header-icon-btn notification-bell-btn"
+            onClick={onOpenNotifications}
+            aria-label="Open notifications center"
+            title="Notification Center (Deadlines & Matches)"
+          >
+            <Bell size={15} />
+            {unreadNotificationsCount !== undefined && unreadNotificationsCount > 0 && (
+              <span className="notif-badge-pill">{unreadNotificationsCount}</span>
+            )}
+          </button>
 
           {/* User Account / Profile Dropdown Control */}
           <div className="profile-menu-container" ref={profileMenuRef}>
