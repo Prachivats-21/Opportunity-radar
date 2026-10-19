@@ -144,7 +144,7 @@ a {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: var(--bg-main);
+  background-color: transparent;
   position: relative;
 }
 
@@ -315,7 +315,7 @@ a {
   font-weight: 600;
   color: var(--sage-dark);
   padding: 6px 10px;
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   transition: all 0.15s ease;
@@ -482,7 +482,7 @@ a {
 }
 
 .search-container:focus-within {
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border-color: var(--sage);
   box-shadow: 0 0 0 3px rgba(82, 125, 104, 0.12);
 }
@@ -517,7 +517,7 @@ a {
   font-family: var(--font-sans);
   color: var(--text-muted);
   border: 1px solid var(--border-subtle);
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border-radius: 4px;
   padding: 2px 6px;
   white-space: nowrap;
@@ -534,7 +534,7 @@ a {
   height: 38px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   color: var(--text-secondary);
   display: flex;
   align-items: center;
@@ -603,7 +603,7 @@ a {
   padding: 4px 10px 4px 4px;
   border-radius: var(--radius-full);
   border: 1px solid var(--border-subtle);
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   transition: all 0.15s ease;
 }
 
@@ -678,7 +678,7 @@ a {
   top: calc(100% + 8px);
   right: 0;
   width: 220px;
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
@@ -764,7 +764,7 @@ a {
    Welcome Hero Section
    -------------------------------------------------------------------------- */
 .welcome-hero {
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-xl);
   padding: 32px 36px;
@@ -861,7 +861,7 @@ a {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   color: var(--text-secondary);
   border: 1px solid var(--border-subtle);
   font-weight: 600;
@@ -976,7 +976,7 @@ a {
 }
 
 .category-card {
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: 18px 16px;
@@ -1058,7 +1058,7 @@ a {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: 16px 20px;
@@ -1181,7 +1181,7 @@ a {
 
 .filter-select-pill:focus-within {
   border-color: var(--sage);
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
 }
 
 .filter-select-pill label {
@@ -1207,7 +1207,7 @@ a {
   align-items: center;
   gap: 7px;
   padding: 6px 14px;
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   font-size: 12px;
@@ -1354,7 +1354,7 @@ a {
   bottom: 0;
   right: 0;
   width: min(460px, 100vw);
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border-left: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-modal);
   z-index: 105;
@@ -1495,7 +1495,7 @@ a {
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
   font-size: 12px;
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
 }
 
 .drawer-select {
@@ -1511,7 +1511,7 @@ a {
 
 .drawer-select:focus {
   border-color: var(--sage);
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
 }
 
 .drawer-helper-text {
@@ -1597,7 +1597,7 @@ a {
 .drawer-footer {
   padding: 16px 24px;
   border-top: 1px solid var(--divider);
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1616,7 +1616,7 @@ a {
 
 .opportunity-card {
   min-width: 0;
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: 20px;
@@ -1706,7 +1706,7 @@ a {
   height: 32px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   color: var(--text-tertiary);
   display: flex;
   align-items: center;
@@ -1860,7 +1860,7 @@ a {
 .accordion-content {
   padding: 10px 12px 12px;
   border-top: 1px solid var(--divider);
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -1945,7 +1945,7 @@ a {
    Right-Hand Information Panel
    -------------------------------------------------------------------------- */
 .info-panel-card {
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: 20px;
@@ -2103,7 +2103,7 @@ a {
    -------------------------------------------------------------------------- */
 .empty-state-card {
   grid-column: 1 / -1;
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border: 1px dashed var(--border-dark);
   border-radius: var(--radius-xl);
   padding: 48px 24px;
@@ -2207,7 +2207,7 @@ a {
 }
 
 .modal-dialog {
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-modal);
@@ -2286,7 +2286,7 @@ a {
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border-color: var(--sage);
   box-shadow: 0 0 0 3px rgba(82, 125, 104, 0.12);
 }
@@ -2314,7 +2314,7 @@ a {
   gap: 5px;
   padding: 3px 8px;
   border-radius: var(--radius-sm);
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   font-size: 11px;
   color: var(--text-primary);
@@ -2713,7 +2713,7 @@ a {
 }
 
 .header-search-wrap:focus-within {
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border-color: var(--sage);
   box-shadow: 0 0 0 3px rgba(82, 125, 104, 0.12);
 }
@@ -2821,7 +2821,7 @@ a {
 .account-menu-trigger:hover,
 .account-menu-trigger.active {
   border-color: var(--border-hover);
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   box-shadow: var(--shadow-sm);
 }
 
@@ -3355,7 +3355,7 @@ a {
 }
 
 .track-choice-card:hover {
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border-color: var(--border-hover);
   box-shadow: var(--shadow-sm);
 }
@@ -3431,7 +3431,7 @@ a {
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 8px 10px;
@@ -4936,7 +4936,7 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
   padding: 6px 12px;
@@ -4978,7 +4978,7 @@ a {
   bottom: 0;
   width: 100%;
   max-width: 600px;
-  background-color: #FFFFFF;
+  background-color: var(--bg-surface);
   box-shadow: -12px 0 40px rgba(15, 23, 42, 0.18);
   display: flex;
   flex-direction: column;
@@ -4997,7 +4997,7 @@ a {
   justify-content: space-between;
   padding: 16px 24px;
   border-bottom: 1px solid var(--border-subtle);
-  background: #FFFFFF;
+  background: var(--bg-surface);
 }
 
 .drawer-header-left {
@@ -5087,7 +5087,7 @@ a {
 }
 
 .drawer-meta-cell {
-  background: #FFFFFF;
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 10px 12px;
@@ -5202,7 +5202,7 @@ a {
 .drawer-footer {
   padding: 16px 24px;
   border-top: 1px solid var(--border-subtle);
-  background: #FFFFFF;
+  background: var(--bg-surface);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -5248,7 +5248,7 @@ a {
 }
 
 .drawer-bookmark-btn {
-  background: #FFFFFF;
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
   padding: 10px 14px;
