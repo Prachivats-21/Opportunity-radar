@@ -11,6 +11,7 @@ interface SavedViewProps {
   userSkills: string[]
   onNavigateToExplore: () => void
   onNavigateToDashboard: () => void
+  onInspect?: (opportunity: Opportunity) => void
 }
 
 export const SavedView: React.FC<SavedViewProps> = ({
@@ -21,6 +22,7 @@ export const SavedView: React.FC<SavedViewProps> = ({
   userSkills,
   onNavigateToExplore,
   onNavigateToDashboard,
+  onInspect,
 }) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('All')
@@ -132,6 +134,7 @@ export const SavedView: React.FC<SavedViewProps> = ({
                   isSaved={true}
                   onToggleSave={onToggleSave}
                   userSkills={userSkills}
+                  onInspect={onInspect}
                 />
               ))}
             </section>

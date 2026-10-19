@@ -2,9 +2,10 @@ import { useEffect, useMemo, useState, useCallback } from 'react'
 import { Navbar } from './components/Navbar'
 import { AppFooter } from './components/AppFooter'
 import { WelcomeHero } from './components/WelcomeHero'
-import { CategoryExplore } from './components/CategoryExplore'
 import { FiltersBar } from './components/FiltersBar'
 import { OpportunityCard } from './components/OpportunityCard'
+import { OpportunityDetailDrawer } from './components/OpportunityDetailDrawer'
+import { RadarScope } from './components/RadarScope'
 import { ProfileModal } from './components/ProfileModal'
 import { AdvancedFilterDrawer } from './components/AdvancedFilterDrawer'
 import { AuthModal } from './components/AuthModal'
@@ -218,6 +219,7 @@ export function App() {
   const [showAdvancedDrawer, setShowAdvancedDrawer] = useState(false)
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
+  const [selectedOpportunityForDrawer, setSelectedOpportunityForDrawer] = useState<Opportunity | null>(null)
 
   // Status & Feedback
   const [loadingMatches, setLoadingMatches] = useState(false)
@@ -666,10 +668,12 @@ export function App() {
               loading={loadingMatches}
             />
 
-            {/* Explore by Category Tracks */}
-            <CategoryExplore
-              counts={categoryCounts as any}
-              selectedCategory={filters.category}
+            {/* Interactive Tactile Radar Scope Scanner */}
+            <RadarScope
+              opportunities={opportunities}
+              matchMap={matchMap}
+              onSelectOpportunity={(opp) => setSelectedOpportunityForDrawer(opp)}
+              activeCategory={filters.category}
               onSelectCategory={(cat) => {
                 handleFilterUpdate({ category: cat })
                 const el = document.getElementById('opportunity-feed')
@@ -705,6 +709,7 @@ export function App() {
                     isSaved={saved.includes(opp.id)}
                     onToggleSave={toggleSave}
                     userSkills={profile.skills}
+                    onInspect={(opp) => setSelectedOpportunityForDrawer(opp)}
                   />
                 ))
               ) : (
@@ -736,6 +741,7 @@ export function App() {
             userSkills={profile.skills}
             onNavigateToExplore={() => setActiveTab('Dashboard')}
             onNavigateToDashboard={() => setActiveTab('Dashboard')}
+            onInspect={(opp) => setSelectedOpportunityForDrawer(opp)}
           />
         )}
 
@@ -839,6 +845,23 @@ export function App() {
         onClose={() => setShowNotifications(false)}
         onSelectOpportunity={(oppId) => {
           handleFilterUpdate({ searchQuery: oppId })
+          const el = document.getElementById('opportunity-feed')
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }}
+      />
+
+      {/* Interactive Opportunity Inspection Drawer */}
+      <OpportunityDetailDrawer
+        opportunity={selectedOpportunityForDrawer}
+        match={selectedOpportunityForDrawer ? matchMap.get(selectedOpportunityForDrawer.id) : undefined}
+        isOpen={!!selectedOpportunityForDrawer}
+        onClose={() => setSelectedOpportunityForDrawer(null)}
+        isSaved={selectedOpportunityForDrawer ? saved.includes(selectedOpportunityForDrawer.id) : false}
+        onToggleSave={toggleSave}
+        userSkills={profile.skills}
+        onSelectCategory={(cat) => {
+          handleFilterUpdate({ category: cat })
+          setSelectedOpportunityForDrawer(null)
           const el = document.getElementById('opportunity-feed')
           if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
         }}

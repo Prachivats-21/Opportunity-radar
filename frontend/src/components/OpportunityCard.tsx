@@ -22,6 +22,7 @@ interface OpportunityCardProps {
   isSaved: boolean
   onToggleSave: (id: string) => void
   userSkills?: string[]
+  onInspect?: (opportunity: Opportunity) => void
 }
 
 export const OpportunityCard: React.FC<OpportunityCardProps> = ({
@@ -30,6 +31,7 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
   isSaved,
   onToggleSave,
   userSkills = [],
+  onInspect,
 }) => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false)
 
@@ -224,7 +226,18 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
   const platformMeta = getPlatformMeta(opportunity.source_url, opportunity.source_name)
 
   return (
-    <article className="opportunity-card" aria-labelledby={`opp-title-${opportunity.id}`}>
+    <article
+      className="opportunity-card interactive-card"
+      aria-labelledby={`opp-title-${opportunity.id}`}
+      onClick={() => onInspect && onInspect(opportunity)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          onInspect && onInspect(opportunity)
+        }
+      }}
+    >
       {/* 1. Card Topline Header */}
       <div className="card-header">
         <div className="card-org-row">
@@ -261,7 +274,10 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
           {/* Bookmark Button */}
           <button
             className={`bookmark-btn ${isSaved ? 'saved' : ''}`}
-            onClick={() => onToggleSave(opportunity.id)}
+            onClick={(e) => {
+              e.stopPropagation()
+              onToggleSave(opportunity.id)
+            }}
             aria-label={isSaved ? `Remove ${opportunity.title} from saved` : `Save ${opportunity.title}`}
             title={isSaved ? 'Remove from saved' : 'Save opportunity'}
           >
@@ -374,7 +390,10 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
         <div className="why-match-accordion">
           <button
             className="accordion-trigger"
-            onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+            onClick={(e) => {
+              e.stopPropagation()
+              setIsAccordionOpen(!isAccordionOpen)
+            }}
             aria-expanded={isAccordionOpen}
           >
             <div className="accordion-trigger-left">
@@ -429,17 +448,32 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
           </span>
         </div>
 
-        <a
-          href={opportunity.source_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`btn-apply-source ${platformMeta.badgeClass}`}
-          aria-label={`${platformMeta.buttonText} for ${opportunity.title} (opens in new tab)`}
-          title={`${platformMeta.buttonText} — ${platformMeta.note}`}
-        >
-          <span>{platformMeta.buttonText}</span>
-          <ExternalLink size={13} />
-        </a>
+        <div className="card-footer-actions">
+          <button
+            type="button"
+            className="btn-inspect-signal"
+            onClick={(e) => {
+              e.stopPropagation()
+              onInspect && onInspect(opportunity)
+            }}
+            title="Inspect deep match breakdown & requirements"
+          >
+            <span>View Details</span>
+          </button>
+
+          <a
+            href={opportunity.source_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`btn-apply-source ${platformMeta.badgeClass}`}
+            aria-label={`${platformMeta.buttonText} for ${opportunity.title} (opens in new tab)`}
+            title={`${platformMeta.buttonText} — ${platformMeta.note}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span>{platformMeta.buttonText}</span>
+            <ExternalLink size={13} />
+          </a>
+        </div>
       </div>
     </article>
   )
