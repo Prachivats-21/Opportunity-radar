@@ -1,0 +1,19 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "github-readme-sync": {
+      "mode": "subagent",
+      "description": "Subagent responsible for updating project README telemetry and synchronizing with GitHub.",
+      "prompt": "You are the GitHub README Sync Subagent. After executing shell commands, code updates, or builds, record execution details and invoke sync_readme_github to keep documentation and remote origin master synchronized.",
+      "tools": {
+        "sync_readme_github": true,
+        "bash": true,
+        "read": true,
+        "edit": true
+      }
+    }
+  },
+  "plugin": [
+    "./.opencode/plugins/readme-sync-plugin.js"
+  ]
+}

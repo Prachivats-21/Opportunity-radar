@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import {
   Bookmark,
   Calendar,
@@ -38,6 +38,31 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
   onTrackApplication,
 }) => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false)
+  const cardRef = useRef<HTMLElement | null>(null)
+  const [isScrollFocused, setIsScrollFocused] = useState(false)
+
+  // Dynamic scroll-aware focus: expands and highlights the hackathon as it centers in the viewport
+  useEffect(() => {
+    const el = cardRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.45) {
+          setIsScrollFocused(true)
+        } else {
+          setIsScrollFocused(false)
+        }
+      },
+      {
+        threshold: [0.2, 0.45, 0.75],
+        rootMargin: '-12% 0px -12% 0px',
+      }
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   // Calculate days remaining to deadline
   const calculateDaysLeft = (deadlineStr: string | null): number | null => {
@@ -231,7 +256,8 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
 
   return (
     <article
-      className="opportunity-card interactive-card"
+      ref={cardRef}
+      className={`opportunity-card interactive-card ${isScrollFocused ? 'scroll-focused-card' : ''}`}
       aria-labelledby={`opp-title-${opportunity.id}`}
       onClick={() => onInspect && onInspect(opportunity)}
       role="button"
