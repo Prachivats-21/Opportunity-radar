@@ -49,7 +49,7 @@ export const CyberTunnelCanvas: React.FC = () => {
 
     // 1. Scene & Camera
     const scene = new THREE.Scene()
-    scene.fog = new THREE.Fog(0x070417, 10, 45)
+    scene.fog = new THREE.Fog(0x0A0E17, 10, 45)
 
     const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 400)
     camera.position.set(0, 0, 20)
@@ -75,11 +75,11 @@ export const CyberTunnelCanvas: React.FC = () => {
     const uniforms = {
       uTime: { value: 0 },
       uAppear: { value: 0 },
-      uColLow: { value: hexToVec3('#180a3a') },
-      uColHigh: { value: hexToVec3('#2bf0ff') },
-      uOpacity: { value: 1.2 },
-      uSize: { value: 4.5 },
-      uBrightness: { value: 0.65 },
+      uColLow: { value: hexToVec3('#061a14') },
+      uColHigh: { value: hexToVec3('#10b981') },
+      uOpacity: { value: 1.0 },
+      uSize: { value: 4.2 },
+      uBrightness: { value: 0.55 },
       uSwirl: { value: 0.39 },
       uScale: { value: 0.18 },
       uCursor: { value: new THREE.Vector3() },
@@ -179,7 +179,7 @@ export const CyberTunnelCanvas: React.FC = () => {
       depthWrite: false,
       uniforms: {
         uTime: { value: 0 },
-        uColor: { value: hexToVec3('#8fe6ff') },
+        uColor: { value: hexToVec3('#34d399') },
       },
       vertexShader: `
         attribute float size;
