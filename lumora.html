@@ -1,0 +1,2916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumora — Independent Design & Engineering Studio</title>
+  <meta name="description" content="Lumora is an independent studio crafting brands, products, and the systems that connect them — bold ideas, shipped with quiet precision." />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Global Reset & Typography */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-behavior: smooth; }
+    body { background: #ffffff; color: #111111; font-family: 'Onest', -apple-system, BlinkMacSystemFont, sans-serif; overflow-x: hidden; line-height: 1.5; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+    ul { list-style: none; }
+    img { display: block; max-width: 100%; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    :focus-visible { outline: 2px solid #b15f2c; outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+    /* The rem-based adaptive grid */
+    @media (max-width: 1920px) { html { font-size: 0.833333vw; } }
+    @media (max-width: 1440px) { html { font-size: 1.111111vw; } }
+    @media (max-width: 1024px) { html { font-size: 1.5625vw; } }
+    @media (max-width: 640px)  { html { font-size: 4.444444vw; } }
+
+    /* Root Design Tokens */
+    :root {
+      --background: #ffffff;
+      --foreground: #111111;
+      --ink: #0a0a0a;
+      --muted: #8d8d8d;
+      --subtle: #b6b6b6;
+      --line: #e6e5e2;
+      --surface: #f1f0ee;
+      --surface-2: #e3e2df;
+      --accent: #b15f2c;
+      --accent-from: #cf8047;
+      --accent-to: #97501f;
+    }
+
+    /* Common Shell */
+    .shell {
+      max-width: 88rem;
+      margin-inline: auto;
+      padding-inline: 1.25rem;
+    }
+    @media (min-width: 640px) {
+      .shell { padding-inline: 2rem; }
+    }
+
+    /* Skip link */
+    .skip-link {
+      position: fixed;
+      left: 1rem;
+      top: 1rem;
+      z-index: 200;
+      border-radius: 0.875rem;
+      background: #0a0a0a;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      color: #fff;
+      transform: translateY(-150%);
+      transition: transform 0.2s ease;
+    }
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    /* SVGs inline formatting */
+    .icon {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    /* Eyebrow badge */
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    .eyebrow .dot {
+      width: 0.375rem;
+      height: 0.375rem;
+      border-radius: 9999px;
+      display: inline-block;
+    }
+    .eyebrow.tone-dark {
+      color: rgba(17, 17, 17, 0.7);
+    }
+    .eyebrow.tone-dark .dot {
+      background: rgba(17, 17, 17, 0.5);
+    }
+    .eyebrow.tone-light {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    .eyebrow.tone-light .dot {
+      background: rgba(255, 255, 255, 0.6);
+    }
+    .eyebrow.bordered {
+      border: 1px solid var(--line);
+      border-radius: 9999px;
+      padding: 0.375rem 1rem;
+    }
+
+    /* Pill Button */
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease;
+      white-space: nowrap;
+    }
+    .pill-btn:hover {
+      transform: scale(1.04);
+    }
+    .pill-btn.no-arrow {
+      padding: 0.875rem 1.75rem;
+    }
+    .pill-btn.with-arrow {
+      padding: 0.375rem 0.375rem 0.375rem 1.5rem;
+      gap: 0.75rem;
+    }
+    .pill-btn.variant-dark {
+      background: #0a0a0a;
+      color: #ffffff;
+    }
+    .pill-btn.variant-dark .btn-arrow-badge {
+      background: #ffffff;
+      color: #0a0a0a;
+    }
+    .pill-btn.variant-light {
+      background: #f1f0ee;
+      color: #111111;
+    }
+    .pill-btn.variant-light .btn-arrow-badge {
+      background: #0a0a0a;
+      color: #ffffff;
+    }
+    .pill-btn.variant-outline {
+      border: 1px solid #e6e5e2;
+      background: transparent;
+      color: #111111;
+    }
+    .pill-btn.variant-outline .btn-arrow-badge {
+      background: #0a0a0a;
+      color: #ffffff;
+    }
+    .btn-arrow-badge {
+      width: 2.25rem;
+      height: 2.25rem;
+      display: grid;
+      place-items: center;
+      border-radius: 9999px;
+      font-size: 1rem;
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .pill-btn:hover .btn-arrow-badge.arrow-right {
+      transform: translateX(3px);
+    }
+    .pill-btn:hover .btn-arrow-badge.arrow-up-right {
+      transform: translate(2px, -2px);
+    }
+
+    /* Tag Chip */
+    .tag-chip {
+      display: inline-flex;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 9999px;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      color: #ffffff;
+    }
+
+    /* Animated Link */
+    .animated-link {
+      display: inline-flex;
+      align-items: center;
+      color: inherit;
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s ease;
+      opacity: 0.65;
+    }
+    .animated-link:hover {
+      transform: translateX(4px);
+      opacity: 1;
+    }
+
+    /* Line reveal clip */
+    .line-reveal-wrap {
+      overflow: hidden;
+      display: block;
+    }
+    .line-reveal-inner {
+      display: inline-block;
+      transform: translateY(100%);
+      opacity: 0;
+      transition: transform 0.9s cubic-bezier(0.215, 0.61, 0.355, 1), opacity 0.9s ease;
+    }
+    .revealed .line-reveal-inner {
+      transform: translateY(0%);
+      opacity: 1;
+    }
+
+    /* Word reveal */
+    .word-reveal-span {
+      display: inline-block;
+      transform: translateY(24px);
+      opacity: 0;
+      transition: transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.7s ease;
+      margin-right: 0.28em;
+    }
+    .revealed .word-reveal-span {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Generic entrance reveals */
+    .reveal-elem {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-elem.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==========================================================================
+       PAGE LOADER
+       ========================================================================== */
+    #page-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      background: #0a0a0a;
+      color: #ffffff;
+      border-radius: 0 0 2rem 2rem;
+      transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+    .loader-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+      text-align: center;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .loader-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 600;
+      font-size: 1.5rem;
+      color: #ffffff;
+    }
+    @media (min-width: 640px) {
+      .loader-brand { font-size: 1.875rem; }
+    }
+    .loader-tagline {
+      max-width: 24ch;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.55);
+    }
+    .loader-progress-block {
+      width: min(22rem, 72vw);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .loader-track {
+      height: 1px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .loader-fill {
+      height: 100%;
+      background: #cf8047;
+      width: 0%;
+      transition: width 0.08s ease-out;
+    }
+    .loader-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(255, 255, 255, 0.45);
+    }
+    .loader-counter {
+      color: rgba(255, 255, 255, 0.8);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ==========================================================================
+       HEADER
+       ========================================================================== */
+    header.site-header {
+      position: absolute;
+      inset-inline: 0;
+      top: 0;
+      z-index: 50;
+      opacity: 0;
+      transform: translateY(-14px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    header.site-header.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding: 1.25rem;
+    }
+    @media (min-width: 640px) {
+      .header-inner { padding: 1.5rem 2rem; }
+    }
+    .brand-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.125rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .brand-btn:hover {
+      transform: scale(1.04);
+    }
+    .brand-mark {
+      font-size: 1.25rem;
+      color: #b15f2c;
+    }
+
+    .primary-nav {
+      display: none;
+    }
+    @media (min-width: 1024px) {
+      .primary-nav {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s ease;
+    }
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      opacity: 1;
+    }
+    .nav-btn[aria-current="page"] {
+      opacity: 1;
+      font-weight: 600;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .clock-chip {
+      display: none;
+      align-items: center;
+      border: 1px solid rgba(230, 229, 226, 0.8);
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-radius: 0.875rem;
+      padding: 0.5rem 0.75rem;
+      gap: 0.75rem;
+      font-size: 0.75rem;
+      color: rgba(17, 17, 17, 0.7);
+    }
+    @media (min-width: 768px) {
+      .clock-chip { display: flex; }
+    }
+    .clock-chip-muted {
+      color: rgba(17, 17, 17, 0.45);
+    }
+    .clock-chip-time {
+      min-width: 3.5rem;
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+      color: #111111;
+    }
+    .clock-chip-sep {
+      color: rgba(17, 17, 17, 0.3);
+    }
+    .clock-chip-date {
+      font-weight: 500;
+    }
+
+    .menu-trigger-btn {
+      border: 1px solid rgba(230, 229, 226, 0.8);
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-radius: 0.875rem;
+      transition: background 0.2s ease;
+    }
+    .menu-trigger-btn:hover {
+      background: rgba(255, 255, 255, 0.7);
+    }
+    .menu-trigger-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .menu-trigger-btn:hover .menu-trigger-inner {
+      transform: scale(1.05);
+    }
+    .menu-text {
+      display: none;
+    }
+    @media (min-width: 640px) {
+      .menu-text { display: inline; }
+    }
+
+    /* ==========================================================================
+       HERO SECTION
+       ========================================================================== */
+    section#home {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      border-radius: 0 0 2rem 2rem;
+      background: #c9c9c9;
+    }
+    .liquid-reveal-wrap {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .liquid-reveal-wrap img.liquid-base-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .liquid-reveal-wrap canvas#liquid-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .legibility-vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.35), transparent, rgba(255, 255, 255, 0.35));
+    }
+    .hero-watermark {
+      pointer-events: none;
+      position: absolute;
+      inset-inline: 0;
+      bottom: 7rem;
+      z-index: 1;
+      text-align: center;
+      user-select: none;
+      font-weight: 700;
+      line-height: 1;
+      font-size: 13rem;
+      color: rgba(255, 255, 255, 0.4);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .hero-watermark.revealed {
+      opacity: 0.4;
+      transform: translateY(0);
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding: 7rem 1.25rem 5rem;
+    }
+    @media (min-width: 640px) {
+      .hero-grid { padding-inline: 2rem; }
+    }
+    @media (min-width: 1024px) {
+      .hero-grid {
+        display: grid;
+        min-height: 100lvh;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 2.5rem;
+        padding: 9rem 2rem 7rem;
+        align-content: center;
+      }
+    }
+
+    .hero-left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+    @media (min-width: 1024px) {
+      .hero-left-col {
+        grid-column: span 7;
+      }
+    }
+
+    .hero-h1 {
+      max-width: 18ch;
+      font-size: 2.25rem;
+      font-weight: 600;
+      line-height: 0.98;
+      letter-spacing: -0.02em;
+    }
+    @media (min-width: 640px) {
+      .hero-h1 { font-size: 3rem; }
+    }
+    @media (min-width: 768px) {
+      .hero-h1 { font-size: 3.75rem; }
+    }
+
+    .hero-rating-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .stars-cluster {
+      color: #b15f2c;
+      display: inline-flex;
+      gap: 0.15rem;
+      font-size: 1rem;
+    }
+    .rating-text {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: rgba(17, 17, 17, 0.7);
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .hero-right-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2rem;
+    }
+    @media (min-width: 1024px) {
+      .hero-right-col {
+        grid-column: span 5;
+        align-items: flex-end;
+      }
+    }
+
+    /* Hero Carousel Card */
+    .hero-carousel-card {
+      width: 100%;
+      max-width: 24rem;
+      border-radius: 1.25rem;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 0.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(230, 229, 226, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @media (min-width: 1024px) {
+      .hero-carousel-card { width: 19rem; }
+    }
+    .hero-carousel-inner {
+      display: flex;
+      gap: 0.5rem;
+      cursor: pointer;
+      border-radius: 0.875rem;
+      user-select: none;
+    }
+    .carousel-tile-left {
+      aspect-ratio: 1;
+      width: 6rem;
+      display: grid;
+      place-items: center;
+      border-radius: 0.875rem;
+      background: #0a0a0a;
+      font-size: 1.875rem;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+    .carousel-tile-left .icon {
+      color: #cf8047;
+    }
+    .carousel-panel-right {
+      flex: 1;
+      border-radius: 0.875rem;
+      background: rgba(241, 240, 238, 0.7);
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+    .carousel-slot {
+      position: relative;
+      min-height: 3.25rem;
+    }
+    .carousel-item-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+    }
+    .carousel-caption {
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(17, 17, 17, 0.45);
+      margin-bottom: 0.2rem;
+    }
+    .carousel-title {
+      max-width: 8rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      line-height: 1.35;
+      color: #111111;
+    }
+    .carousel-nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+    }
+    .carousel-dots {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .carousel-dot {
+      height: 0.25rem;
+      border-radius: 9999px;
+      transition: all 0.3s ease;
+    }
+    .carousel-dot.active {
+      width: 1rem;
+      background: rgba(17, 17, 17, 0.7);
+    }
+    .carousel-dot.inactive {
+      width: 0.375rem;
+      background: rgba(17, 17, 17, 0.2);
+    }
+    .carousel-arrows {
+      display: flex;
+      gap: 0.25rem;
+    }
+    .carousel-arrow-btn {
+      width: 1.75rem;
+      height: 1.75rem;
+      display: grid;
+      place-items: center;
+      border-radius: 9999px;
+      background: #ffffff;
+      color: rgba(17, 17, 17, 0.7);
+      border: 1px solid #e6e5e2;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+    .carousel-arrow-btn:hover {
+      color: #111111;
+      transform: scale(1.08);
+    }
+
+    /* Partners */
+    .partners-block {
+      width: 100%;
+      max-width: 24rem;
+    }
+    @media (min-width: 1024px) {
+      .partners-block { width: 19rem; }
+    }
+    .partners-label {
+      margin-bottom: 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: rgba(17, 17, 17, 0.45);
+      text-align: left;
+    }
+    @media (min-width: 1024px) {
+      .partners-label { text-align: right; }
+    }
+    .partners-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      column-gap: 1rem;
+      row-gap: 0.75rem;
+    }
+    .partner-item {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.75rem;
+      color: rgba(17, 17, 17, 0.7);
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s ease;
+    }
+    .partner-item:hover {
+      transform: translateY(-2px);
+      opacity: 1;
+      color: #111111;
+    }
+    .partner-item .icon {
+      font-size: 0.875rem;
+      color: rgba(17, 17, 17, 0.4);
+    }
+
+    /* Bottom status bar */
+    .hero-status-bar {
+      border-top: 1px solid rgba(17, 17, 17, 0.1);
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+      color: rgba(17, 17, 17, 0.6);
+      position: relative;
+      z-index: 20;
+    }
+    @media (min-width: 640px) {
+      .hero-status-bar { padding-inline: 2rem; }
+    }
+    .status-center {
+      display: none;
+    }
+    @media (min-width: 640px) {
+      .status-center { display: inline-block; }
+    }
+    .status-right {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* ==========================================================================
+       ABOUT SECTION
+       ========================================================================== */
+    section#about {
+      background: #ffffff;
+    }
+    .about-shell {
+      display: grid;
+      grid-template-columns: 1fr;
+      align-items: center;
+      gap: 3rem;
+      padding-block: 5rem;
+    }
+    @media (min-width: 1024px) {
+      .about-shell {
+        grid-template-columns: 1fr 1fr;
+        padding-block: 7rem;
+      }
+    }
+    .about-globe-block {
+      position: relative;
+      min-height: 14rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    @media (min-width: 1024px) {
+      .about-globe-block { min-height: 20rem; }
+    }
+    .globe-watermark {
+      position: absolute;
+      left: -1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12rem;
+      color: rgba(17, 17, 17, 0.08);
+      pointer-events: none;
+      user-select: none;
+    }
+    @media (min-width: 640px) {
+      .globe-watermark { font-size: 16rem; }
+    }
+    @media (min-width: 1024px) {
+      .globe-watermark { font-size: 20rem; left: -1.5rem; }
+    }
+    .globe-feature-text {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.875rem;
+      color: rgba(17, 17, 17, 0.7);
+      position: relative;
+      z-index: 2;
+    }
+    .globe-feature-text .icon {
+      font-size: 1.5rem;
+      color: #111111;
+    }
+    .globe-feature-text span {
+      max-width: 14rem;
+    }
+
+    .about-statement-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+    .about-h2 {
+      font-size: 1.5rem;
+      font-weight: 500;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+    }
+    @media (min-width: 640px) {
+      .about-h2 { font-size: 1.875rem; }
+    }
+    .about-muted-text {
+      color: #8d8d8d;
+    }
+    .about-footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1.5rem;
+      border-top: 1px solid #e6e5e2;
+      padding-top: 1.5rem;
+    }
+    .social-chips-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .social-chips-label {
+      font-size: 0.875rem;
+      color: rgba(17, 17, 17, 0.45);
+    }
+    .social-chips-list {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .social-chip {
+      width: 2.25rem;
+      height: 2.25rem;
+      display: grid;
+      place-items: center;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .social-chip:hover {
+      transform: scale(1.18);
+    }
+    .social-chip.chip-x {
+      background: #b15f2c;
+      color: #ffffff;
+    }
+    .social-chip.chip-generic {
+      background: #f1f0ee;
+      color: rgba(17, 17, 17, 0.7);
+    }
+
+    /* ==========================================================================
+       CREATE BAND ("We Build -> Better")
+       ========================================================================== */
+    section.create-band {
+      background: #ffffff;
+      padding-block: 2.5rem;
+    }
+    .create-band-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    @media (min-width: 640px) {
+      .create-band-list {
+        flex-direction: row;
+        gap: 1rem;
+      }
+    }
+    .create-band-item {
+      flex: 1;
+    }
+    .create-tile {
+      display: grid;
+      place-items: center;
+      height: 6rem;
+      border-radius: 9999px;
+      font-size: 1.875rem;
+      font-weight: 500;
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      cursor: default;
+    }
+    @media (min-width: 640px) {
+      .create-tile {
+        height: 10rem;
+        font-size: 2.25rem;
+      }
+    }
+    .create-tile:hover {
+      transform: scale(1.03);
+    }
+    .create-tile.variant-light {
+      background: #f1f0ee;
+      color: #111111;
+    }
+    .create-tile.variant-accent {
+      background: linear-gradient(to bottom right, #cf8047, #97501f);
+      color: #ffffff;
+    }
+    .create-tile.variant-dark {
+      background: #0a0a0a;
+      color: #ffffff;
+      font-size: 2.25rem;
+    }
+    @media (min-width: 640px) {
+      .create-tile.variant-dark { font-size: 3rem; }
+    }
+    .create-tile.variant-ghost {
+      background: rgba(241, 240, 238, 0.6);
+      color: rgba(17, 17, 17, 0.35);
+    }
+
+    /* ==========================================================================
+       PORTFOLIO SECTION
+       ========================================================================== */
+    section#works {
+      background: #ffffff;
+    }
+    .portfolio-shell {
+      padding-top: 2.5rem;
+      padding-bottom: 5rem;
+    }
+    @media (min-width: 1024px) {
+      .portfolio-shell { padding-bottom: 7rem; }
+    }
+    .portfolio-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .portfolio-h2 {
+      font-size: 2.25rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-top: 1rem;
+    }
+    @media (min-width: 640px) {
+      .portfolio-h2 { font-size: 3rem; }
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    @media (min-width: 768px) {
+      .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .portfolio-card {
+      position: relative;
+      min-height: 22rem;
+      overflow: hidden;
+      border-radius: 2rem;
+      background: #0a0a0a;
+      padding: 1.5rem;
+      color: #ffffff;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+    }
+    @media (min-width: 640px) {
+      .portfolio-card { min-height: 26rem; padding: 2rem; }
+    }
+    .portfolio-card:hover {
+      transform: translateY(-8px) scale(1.012);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+    .portfolio-card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+      color: rgba(255, 255, 255, 0.45);
+      position: relative;
+      z-index: 2;
+    }
+    .portfolio-card-badge {
+      width: 2.75rem;
+      height: 2.75rem;
+      display: grid;
+      place-items: center;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 1rem;
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .portfolio-card:hover .portfolio-card-badge {
+      transform: rotate(45deg) scale(1.08);
+    }
+    .portfolio-card-watermark {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+      user-select: none;
+      font-size: 4.5rem;
+      color: rgba(255, 255, 255, 0.06);
+    }
+    .portfolio-card-watermark .registered-mark {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      margin-left: 0.25rem;
+      vertical-align: super;
+    }
+    .portfolio-card-bottom {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+    }
+    .portfolio-card-title {
+      font-size: 1.5rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    @media (min-width: 640px) {
+      .portfolio-card-title { font-size: 1.875rem; }
+    }
+    .portfolio-card-desc {
+      margin-top: 0.5rem;
+      max-width: 28rem;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.5;
+    }
+    .portfolio-card-tags {
+      margin-top: 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    /* ==========================================================================
+       SERVICES SECTION
+       ========================================================================== */
+    section#services {
+      background: #ffffff;
+    }
+    .services-shell {
+      padding-block: 5rem;
+    }
+    @media (min-width: 1024px) {
+      .services-shell { padding-block: 7rem; }
+    }
+    .services-h2 {
+      margin: 1.25rem 0 3rem;
+      max-width: 16ch;
+      font-size: 2.25rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    @media (min-width: 640px) {
+      .services-h2 { margin-bottom: 3.5rem; font-size: 3rem; }
+    }
+    .services-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .service-row-wrap {
+      border-top: 1px solid #e6e5e2;
+    }
+    .service-row-wrap:first-child {
+      border-top: none;
+    }
+    .service-row-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border-radius: 1.25rem;
+      padding: 1.5rem 1.5rem;
+      background: rgba(241, 240, 238, 0);
+      transition: background 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+    @media (min-width: 640px) {
+      .service-row-link {
+        gap: 1.5rem;
+        padding-block: 2rem;
+      }
+    }
+    .service-row-link:hover {
+      background: rgba(241, 240, 238, 1);
+      padding-left: 2rem;
+      padding-right: 1.25rem;
+    }
+    .service-index {
+      width: 1.75rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: rgba(17, 17, 17, 0.4);
+    }
+    @media (min-width: 640px) {
+      .service-index { width: 2.5rem; }
+    }
+    .service-title {
+      flex: 1;
+      font-size: 1.5rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    @media (min-width: 640px) {
+      .service-title { font-size: 1.875rem; }
+    }
+    @media (min-width: 768px) {
+      .service-title { font-size: 2.25rem; }
+    }
+    .service-desc {
+      display: none;
+      max-width: 20rem;
+      font-size: 0.875rem;
+      color: rgba(17, 17, 17, 0.55);
+    }
+    @media (min-width: 1024px) {
+      .service-desc { display: block; }
+    }
+    .service-arrow-badge {
+      width: 2.5rem;
+      height: 2.5rem;
+      display: grid;
+      place-items: center;
+      border-radius: 9999px;
+      background: #0a0a0a;
+      color: #ffffff;
+      font-size: 1rem;
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    @media (min-width: 640px) {
+      .service-arrow-badge { width: 3rem; height: 3rem; }
+    }
+    .service-row-link:hover .service-arrow-badge {
+      transform: translateX(5px);
+    }
+
+    /* ==========================================================================
+       STATS SECTION
+       ========================================================================== */
+    section.stats-section {
+      background: #ffffff;
+      padding-bottom: 5rem;
+    }
+    @media (min-width: 1024px) {
+      section.stats-section { padding-bottom: 7rem; }
+    }
+    .stats-panel {
+      border-radius: 2rem;
+      background: #0a0a0a;
+      padding: 3rem 1.5rem;
+      color: #ffffff;
+    }
+    @media (min-width: 640px) {
+      .stats-panel { padding: 4rem 2rem; }
+    }
+    @media (min-width: 768px) {
+      .stats-panel { padding-inline: 4rem; }
+    }
+    .stats-h2 {
+      margin-top: 1rem;
+      max-width: 20ch;
+      font-size: 1.875rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    @media (min-width: 768px) {
+      .stats-h2 { font-size: 2.25rem; }
+    }
+    .stats-grid {
+      margin-top: 3.5rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 2rem;
+      row-gap: 3rem;
+    }
+    @media (min-width: 1024px) {
+      .stats-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+    @media (min-width: 640px) {
+      .stat-number { font-size: 3.75rem; }
+    }
+    @media (min-width: 768px) {
+      .stat-number { font-size: 4.5rem; }
+    }
+    .stat-label {
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    footer.site-footer {
+      position: relative;
+      overflow: hidden;
+      border-radius: 2rem 2rem 0 0;
+      background: #0a0a0a;
+      color: #ffffff;
+    }
+    .footer-shell {
+      position: relative;
+      z-index: 10;
+      padding-block: 5rem 2.5rem;
+    }
+    @media (min-width: 1024px) {
+      .footer-shell { padding-top: 6rem; }
+    }
+    .footer-cta-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 4rem;
+    }
+    @media (min-width: 768px) {
+      .footer-cta-card {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+    .footer-cta-h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      max-width: 18ch;
+      line-height: 1.1;
+    }
+    @media (min-width: 640px) {
+      .footer-cta-h2 { font-size: 2.75rem; }
+    }
+
+    .footer-columns {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      padding-block: 4rem;
+    }
+    @media (min-width: 768px) {
+      .footer-columns { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .footer-columns { grid-template-columns: 2fr 1fr 1fr 1fr; }
+    }
+    .footer-brand-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .footer-tagline {
+      margin-top: 1rem;
+      max-width: 20rem;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.5;
+    }
+    .footer-col-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 1.25rem;
+    }
+    .footer-links-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .footer-legal-bar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 2rem;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.45);
+    }
+    @media (min-width: 640px) {
+      .footer-legal-bar { flex-direction: row; }
+    }
+    .legal-links-group {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-watermark {
+      position: absolute;
+      inset-inline: 0;
+      bottom: -1.5rem;
+      z-index: 0;
+      text-align: center;
+      pointer-events: none;
+      user-select: none;
+      font-weight: 700;
+      line-height: 1;
+      font-size: 13rem;
+      color: rgba(255, 255, 255, 0.05);
+    }
+
+    /* ==========================================================================
+       NAV MENU OVERLAY
+       ========================================================================== */
+    #nav-menu-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 115;
+      display: flex;
+      flex-direction: column;
+      background: #0a0a0a;
+      color: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #nav-menu-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .nav-overlay-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem;
+    }
+    @media (min-width: 640px) {
+      .nav-overlay-top { padding: 1.5rem 2rem; }
+    }
+    .nav-close-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 0.875rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(255, 255, 255, 0.7);
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .nav-close-btn:hover {
+      border-color: rgba(255, 255, 255, 0.4);
+      color: #ffffff;
+    }
+    .nav-overlay-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .nav-overlay-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .nav-overlay-item-btn {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      padding-block: 0.5rem;
+      text-align: left;
+      font-size: 2.25rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: rgba(255, 255, 255, 0.7);
+      transform: translateY(1rem);
+      opacity: 0;
+      transition: transform 0.5s ease-out, opacity 0.5s ease-out, color 0.3s ease;
+    }
+    @media (min-width: 640px) {
+      .nav-overlay-item-btn { font-size: 3.75rem; }
+    }
+    #nav-menu-overlay.active .nav-overlay-item-btn {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .nav-overlay-item-btn:hover {
+      color: #ffffff;
+    }
+    .nav-item-num {
+      font-size: 1rem;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.3);
+      transition: color 0.3s ease;
+    }
+    .nav-overlay-item-btn:hover .nav-item-num {
+      color: #cf8047;
+    }
+    .nav-overlay-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1.5rem 1.25rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+      color: rgba(255, 255, 255, 0.45);
+    }
+    @media (min-width: 640px) {
+      .nav-overlay-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-inline: 2rem;
+      }
+    }
+    .nav-start-btn {
+      color: rgba(255, 255, 255, 0.7);
+      transition: color 0.2s ease;
+    }
+    .nav-start-btn:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    /* ==========================================================================
+       REQUEST MODAL
+       ========================================================================== */
+    #request-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 110;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 1rem;
+      background: rgba(17, 17, 17, 0.4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @media (min-width: 640px) {
+      #request-modal-backdrop { align-items: center; }
+    }
+    #request-modal-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-panel {
+      position: relative;
+      width: 100%;
+      max-width: 32rem;
+      overflow: hidden;
+      border-radius: 2rem;
+      background: #ffffff;
+      padding: 1.5rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      border: 1px solid #e6e5e2;
+      transform: translateY(28px);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @media (min-width: 640px) {
+      .modal-panel { padding: 2rem; }
+    }
+    #request-modal-backdrop.active .modal-panel {
+      transform: translateY(0);
+    }
+    .modal-close-trigger {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      width: 2.25rem;
+      height: 2.25rem;
+      display: grid;
+      place-items: center;
+      border-radius: 9999px;
+      background: #f1f0ee;
+      color: rgba(17, 17, 17, 0.6);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .modal-close-trigger:hover {
+      background: #e3e2df;
+      color: #111111;
+    }
+
+    .modal-heading-block {
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.375rem;
+    }
+    .modal-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: rgba(17, 17, 17, 0.6);
+    }
+    .modal-kicker .dot {
+      width: 0.375rem;
+      height: 0.375rem;
+      border-radius: 9999px;
+      background: #b15f2c;
+    }
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #111111;
+    }
+    @media (min-width: 640px) {
+      .modal-title { font-size: 1.875rem; }
+    }
+
+    .modal-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .form-field-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+      color: rgba(17, 17, 17, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 0.375rem;
+    }
+    .modal-input {
+      width: 100%;
+      border: 1px solid #e6e5e2;
+      background: rgba(241, 240, 238, 0.5);
+      border-radius: 0.875rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+      font-family: inherit;
+      color: #111111;
+      outline: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .modal-input:focus {
+      border-color: rgba(17, 17, 17, 0.4);
+      background: #ffffff;
+    }
+    textarea.modal-input {
+      resize: none;
+    }
+    .modal-bottom-row {
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .modal-reply-note {
+      font-size: 0.75rem;
+      color: rgba(17, 17, 17, 0.45);
+    }
+
+    /* Modal Success State */
+    .modal-success-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding-block: 2rem;
+      gap: 1rem;
+    }
+    .modal-success-badge {
+      width: 3.5rem;
+      height: 3.5rem;
+      display: grid;
+      place-items: center;
+      border-radius: 9999px;
+      background: #0a0a0a;
+      color: #cf8047;
+      font-size: 1.5rem;
+    }
+    .modal-success-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #111111;
+    }
+    .modal-success-desc {
+      max-width: 32ch;
+      font-size: 0.875rem;
+      color: rgba(17, 17, 17, 0.6);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <!-- Skip to content link -->
+  <a href="#home" class="skip-link">Skip to content</a>
+
+  <!-- ==========================================================================
+       PAGE LOADER
+       ========================================================================== -->
+  <div id="page-loader">
+    <div class="loader-center" id="loader-content">
+      <div class="loader-brand">
+        <svg class="icon" style="font-size:1.875rem; color:#cf8047;" viewBox="0 0 48 48" fill="currentColor">
+          <path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z"/>
+        </svg>
+        <span>Lumora</span>
+      </div>
+      <p class="loader-tagline">Bold ideas, shipped with quiet precision.</p>
+    </div>
+    <div class="loader-progress-block">
+      <div class="loader-track">
+        <div class="loader-fill" id="loader-progress-fill"></div>
+      </div>
+      <div class="loader-info">
+        <span>Loading</span>
+        <span class="loader-counter" id="loader-progress-text">000</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       HEADER (FIXED OVERLAY)
+       ========================================================================== -->
+  <header class="site-header" id="site-header">
+    <div class="shell header-inner">
+      <!-- Brand Button -->
+      <button class="brand-btn" id="header-brand-btn" aria-label="Lumora Home">
+        <svg class="icon brand-mark" viewBox="0 0 48 48" fill="currentColor">
+          <path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z"/>
+        </svg>
+        <span>Lumora</span>
+      </button>
+
+      <!-- Primary Nav -->
+      <nav class="primary-nav" aria-label="Main navigation">
+        <button class="nav-btn" data-target="home" aria-current="page">Home</button>
+        <button class="nav-btn" data-target="works">Work</button>
+        <button class="nav-btn" data-target="services">
+          <span>Services</span>
+          <span style="font-size:0.75rem; opacity:0.6;">▾</span>
+        </button>
+        <button class="nav-btn" data-target="about">Studio</button>
+        <button class="nav-btn" data-target="about">Careers</button>
+        <button class="nav-btn" data-open-modal>Contact</button>
+      </nav>
+
+      <!-- Right: Clock chip & Menu -->
+      <div class="header-right">
+        <div class="clock-chip" id="header-clock-chip">
+          <span class="clock-chip-muted">Local time</span>
+          <span class="clock-chip-time" id="live-time-val">9:41am</span>
+          <span class="clock-chip-sep">•</span>
+          <span class="clock-chip-date" id="live-date-val">12 March, 2025</span>
+        </div>
+        <button class="menu-trigger-btn" id="menu-open-trigger" aria-label="Open Navigation Menu">
+          <span class="menu-trigger-inner">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+            <span class="menu-text">Menu</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ==========================================================================
+         HERO SECTION (#home)
+         ========================================================================== -->
+    <section id="home">
+      <!-- A) LiquidReveal background -->
+      <div class="liquid-reveal-wrap" id="liquid-reveal-container">
+        <!-- Always visible base image (after.jpg) -->
+        <img class="liquid-base-img" id="liquid-base-img" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/lumora-e8b711fc68/hero/after.jpg" alt="Lumora Studio workspace showcase" />
+        <!-- Canvas for brush trail (reveals before.jpg) -->
+        <canvas id="liquid-canvas" aria-hidden="true"></canvas>
+      </div>
+
+      <!-- B) Legibility vignette -->
+      <div class="legibility-vignette"></div>
+
+      <!-- C) Brand watermark -->
+      <div class="hero-watermark" id="hero-watermark">LUMORA</div>
+
+      <!-- D) Content grid -->
+      <div class="shell hero-grid">
+        <!-- Left column -->
+        <div class="hero-left-col">
+          <!-- Eyebrow -->
+          <div class="reveal-elem" id="hero-eyebrow">
+            <div class="eyebrow tone-dark">
+              <span class="dot"></span>
+              <span>Independent Studio</span>
+            </div>
+          </div>
+
+          <!-- H1 Line Reveal -->
+          <h1 class="hero-h1" id="hero-h1">
+            <span class="line-reveal-wrap"><span class="line-reveal-inner" style="transition-delay: 250ms;">Bold ideas,</span></span>
+            <span class="line-reveal-wrap"><span class="line-reveal-inner" style="transition-delay: 370ms;">shipped with</span></span>
+            <span class="line-reveal-wrap"><span class="line-reveal-inner" style="transition-delay: 490ms;">quiet precision</span></span>
+          </h1>
+
+          <!-- Rating row -->
+          <div class="reveal-elem hero-rating-row" id="hero-rating">
+            <div class="stars-cluster">
+              <!-- 5 filled stars -->
+              <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.88 6.49.94-4.7 4.58 1.11 6.46L12 17.9l-5.8 3.05 1.1-6.46-4.69-4.58 6.49-.94L12 2.5z"/></svg>
+              <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.88 6.49.94-4.7 4.58 1.11 6.46L12 17.9l-5.8 3.05 1.1-6.46-4.69-4.58 6.49-.94L12 2.5z"/></svg>
+              <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.88 6.49.94-4.7 4.58 1.11 6.46L12 17.9l-5.8 3.05 1.1-6.46-4.69-4.58 6.49-.94L12 2.5z"/></svg>
+              <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.88 6.49.94-4.7 4.58 1.11 6.46L12 17.9l-5.8 3.05 1.1-6.46-4.69-4.58 6.49-.94L12 2.5z"/></svg>
+              <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.88 6.49.94-4.7 4.58 1.11 6.46L12 17.9l-5.8 3.05 1.1-6.46-4.69-4.58 6.49-.94L12 2.5z"/></svg>
+            </div>
+            <span class="rating-text">200+ brands shipped</span>
+          </div>
+
+          <!-- CTA row -->
+          <div class="reveal-elem hero-cta-row" id="hero-ctas">
+            <button class="pill-btn with-arrow variant-dark" data-open-modal>
+              <span>Let's Talk</span>
+              <span class="btn-arrow-badge arrow-right">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </span>
+            </button>
+            <button class="pill-btn no-arrow variant-outline" data-target="works">
+              <span>View Work</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <div class="hero-right-col">
+          <!-- HeroCard Carousel -->
+          <div class="reveal-elem hero-carousel-card" id="hero-card">
+            <div class="hero-carousel-inner" id="hero-carousel-tap">
+              <div class="carousel-tile-left">
+                <svg class="icon" viewBox="0 0 48 48" fill="currentColor">
+                  <path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z"/>
+                </svg>
+              </div>
+              <div class="carousel-panel-right">
+                <div class="carousel-slot" id="carousel-slot">
+                  <div class="carousel-item-content" id="carousel-content">
+                    <span class="carousel-caption" id="carousel-caption">Conversion design</span>
+                    <h3 class="carousel-title" id="carousel-title">Crafted to convert.</h3>
+                  </div>
+                </div>
+                <div class="carousel-nav-row">
+                  <div class="carousel-dots">
+                    <span class="carousel-dot active"></span>
+                    <span class="carousel-dot inactive"></span>
+                    <span class="carousel-dot inactive"></span>
+                  </div>
+                  <div class="carousel-arrows">
+                    <button class="carousel-arrow-btn" id="carousel-prev-btn" aria-label="Previous slide">
+                      <svg class="icon" style="transform: rotate(180deg);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </button>
+                    <button class="carousel-arrow-btn" id="carousel-next-btn" aria-label="Next slide">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Partners -->
+          <div class="reveal-elem partners-block" id="hero-partners">
+            <p class="partners-label">Trusted by</p>
+            <div class="partners-grid">
+              <div class="partner-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>
+                <span>Kaido</span>
+              </div>
+              <div class="partner-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>
+                <span>Northpeak</span>
+              </div>
+              <div class="partner-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>
+                <span>Vellum</span>
+              </div>
+              <div class="partner-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>
+                <span>Orbit</span>
+              </div>
+              <div class="partner-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>
+                <span>Brightline</span>
+              </div>
+              <div class="partner-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>
+                <span>Cobalt</span>
+              </div>
+              <div class="partner-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>
+                <span>Mesa</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- E) Bottom status bar -->
+      <div class="hero-status-bar reveal-elem" id="hero-status-bar">
+        <span>Working since 2014</span>
+        <span class="status-center">Remote-first, worldwide</span>
+        <span class="status-right">
+          <span>Scroll to explore</span>
+          <span>↓</span>
+        </span>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         ABOUT SECTION (#about)
+         ========================================================================== -->
+    <section id="about">
+      <div class="shell about-shell">
+        <!-- Left: Globe block -->
+        <div class="about-globe-block">
+          <svg class="icon globe-watermark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <circle cx="12" cy="12" r="9.25"/>
+            <path d="M12 2.75c2.6 2.3 4 5.8 4 9.25s-1.4 6.95-4 9.25c-2.6-2.3-4-5.8-4-9.25s1.4-6.95 4-9.25zM2.75 12h18.5"/>
+          </svg>
+          <div class="eyebrow tone-dark">
+            <span class="dot"></span>
+            <span>The Studio</span>
+          </div>
+          <div class="globe-feature-text reveal-elem">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <circle cx="12" cy="12" r="9.25"/>
+              <path d="M12 2.75c2.6 2.3 4 5.8 4 9.25s-1.4 6.95-4 9.25c-2.6-2.3-4-5.8-4-9.25s1.4-6.95 4-9.25zM2.75 12h18.5"/>
+            </svg>
+            <span>A distributed team building across every time zone.</span>
+          </div>
+        </div>
+
+        <!-- Right: Statement block -->
+        <div class="about-statement-block">
+          <h2 class="about-h2" id="about-statement-h2">
+            <!-- Word reveal spans injected or parsed -->
+          </h2>
+          <div class="about-footer-row reveal-elem">
+            <div class="social-chips-group">
+              <span class="social-chips-label">Find us online</span>
+              <div class="social-chips-list">
+                <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-chip chip-x" aria-label="X / Twitter">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l16 16M20 4 4 20"/></svg>
+                </a>
+                <a href="https://behance.net" target="_blank" rel="noopener noreferrer" class="social-chip chip-generic" aria-label="Behance">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>
+                </a>
+                <a href="https://dribbble.com" target="_blank" rel="noopener noreferrer" class="social-chip chip-generic" aria-label="Dribbble">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>
+                </a>
+              </div>
+            </div>
+            <button class="pill-btn with-arrow variant-outline" data-target="about">
+              <span>About Us</span>
+              <span class="btn-arrow-badge arrow-right">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         CREATE BAND ("We Build -> Better")
+         ========================================================================== -->
+    <section class="create-band">
+      <ul class="shell create-band-list">
+        <li class="create-band-item reveal-elem" style="transition-delay: 0ms;">
+          <div class="create-tile variant-light">We</div>
+        </li>
+        <li class="create-band-item reveal-elem" style="transition-delay: 120ms;">
+          <div class="create-tile variant-accent">Build</div>
+        </li>
+        <li class="create-band-item reveal-elem" style="transition-delay: 240ms;">
+          <div class="create-tile variant-dark">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+        </li>
+        <li class="create-band-item reveal-elem" style="transition-delay: 360ms;">
+          <div class="create-tile variant-ghost">Better</div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ==========================================================================
+         PORTFOLIO SECTION (#works)
+         ========================================================================== -->
+    <section id="works">
+      <div class="shell portfolio-shell">
+        <div class="portfolio-header">
+          <div class="eyebrow tone-dark bordered reveal-elem">
+            <span class="dot"></span>
+            <span>Portfolio</span>
+          </div>
+          <h2 class="portfolio-h2">
+            <span class="line-reveal-wrap"><span class="line-reveal-inner">Selected Work</span></span>
+          </h2>
+        </div>
+
+        <ul class="portfolio-grid">
+          <!-- Card 1: Aster Labs -->
+          <li class="reveal-elem" style="transition-delay: 0ms;">
+            <article class="portfolio-card">
+              <div class="portfolio-card-meta">
+                <span>Branding — 2025</span>
+                <span class="portfolio-card-badge">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+                </span>
+              </div>
+              <div class="portfolio-card-watermark">
+                <svg class="icon" viewBox="0 0 48 48" fill="currentColor">
+                  <path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z"/>
+                </svg>
+                <span class="registered-mark">®</span>
+              </div>
+              <div class="portfolio-card-bottom">
+                <h3 class="portfolio-card-title">Aster Labs</h3>
+                <p class="portfolio-card-desc">A complete identity and go-to-market system for a fast-moving research startup.</p>
+                <div class="portfolio-card-tags">
+                  <span class="tag-chip">Branding</span>
+                  <span class="tag-chip">Strategy</span>
+                  <span class="tag-chip">Design</span>
+                </div>
+              </div>
+            </article>
+          </li>
+
+          <!-- Card 2: Nova Finance -->
+          <li class="reveal-elem" style="transition-delay: 90ms;">
+            <article class="portfolio-card">
+              <div class="portfolio-card-meta">
+                <span>Product — 2024</span>
+                <span class="portfolio-card-badge">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+                </span>
+              </div>
+              <div class="portfolio-card-watermark">
+                <svg class="icon" viewBox="0 0 48 48" fill="currentColor">
+                  <path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z"/>
+                </svg>
+                <span class="registered-mark">®</span>
+              </div>
+              <div class="portfolio-card-bottom">
+                <h3 class="portfolio-card-title">Nova Finance</h3>
+                <p class="portfolio-card-desc">A finance platform reimagined — clear data, calm interfaces, and effortless flows.</p>
+                <div class="portfolio-card-tags">
+                  <span class="tag-chip">Product Design</span>
+                  <span class="tag-chip">Web App</span>
+                  <span class="tag-chip">QA</span>
+                </div>
+              </div>
+            </article>
+          </li>
+
+          <!-- Card 3: Helio Studio -->
+          <li class="reveal-elem" style="transition-delay: 180ms;">
+            <article class="portfolio-card">
+              <div class="portfolio-card-meta">
+                <span>Identity — 2023</span>
+                <span class="portfolio-card-badge">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+                </span>
+              </div>
+              <div class="portfolio-card-watermark">
+                <svg class="icon" viewBox="0 0 48 48" fill="currentColor">
+                  <path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z"/>
+                </svg>
+                <span class="registered-mark">®</span>
+              </div>
+              <div class="portfolio-card-bottom">
+                <h3 class="portfolio-card-title">Helio Studio</h3>
+                <p class="portfolio-card-desc">A bold visual identity and art direction system built to scale across every surface.</p>
+                <div class="portfolio-card-tags">
+                  <span class="tag-chip">Brand Identity</span>
+                  <span class="tag-chip">Art Direction</span>
+                </div>
+              </div>
+            </article>
+          </li>
+
+          <!-- Card 4: Pulse Health -->
+          <li class="reveal-elem" style="transition-delay: 270ms;">
+            <article class="portfolio-card">
+              <div class="portfolio-card-meta">
+                <span>Mobile — 2023</span>
+                <span class="portfolio-card-badge">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+                </span>
+              </div>
+              <div class="portfolio-card-watermark">
+                <svg class="icon" viewBox="0 0 48 48" fill="currentColor">
+                  <path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z"/>
+                </svg>
+                <span class="registered-mark">®</span>
+              </div>
+              <div class="portfolio-card-bottom">
+                <h3 class="portfolio-card-title">Pulse Health</h3>
+                <p class="portfolio-card-desc">A wellness app grounded in research, shipped end to end from concept to release.</p>
+                <div class="portfolio-card-tags">
+                  <span class="tag-chip">Mobile App</span>
+                  <span class="tag-chip">UX Research</span>
+                  <span class="tag-chip">Development</span>
+                </div>
+              </div>
+            </article>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SERVICES SECTION (#services)
+         ========================================================================== -->
+    <section id="services">
+      <div class="shell services-shell">
+        <div class="eyebrow tone-dark reveal-elem">
+          <span class="dot"></span>
+          <span>Services</span>
+        </div>
+        <h2 class="services-h2">
+          <span class="line-reveal-wrap"><span class="line-reveal-inner">What we do best</span></span>
+        </h2>
+
+        <ul class="services-list">
+          <!-- Row 1 -->
+          <li class="service-row-wrap reveal-elem" style="transition-delay: 0ms;">
+            <div class="service-row-link" data-open-modal>
+              <span class="service-index">01</span>
+              <h3 class="service-title">Software Development</h3>
+              <p class="service-desc">Scalable web & mobile products built to last.</p>
+              <div class="service-arrow-badge">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+              </div>
+            </div>
+          </li>
+
+          <!-- Row 2 -->
+          <li class="service-row-wrap reveal-elem" style="transition-delay: 80ms;">
+            <div class="service-row-link" data-open-modal>
+              <span class="service-index">02</span>
+              <h3 class="service-title">Product Design</h3>
+              <p class="service-desc">Interfaces that feel effortless and look sharp.</p>
+              <div class="service-arrow-badge">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+              </div>
+            </div>
+          </li>
+
+          <!-- Row 3 -->
+          <li class="service-row-wrap reveal-elem" style="transition-delay: 160ms;">
+            <div class="service-row-link" data-open-modal>
+              <span class="service-index">03</span>
+              <h3 class="service-title">Quality Assurance</h3>
+              <p class="service-desc">Rigorous testing for flawless, confident releases.</p>
+              <div class="service-arrow-badge">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+              </div>
+            </div>
+          </li>
+
+          <!-- Row 4 -->
+          <li class="service-row-wrap reveal-elem" style="transition-delay: 240ms;">
+            <div class="service-row-link" data-open-modal>
+              <span class="service-index">04</span>
+              <h3 class="service-title">Consulting</h3>
+              <p class="service-desc">Strategy and direction for ambitious teams.</p>
+              <div class="service-arrow-badge">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         STATS SECTION
+         ========================================================================== -->
+    <section class="stats-section">
+      <div class="shell">
+        <div class="stats-panel reveal-elem">
+          <div class="eyebrow tone-light">
+            <span class="dot"></span>
+            <span>By the numbers</span>
+          </div>
+          <h2 class="stats-h2">
+            <span class="line-reveal-wrap"><span class="line-reveal-inner">Proof in the work, not the words.</span></span>
+          </h2>
+          <ul class="stats-grid">
+            <li class="reveal-elem" style="transition-delay: 0ms;">
+              <div class="stat-number"><span class="stat-counter" data-target="150">0</span>+</div>
+              <p class="stat-label">Projects delivered</p>
+            </li>
+            <li class="reveal-elem" style="transition-delay: 90ms;">
+              <div class="stat-number"><span class="stat-counter" data-target="98">0</span>%</div>
+              <p class="stat-label">Client retention</p>
+            </li>
+            <li class="reveal-elem" style="transition-delay: 180ms;">
+              <div class="stat-number"><span class="stat-counter" data-target="12">0</span></div>
+              <p class="stat-label">Years of craft</p>
+            </li>
+            <li class="reveal-elem" style="transition-delay: 270ms;">
+              <div class="stat-number"><span class="stat-counter" data-target="40">0</span>+</div>
+              <p class="stat-label">Team members</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="shell footer-shell">
+      <!-- CTA Row -->
+      <div class="footer-cta-card">
+        <h2 class="footer-cta-h2">
+          <span class="line-reveal-wrap"><span class="line-reveal-inner">Have a project in mind?</span></span>
+          <span class="line-reveal-wrap"><span class="line-reveal-inner" style="transition-delay: 100ms;">Let's get to work.</span></span>
+        </h2>
+        <button class="pill-btn with-arrow variant-light" data-open-modal>
+          <span>Start a project</span>
+          <span class="btn-arrow-badge arrow-up-right">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </span>
+        </button>
+      </div>
+
+      <!-- Columns -->
+      <div class="footer-columns">
+        <div>
+          <div class="footer-brand-title">
+            <svg class="icon" style="font-size:1.25rem; color:#cf8047;" viewBox="0 0 48 48" fill="currentColor">
+              <path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z"/>
+            </svg>
+            <span>Lumora</span>
+          </div>
+          <p class="footer-tagline">An independent studio crafting brands, products, and the systems that connect them.</p>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Company</h4>
+          <ul class="footer-links-list">
+            <li><a href="#about" class="animated-link">About</a></li>
+            <li><a href="#about" class="animated-link">Careers</a></li>
+            <li><a href="#home" class="animated-link">Partners</a></li>
+            <li><a href="#contact" class="animated-link" data-open-modal>Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Services</h4>
+          <ul class="footer-links-list">
+            <li><a href="#services" class="animated-link">Development</a></li>
+            <li><a href="#services" class="animated-link">Design</a></li>
+            <li><a href="#services" class="animated-link">Quality Assurance</a></li>
+            <li><a href="#services" class="animated-link">Consulting</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Social</h4>
+          <ul class="footer-links-list">
+            <li><a href="https://x.com" target="_blank" rel="noopener noreferrer" class="animated-link">X / Twitter</a></li>
+            <li><a href="https://behance.net" target="_blank" rel="noopener noreferrer" class="animated-link">Behance</a></li>
+            <li><a href="https://dribbble.com" target="_blank" rel="noopener noreferrer" class="animated-link">Dribbble</a></li>
+            <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="animated-link">LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Legal bar -->
+      <div class="footer-legal-bar">
+        <span>© 2025 Lumora Studio. All rights reserved.</span>
+        <div class="legal-links-group">
+          <a href="#privacy" class="animated-link" style="opacity:0.7;">Privacy</a>
+          <a href="#terms" class="animated-link" style="opacity:0.7;">Terms</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Watermark -->
+    <div class="footer-watermark">LUMORA</div>
+  </footer>
+
+  <!-- ==========================================================================
+       NAV MENU OVERLAY
+       ========================================================================== -->
+  <div id="nav-menu-overlay" role="dialog" aria-modal="true" aria-label="Navigation Menu">
+    <div class="shell nav-overlay-top">
+      <div class="brand-btn" style="color:#ffffff;">
+        <svg class="icon brand-mark" style="color:#cf8047;" viewBox="0 0 48 48" fill="currentColor">
+          <path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z"/>
+        </svg>
+        <span>Lumora</span>
+      </div>
+      <button class="nav-close-btn" id="nav-menu-close-btn" aria-label="Close menu">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l16 16M20 4 4 20"/></svg>
+        <span>Close</span>
+      </button>
+    </div>
+
+    <div class="shell nav-overlay-center">
+      <ul class="nav-overlay-list">
+        <li>
+          <button class="nav-overlay-item-btn" data-target="home" style="transition-delay: 80ms;">
+            <span class="nav-item-num">01</span>
+            <span>Home</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-overlay-item-btn" data-target="works" style="transition-delay: 125ms;">
+            <span class="nav-item-num">02</span>
+            <span>Work</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-overlay-item-btn" data-target="services" style="transition-delay: 170ms;">
+            <span class="nav-item-num">03</span>
+            <span>Services</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-overlay-item-btn" data-target="about" style="transition-delay: 215ms;">
+            <span class="nav-item-num">04</span>
+            <span>Studio</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-overlay-item-btn" data-target="about" style="transition-delay: 260ms;">
+            <span class="nav-item-num">05</span>
+            <span>Careers</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-overlay-item-btn" data-open-modal style="transition-delay: 305ms;">
+            <span class="nav-item-num">06</span>
+            <span>Contact</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="shell nav-overlay-bottom">
+      <span id="nav-overlay-time">Local time — 9:41am</span>
+      <button class="nav-start-btn" data-open-modal>Start a project →</button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       REQUEST MODAL OVERLAY
+       ========================================================================== -->
+  <div id="request-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title-heading">
+    <div class="modal-panel" id="modal-panel" onclick="event.stopPropagation();">
+      <button class="modal-close-trigger" id="modal-close-btn" aria-label="Close dialog">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l16 16M20 4 4 20"/></svg>
+      </button>
+
+      <!-- Default form state -->
+      <div id="modal-form-view">
+        <div class="modal-heading-block">
+          <div class="modal-kicker">
+            <span class="dot"></span>
+            <span>Start a project</span>
+          </div>
+          <h2 class="modal-title" id="modal-title-heading">Tell us what you're building.</h2>
+        </div>
+
+        <form class="modal-form" id="project-request-form">
+          <label class="form-field-label">
+            <span>Name</span>
+            <input type="text" class="modal-input" required placeholder="Your name" />
+          </label>
+
+          <label class="form-field-label">
+            <span>Email</span>
+            <input type="email" class="modal-input" required placeholder="you@company.com" />
+          </label>
+
+          <label class="form-field-label">
+            <span>Project</span>
+            <textarea class="modal-input" rows="4" required placeholder="A few words about your project, timeline, and budget."></textarea>
+          </label>
+
+          <div class="modal-bottom-row">
+            <span class="modal-reply-note">We reply within one business day.</span>
+            <button type="submit" class="pill-btn with-arrow variant-dark" id="modal-submit-btn">
+              <span id="modal-btn-label">Send request</span>
+              <span class="btn-arrow-badge arrow-up-right">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Success state -->
+      <div class="modal-success-state" id="modal-success-view" style="display:none;">
+        <div class="modal-success-badge">
+          <svg class="icon" viewBox="0 0 48 48" fill="currentColor">
+            <path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z"/>
+          </svg>
+        </div>
+        <h2 class="modal-success-title">Request received</h2>
+        <p class="modal-success-desc">Thanks for reaching out — we'll get back to you within one business day.</p>
+        <button class="pill-btn no-arrow variant-dark" id="modal-success-close-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       SCRIPTS: LENIS + ES MODULE CONTROLLER
+       ========================================================================== -->
+  <script type="importmap">
+  {
+    "imports": {
+      "lenis": "https://unpkg.com/lenis@1.3.23/dist/lenis.mjs"
+    }
+  }
+  </script>
+
+  <script type="module">
+    import Lenis from 'lenis';
+
+    // 1. Lenis Smooth Scroll Setup
+    window.scrollTo(0, 0);
+    const lenis = new Lenis({
+      smoothWheel: true,
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+    });
+
+    function raf(t) {
+      lenis.raf(t);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Scroll Lock Model
+    let scrollLocked = false;
+    function stopScroll() {
+      scrollLocked = true;
+      lenis.stop();
+      document.documentElement.style.position = 'relative';
+      document.documentElement.style.overflow = 'hidden';
+      document.documentElement.style.height = '100%';
+    }
+    function startScroll() {
+      scrollLocked = false;
+      lenis.start();
+      document.documentElement.style.removeProperty('position');
+      document.documentElement.style.removeProperty('overflow');
+      document.documentElement.style.removeProperty('height');
+    }
+
+    // ScrollTo helper
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      lenis.scrollTo(el, { offset: 0, duration: 1.2 });
+    }
+
+    // 2. Adaptive Grid Scale-Up (Base 1920, Coef 0.6666)
+    function applyAdaptiveGrid() {
+      const FONT_BASE = 16, baseWidth = 1920, coef = 0.6666;
+      const w = window.innerWidth;
+      const widthReduction = ((baseWidth - w) / baseWidth) * 100;
+      const size = FONT_BASE - (FONT_BASE * (widthReduction * coef)) / 100;
+      if (size > FONT_BASE) {
+        document.documentElement.style.fontSize = size + 'px';
+      } else {
+        document.documentElement.style.removeProperty('font-size');
+      }
+    }
+    applyAdaptiveGrid();
+    window.addEventListener('resize', applyAdaptiveGrid);
+
+    // 3. Live Clock (1s tick)
+    const timeEl = document.getElementById('live-time-val');
+    const dateEl = document.getElementById('live-date-val');
+    const navTimeEl = document.getElementById('nav-overlay-time');
+    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      const meridiem = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12 || 12;
+      const timeStr = `${hours}:${mins}${meridiem}`;
+
+      const day = now.getDate();
+      const month = MONTHS[now.getMonth()];
+      const year = now.getFullYear();
+      const dateStr = `${day} ${month}, ${year}`;
+
+      if (timeEl) timeEl.textContent = timeStr;
+      if (dateEl) dateEl.textContent = dateStr;
+      if (navTimeEl) navTimeEl.textContent = `Local time — ${timeStr}`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // 4. LiquidReveal Engine (Base: after.jpg, Brush reveal: before.jpg)
+    const ASSET_BASE_URL = 'https://api.getlayers.ai/storage/v1/object/public/public/assets/lumora-e8b711fc68';
+    const beforeSrc = `${ASSET_BASE_URL}/hero/after.jpg`;  // always-shown base image
+    const afterSrc  = `${ASSET_BASE_URL}/hero/before.jpg`; // brush-revealed image
+
+    const canvas = document.getElementById('liquid-canvas');
+    const container = document.getElementById('liquid-reveal-container');
+
+    if (canvas && container && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const ctx = canvas.getContext('2d');
+      const brushRadius = 143;
+      const decay = 0.016;
+      let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      let coverCanvas = document.createElement('canvas');
+      let coverCtx = coverCanvas.getContext('2d');
+
+      let brushCanvas = document.createElement('canvas');
+      let brushCtx = brushCanvas.getContext('2d');
+
+      const afterImg = new Image();
+      afterImg.crossOrigin = 'anonymous';
+      let afterLoaded = false;
+      afterImg.onload = () => {
+        afterLoaded = true;
+        updateCoverCanvas();
+      };
+      afterImg.src = afterSrc;
+
+      function updateCoverCanvas() {
+        if (!afterLoaded || !container) return;
+        const rect = container.getBoundingClientRect();
+        const cw = Math.round(rect.width * dpr);
+        const ch = Math.round(rect.height * dpr);
+        if (cw === 0 || ch === 0) return;
+
+        canvas.width = cw;
+        canvas.height = ch;
+        coverCanvas.width = cw;
+        coverCanvas.height = ch;
+
+        // object-fit: cover math
+        const imgAspect = afterImg.naturalWidth / afterImg.naturalHeight;
+        const canvasAspect = cw / ch;
+        let dw, dh, dx, dy;
+        if (canvasAspect > imgAspect) {
+          dw = cw;
+          dh = cw / imgAspect;
+          dx = 0;
+          dy = (ch - dh) / 2;
+        } else {
+          dh = ch;
+          dw = ch * imgAspect;
+          dx = (cw - dw) / 2;
+          dy = 0;
+        }
+        coverCtx.clearRect(0, 0, cw, ch);
+        coverCtx.drawImage(afterImg, dx, dy, dw, dh);
+
+        // Prepare brush
+        const rad = brushRadius * dpr;
+        const diam = Math.ceil(rad * 2);
+        brushCanvas.width = diam;
+        brushCanvas.height = diam;
+      }
+
+      window.addEventListener('resize', () => {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        updateCoverCanvas();
+      });
+
+      // Pointer interpolation queue
+      let lastPoint = null;
+      let pointsQueue = [];
+      let idleFrames = 0;
+
+      window.addEventListener('pointermove', (e) => {
+        if (!container || !afterLoaded) return;
+        const rect = container.getBoundingClientRect();
+        const x = (e.clientX - rect.left) * dpr;
+        const y = (e.clientY - rect.top) * dpr;
+        const rad = brushRadius * dpr;
+
+        if (x < -rad || x > canvas.width + rad || y < -rad || y > canvas.height + rad) {
+          lastPoint = null;
+          return;
+        }
+
+        if (!lastPoint) {
+          lastPoint = { x, y };
+          pointsQueue.push({ x, y });
+          return;
+        }
+
+        const dist = Math.hypot(x - lastPoint.x, y - lastPoint.y);
+        const step = Math.max(rad * 0.3, 1);
+        const n = Math.min(Math.ceil(dist / step), 60);
+
+        for (let i = 1; i <= n; i++) {
+          const t = i / n;
+          pointsQueue.push({
+            x: lastPoint.x + (x - lastPoint.x) * t,
+            y: lastPoint.y + (y - lastPoint.y) * t
+          });
+        }
+        lastPoint = { x, y };
+      });
+
+      function stamp(px, py) {
+        const rad = brushRadius * dpr;
+        const diam = Math.ceil(rad * 2);
+        const c = diam / 2;
+
+        brushCtx.clearRect(0, 0, diam, diam);
+        brushCtx.globalCompositeOperation = 'source-over';
+
+        const grad = brushCtx.createRadialGradient(c, c, 0, c, c, rad);
+        grad.addColorStop(0, 'rgba(255,255,255,1)');
+        grad.addColorStop(0.55, 'rgba(255,255,255,0.82)');
+        grad.addColorStop(1, 'rgba(255,255,255,0)');
+        brushCtx.fillStyle = grad;
+        brushCtx.beginPath();
+        brushCtx.arc(c, c, rad, 0, Math.PI * 2);
+        brushCtx.fill();
+
+        brushCtx.globalCompositeOperation = 'source-in';
+        brushCtx.drawImage(
+          coverCanvas,
+          px - c, py - c, diam, diam,
+          0, 0, diam, diam
+        );
+
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.drawImage(brushCanvas, px - c, py - c);
+      }
+
+      function tickCanvas() {
+        const hasPoints = pointsQueue.length > 0;
+        if (hasPoints) {
+          idleFrames = 0;
+        } else {
+          idleFrames++;
+        }
+
+        if (idleFrames <= 120) {
+          const fade = hasPoints ? decay : Math.min(decay + idleFrames * 0.004, 0.5);
+          ctx.globalCompositeOperation = 'destination-out';
+          ctx.fillStyle = `rgba(0,0,0,${fade})`;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          if (hasPoints) {
+            for (let i = 0; i < pointsQueue.length; i++) {
+              stamp(pointsQueue[i].x, pointsQueue[i].y);
+            }
+            pointsQueue = [];
+          }
+
+          if (idleFrames === 120) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
+        }
+
+        requestAnimationFrame(tickCanvas);
+      }
+      requestAnimationFrame(tickCanvas);
+    }
+
+    // 5. HeroCard Carousel Logic
+    const carouselItems = [
+      { caption: "Conversion design", title: "Crafted to convert." },
+      { caption: "Engineering", title: "Built to scale." },
+      { caption: "Brand systems", title: "Designed to last." }
+    ];
+    let activeCarouselIndex = 0;
+
+    const captionEl = document.getElementById('carousel-caption');
+    const titleEl = document.getElementById('carousel-title');
+    const contentEl = document.getElementById('carousel-content');
+    const dotsList = document.querySelectorAll('.carousel-dot');
+
+    function updateCarousel(nextIndex, dir = 1) {
+      if (!contentEl) return;
+      contentEl.style.transform = `translateY(${dir > 0 ? '-14px' : '14px'})`;
+      contentEl.style.opacity = '0';
+
+      setTimeout(() => {
+        activeCarouselIndex = (nextIndex + carouselItems.length) % carouselItems.length;
+        captionEl.textContent = carouselItems[activeCarouselIndex].caption;
+        titleEl.textContent = carouselItems[activeCarouselIndex].title;
+
+        dotsList.forEach((dot, idx) => {
+          dot.className = `carousel-dot ${idx === activeCarouselIndex ? 'active' : 'inactive'}`;
+        });
+
+        contentEl.style.transform = `translateY(${dir > 0 ? '14px' : '-14px'})`;
+        requestAnimationFrame(() => {
+          contentEl.style.transform = 'translateY(0)';
+          contentEl.style.opacity = '1';
+        });
+      }, 180);
+    }
+
+    document.getElementById('carousel-next-btn')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      updateCarousel(activeCarouselIndex + 1, 1);
+    });
+    document.getElementById('carousel-prev-btn')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      updateCarousel(activeCarouselIndex - 1, -1);
+    });
+    document.getElementById('hero-carousel-tap')?.addEventListener('click', () => {
+      updateCarousel(activeCarouselIndex + 1, 1);
+    });
+
+    // 6. About Statement Word Split Reveal
+    const statementEl = document.getElementById('about-statement-h2');
+    if (statementEl) {
+      const part1 = "We partner with ambitious teams to ship ";
+      const part2 = "digital products, brand systems, and the strategy that holds them together.";
+      const words1 = part1.trim().split(/\s+/);
+      const words2 = part2.trim().split(/\s+/);
+
+      let wordIndex = 0;
+      const htmlWords = [
+        ...words1.map(w => `<span class="word-reveal-span" style="transition-delay:${wordIndex++ * 35}ms;">${w}</span>`),
+        ...words2.map(w => `<span class="word-reveal-span about-muted-text" style="transition-delay:${wordIndex++ * 35}ms;">${w}</span>`)
+      ].join(' ');
+      statementEl.innerHTML = htmlWords;
+    }
+
+    // 7. Scroll-driven Count-up for Stats
+    const statCounters = document.querySelectorAll('.stat-counter');
+    let statsAnimated = false;
+
+    function checkStatsScroll() {
+      if (statsAnimated) return;
+      const panel = document.querySelector('.stats-panel');
+      if (!panel) return;
+
+      const rect = panel.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // Start when top hits bottom, end when center hits center
+      if (rect.top <= vh && rect.bottom >= 0) {
+        const progress = Math.min(Math.max((vh - rect.top) / (vh * 0.75), 0), 1);
+        statCounters.forEach(cnt => {
+          const target = parseInt(cnt.getAttribute('data-target') || '0', 10);
+          cnt.textContent = Math.round(progress * target);
+        });
+        if (progress >= 1) {
+          statsAnimated = true;
+        }
+      }
+    }
+    window.addEventListener('scroll', checkStatsScroll, { passive: true });
+
+    // 8. IntersectionObserver for Reveal Animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal-elem, .line-reveal-wrap, section#about, section#works, section#services, .stats-panel').forEach(el => {
+      observer.observe(el);
+    });
+
+    // 9. PageLoader Execution (FILL_MS = 1300ms, easeInOutCubic)
+    stopScroll();
+    const loader = document.getElementById('page-loader');
+    const loaderFill = document.getElementById('loader-progress-fill');
+    const loaderText = document.getElementById('loader-progress-text');
+    const loaderContent = document.getElementById('loader-content');
+
+    const FILL_MS = 1300;
+    const startTime = performance.now();
+
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function animateLoader(now) {
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / FILL_MS, 1);
+      const eased = easeInOutCubic(t);
+      const progress = Math.round(eased * 100);
+
+      if (loaderFill) loaderFill.style.width = `${progress}%`;
+      if (loaderText) loaderText.textContent = String(progress).padStart(3, '0');
+
+      if (t < 1) {
+        requestAnimationFrame(animateLoader);
+      } else {
+        // Exit animation
+        if (loaderContent) {
+          loaderContent.style.opacity = '0';
+          loaderContent.style.transform = 'translateY(-12px)';
+        }
+        if (loader) {
+          loader.style.transform = 'translateY(-100%)';
+        }
+
+        setTimeout(() => {
+          startScroll();
+          if (loader) loader.style.display = 'none';
+
+          // Trigger entrance delays
+          setTimeout(() => document.getElementById('site-header')?.classList.add('revealed'), 150);
+          setTimeout(() => document.getElementById('hero-eyebrow')?.classList.add('revealed'), 200);
+          setTimeout(() => document.getElementById('hero-h1')?.classList.add('revealed'), 250);
+          setTimeout(() => document.getElementById('hero-watermark')?.classList.add('revealed'), 300);
+          setTimeout(() => document.getElementById('hero-card')?.classList.add('revealed'), 400);
+          setTimeout(() => document.getElementById('hero-partners')?.classList.add('revealed'), 550);
+          setTimeout(() => document.getElementById('hero-rating')?.classList.add('revealed'), 650);
+          setTimeout(() => document.getElementById('hero-ctas')?.classList.add('revealed'), 750);
+          setTimeout(() => document.getElementById('hero-status-bar')?.classList.add('revealed'), 900);
+        }, 700);
+      }
+    }
+    requestAnimationFrame(animateLoader);
+
+    // 10. NavMenu Overlay Controls
+    const navOverlay = document.getElementById('nav-menu-overlay');
+    const navOpenBtn = document.getElementById('menu-open-trigger');
+    const navCloseBtn = document.getElementById('nav-menu-close-btn');
+
+    function openNavMenu() {
+      navOverlay?.classList.add('active');
+      stopScroll();
+    }
+    function closeNavMenu() {
+      navOverlay?.classList.remove('active');
+      startScroll();
+    }
+
+    navOpenBtn?.addEventListener('click', openNavMenu);
+    navCloseBtn?.addEventListener('click', closeNavMenu);
+
+    document.querySelectorAll('.nav-overlay-item-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-target');
+        closeNavMenu();
+        if (target) {
+          setTimeout(() => scrollToSection(target), 200);
+        }
+      });
+    });
+
+    // 11. RequestModal Dialog Controls & Stubbed Submission
+    const modalBackdrop = document.getElementById('request-modal-backdrop');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+    const modalForm = document.getElementById('project-request-form');
+    const modalFormView = document.getElementById('modal-form-view');
+    const modalSuccessView = document.getElementById('modal-success-view');
+    const modalSuccessCloseBtn = document.getElementById('modal-success-close-btn');
+    const modalSubmitBtn = document.getElementById('modal-submit-btn');
+    const modalBtnLabel = document.getElementById('modal-btn-label');
+
+    function openModal() {
+      if (navOverlay?.classList.contains('active')) {
+        closeNavMenu();
+      }
+      modalBackdrop?.classList.add('active');
+      stopScroll();
+    }
+    function closeModal() {
+      modalBackdrop?.classList.remove('active');
+      startScroll();
+      // Reset after transition
+      setTimeout(() => {
+        if (modalFormView) modalFormView.style.display = 'block';
+        if (modalSuccessView) modalSuccessView.style.display = 'none';
+        if (modalForm) modalForm.reset();
+        if (modalBtnLabel) modalBtnLabel.textContent = 'Send request';
+        if (modalSubmitBtn) modalSubmitBtn.removeAttribute('disabled');
+      }, 350);
+    }
+
+    document.querySelectorAll('[data-open-modal]').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal();
+      });
+    });
+
+    modalCloseBtn?.addEventListener('click', closeModal);
+    modalSuccessCloseBtn?.addEventListener('click', closeModal);
+    modalBackdrop?.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) closeModal();
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (modalBackdrop?.classList.contains('active')) closeModal();
+        if (navOverlay?.classList.contains('active')) closeNavMenu();
+      }
+    });
+
+    modalForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (modalBtnLabel) modalBtnLabel.textContent = 'Sending…';
+      if (modalSubmitBtn) modalSubmitBtn.setAttribute('disabled', 'true');
+
+      setTimeout(() => {
+        if (modalFormView) modalFormView.style.display = 'none';
+        if (modalSuccessView) modalSuccessView.style.display = 'flex';
+      }, 600);
+    });
+
+    // Global navigation bindings
+    document.querySelectorAll('[data-target]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = btn.getAttribute('data-target');
+        if (target) {
+          e.preventDefault();
+          scrollToSection(target);
+        }
+      });
+    });
+    document.getElementById('header-brand-btn')?.addEventListener('click', () => scrollToSection('home'));
+  </script>
+</body>
+</html>
