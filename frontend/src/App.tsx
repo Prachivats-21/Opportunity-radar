@@ -8,6 +8,7 @@ import { OpportunityCard } from './components/OpportunityCard'
 import { ProfileModal } from './components/ProfileModal'
 import { AddOpportunityModal } from './components/AddOpportunityModal'
 import { AdvancedFilterDrawer } from './components/AdvancedFilterDrawer'
+import { AuthModal } from './components/AuthModal'
 import { ProfileView } from './components/ProfileView'
 import { TuneRadarView } from './components/TuneRadarView'
 import { SettingsView } from './components/SettingsView'
@@ -188,7 +189,26 @@ export function App() {
   })
 
   const [matches, setMatches] = useState<MatchResult[]>([])
-  const [activeTab, setActiveTab] = useState<'Dashboard' | 'Explore' | 'Saved' | 'Profile' | 'Tune' | 'Settings'>('Dashboard')
+  const [activeTab, setActiveTab] = useState<'Dashboard' | 'Saved' | 'Profile' | 'Tune' | 'Settings'>('Dashboard')
+
+  // Student Authentication & Session State
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
+    try {
+      const stored = window.localStorage.getItem('opportunity-radar-auth')
+      return stored ? JSON.parse(stored).isLoggedIn !== false : true
+    } catch {
+      return true
+    }
+  })
+
+  const [userEmail, setUserEmail] = useState<string>(() => {
+    try {
+      const stored = window.localStorage.getItem('opportunity-radar-auth')
+      return stored ? JSON.parse(stored).email || 'prachi.vats@student.edu.in' : 'prachi.vats@student.edu.in'
+    } catch {
+      return 'prachi.vats@student.edu.in'
+    }
+  })
 
   // Unified Filter State
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS)
@@ -197,6 +217,7 @@ export function App() {
   const [showProfileModal, setShowProfileModal] = useState(false)
   const [showAddModal, setShowAddModal] = useState(false)
   const [showAdvancedDrawer, setShowAdvancedDrawer] = useState(false)
+  const [showAuthModal, setShowAuthModal] = useState(false)
 
   // Status & Feedback
   const [loadingMatches, setLoadingMatches] = useState(false)
@@ -207,6 +228,15 @@ export function App() {
 
   // Debounced search query
   const [debouncedQuery, setDebouncedQuery] = useState(filters.searchQuery)
+
+  // Sync auth state to localStorage
+  useEffect(() => {
+    try {
+      window.localStorage.setItem('opportunity-radar-auth', JSON.stringify({ isLoggedIn, email: userEmail }))
+    } catch {
+      // Storage unavailable
+    }
+  }, [isLoggedIn, userEmail])
 
   // Sync custom opportunities to localStorage
   useEffect(() => {
@@ -590,15 +620,15 @@ export function App() {
         activeTab={activeTab}
         onSelectTab={(tab) => {
           setActiveTab(tab as any)
-          if (tab === 'Explore') {
-            handleFilterUpdate({ category: 'All' })
-          }
         }}
         query={filters.searchQuery}
         onQueryChange={(q) => handleFilterUpdate({ searchQuery: q })}
         profileName={profile.name || 'Prachi Vats'}
         profileField={profile.field}
         profileYear={profile.year}
+        isLoggedIn={isLoggedIn}
+        userEmail={userEmail}
+        onOpenAuthModal={() => setShowAuthModal(true)}
         onOpenAddOpportunity={() => setShowAddModal(true)}
         onResetProfile={() => {
           setProfile(DEFAULT_PROFILE)
@@ -614,7 +644,7 @@ export function App() {
       <main className="central-workspace" role="main">
         {/* Backend Connectivity Status Banners */}
         {apiConnected === false && (
-          <div className="error-banner" style={{ backgroundColor: 'var(--terracotta-bg)', borderColor: 'var(--terracotta-border)', color: 'var(--terracotta-dark)', margin: '16px 0 0' }}>
+          <div className="error-banner" style={{ backgroundColor: 'var(--terracotta-bg)', borderColor: 'var(--terracotta-border)', color: 'var(--terracotta-dark)', margin: '8px 0 0' }}>
             <WifiOff size={16} />
             <span style={{ flex: 1 }}>Backend unreachable — showing verified local listings. Match scoring is running client-side.</span>
             <button onClick={fetchOpportunitiesFromApi} style={{ color: 'var(--terracotta-dark)', fontWeight: 700, textDecoration: 'underline' }}>
@@ -623,16 +653,16 @@ export function App() {
           </div>
         )}
         {apiConnected === true && loadingData === false && errorMessage === '' && (
-          <div className="error-banner" style={{ backgroundColor: 'var(--status-eligible-bg)', borderColor: 'var(--sage-border)', color: 'var(--status-eligible)', fontSize: '11px', padding: '10px 18px', margin: '16px 0 0' }}>
+          <div className="error-banner" style={{ backgroundColor: 'var(--status-eligible-bg)', borderColor: 'var(--sage-border)', color: 'var(--status-eligible)', fontSize: '11px', padding: '8px 16px', margin: '4px 0 0' }}>
             <Wifi size={14} style={{ marginTop: '1px' }} />
             <span style={{ flex: 1 }}>Connected to backend — live opportunity data loaded.</span>
           </div>
         )}
 
-        {/* 1. DASHBOARD / DISCOVER VIEW */}
+        {/* 1. DASHBOARD / RADAR FEED VIEW */}
         {activeTab === 'Dashboard' && (
           <div className="dashboard-view-content">
-            {/* Student Radar Summary Hero */}
+            {/* Student Radar Summary Hero (HUD) */}
             <WelcomeHero
               userName={profile.name || 'Prachi Vats'}
               academicYear={profile.year}
@@ -642,8 +672,8 @@ export function App() {
               topMatch={topMatch}
               totalCount={opportunities.length}
               onExploreClick={() => {
-                setActiveTab('Explore')
-                handleFilterUpdate({ category: 'All' })
+                const el = document.getElementById('opportunity-feed')
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
               }}
               onTuneClick={() => setActiveTab('Tune')}
               loading={loadingMatches}
@@ -655,7 +685,8 @@ export function App() {
               selectedCategory={filters.category}
               onSelectCategory={(cat) => {
                 handleFilterUpdate({ category: cat })
-                setActiveTab('Explore')
+                const el = document.getElementById('opportunity-feed')
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
               }}
             />
 
@@ -672,7 +703,7 @@ export function App() {
             />
 
             {/* Opportunities Grid */}
-            <section className="opportunity-grid" aria-label="Opportunities list">
+            <section className="opportunity-grid" id="opportunity-feed" aria-label="Opportunities list">
               {loadingData && opportunities.length === 0 ? (
                 <div className="loading-indicator">
                   <div className="spinner-sage" />
@@ -708,62 +739,7 @@ export function App() {
           </div>
         )}
 
-        {/* 2. EXPLORE FULL CATALOG VIEW */}
-        {activeTab === 'Explore' && (
-          <div className="explore-view-content">
-            <div className="view-header">
-              <div className="view-header-title-group">
-                <div className="view-badge">EXPLORATION CATALOG</div>
-                <h1 className="view-title">All Opportunities</h1>
-                <p className="view-subtitle">
-                  Browse {opportunities.length} verified student opportunities. Filter by tracks, participation formats, eligibility, and deadlines.
-                </p>
-              </div>
-            </div>
-
-            <FiltersBar
-              filters={filters}
-              onFilterChange={handleFilterUpdate}
-              categoryCounts={categoryCounts}
-              totalCount={opportunities.length}
-              resultCount={filteredOpportunities.length}
-              onResetFilters={resetFilters}
-              onOpenAdvancedDrawer={() => setShowAdvancedDrawer(true)}
-              advancedFilterCount={advancedFilterCount}
-            />
-
-            <section className="opportunity-grid" aria-label="Opportunities explore catalog">
-              {filteredOpportunities.length > 0 ? (
-                filteredOpportunities.map((opp) => (
-                  <OpportunityCard
-                    key={opp.id}
-                    opportunity={opp}
-                    match={matchMap.get(opp.id)}
-                    isSaved={saved.includes(opp.id)}
-                    onToggleSave={toggleSave}
-                    userSkills={profile.skills}
-                  />
-                ))
-              ) : (
-                <div className="empty-state-card">
-                  <div className="empty-state-icon">
-                    <Search size={24} />
-                  </div>
-                  <h3 className="empty-state-title">No opportunities found</h3>
-                  <p className="empty-state-text">
-                    No signals match your filters. Try clearing search or resetting filters.
-                  </p>
-                  <button className="btn-secondary" onClick={resetFilters}>
-                    <RefreshCw size={14} />
-                    <span>Reset all filters</span>
-                  </button>
-                </div>
-              )}
-            </section>
-          </div>
-        )}
-
-        {/* 3. SAVED OPPORTUNITIES VIEW */}
+        {/* 2. SAVED OPPORTUNITIES VIEW */}
         {activeTab === 'Saved' && (
           <SavedView
             opportunities={opportunities}
@@ -771,10 +747,7 @@ export function App() {
             matchMap={matchMap}
             onToggleSave={toggleSave}
             userSkills={profile.skills}
-            onNavigateToExplore={() => {
-              setActiveTab('Explore')
-              handleFilterUpdate({ category: 'All' })
-            }}
+            onNavigateToExplore={() => setActiveTab('Dashboard')}
             onNavigateToDashboard={() => setActiveTab('Dashboard')}
           />
         )}
@@ -858,6 +831,28 @@ export function App() {
             setToastMessage('Opportunity added to radar feed!')
           }}
           onClose={() => setShowAddModal(false)}
+        />
+      )}
+
+      {/* Student Portal Login, Onboarding & Persona Switching Modal */}
+      {showAuthModal && (
+        <AuthModal
+          currentProfile={profile}
+          isLoggedIn={isLoggedIn}
+          userEmail={userEmail}
+          onLoginSuccess={(newProfile, email) => {
+            setProfile(newProfile)
+            setIsLoggedIn(true)
+            setUserEmail(email)
+            setShowAuthModal(false)
+            setToastMessage(`Logged in as ${newProfile.name} — Radar calibrated!`)
+          }}
+          onLogout={() => {
+            setIsLoggedIn(false)
+            setShowAuthModal(false)
+            setToastMessage('Signed out. Browsing as Guest Student.')
+          }}
+          onClose={() => setShowAuthModal(false)}
         />
       )}
 

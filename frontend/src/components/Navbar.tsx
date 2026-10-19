@@ -8,12 +8,12 @@ import {
   Bookmark,
   Sparkles,
   Plus,
-  Compass,
   LayoutDashboard,
   RotateCcw,
   Wifi,
   WifiOff,
   ChevronDown,
+  LogIn,
 } from 'lucide-react'
 import { RadarMark } from './RadarMark'
 
@@ -25,6 +25,9 @@ interface NavbarProps {
   profileName: string
   profileField: string
   profileYear: string
+  isLoggedIn?: boolean
+  userEmail?: string
+  onOpenAuthModal: () => void
   onOpenAddOpportunity: () => void
   onResetProfile: () => void
   opportunitiesCount: number
@@ -41,6 +44,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   profileName,
   profileField,
   profileYear,
+  isLoggedIn = true,
+  userEmail = 'prachi.vats@student.edu.in',
+  onOpenAuthModal,
   onOpenAddOpportunity,
   onResetProfile,
   opportunitiesCount,
@@ -123,7 +129,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </a>
 
-          {/* Primary Desktop Navigation Links */}
+          {/* Primary Desktop Navigation Links (Unified Feed & Views) */}
           <nav className="desktop-nav" aria-label="Main navigation">
             <button
               type="button"
@@ -132,17 +138,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               aria-current={activeTab === 'Dashboard' ? 'page' : undefined}
             >
               <LayoutDashboard size={15} />
-              <span>Discover</span>
-            </button>
-
-            <button
-              type="button"
-              className={`nav-link-btn ${activeTab === 'Explore' ? 'active' : ''}`}
-              onClick={() => handleNavClick('Explore')}
-              aria-current={activeTab === 'Explore' ? 'page' : undefined}
-            >
-              <Compass size={15} />
-              <span>Explore</span>
+              <span>Radar Feed</span>
               <span className="header-nav-badge">{opportunitiesCount}</span>
             </button>
 
@@ -155,6 +151,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Bookmark size={15} />
               <span>Saved</span>
               {savedCount > 0 && <span className="header-nav-badge highlight">{savedCount}</span>}
+            </button>
+
+            <button
+              type="button"
+              className={`nav-link-btn ${activeTab === 'Tune' ? 'active' : ''}`}
+              onClick={() => handleNavClick('Tune')}
+              aria-current={activeTab === 'Tune' ? 'page' : undefined}
+            >
+              <Sparkles size={15} />
+              <span>Tune Radar</span>
             </button>
           </nav>
         </div>
@@ -239,13 +245,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                       {profileYear !== 'Not specified' ? `Year ${profileYear} · ` : ''}
                       {profileField}
                     </span>
+                    <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', marginTop: 2 }}>{userEmail}</span>
                   </div>
                 </div>
 
                 <div className="dropdown-divider" />
 
-                {/* Section 1: Workspace */}
-                <div className="dropdown-section-title">WORKSPACE</div>
+                {/* Section 1: Quick Navigation */}
+                <div className="dropdown-section-title">NAVIGATION</div>
                 <button
                   type="button"
                   className={`dropdown-item-btn ${activeTab === 'Dashboard' ? 'current' : ''}`}
@@ -253,17 +260,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   role="menuitem"
                 >
                   <LayoutDashboard size={15} />
-                  <span>Dashboard / Discover</span>
-                </button>
-
-                <button
-                  type="button"
-                  className={`dropdown-item-btn ${activeTab === 'Explore' ? 'current' : ''}`}
-                  onClick={() => handleNavClick('Explore')}
-                  role="menuitem"
-                >
-                  <Compass size={15} />
-                  <span>Explore Catalog</span>
+                  <span>Radar Feed (All Listings)</span>
                   <span className="dropdown-badge">{opportunitiesCount}</span>
                 </button>
 
@@ -278,23 +275,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   {savedCount > 0 && <span className="dropdown-badge accent">{savedCount}</span>}
                 </button>
 
-                <button
-                  type="button"
-                  className="dropdown-item-btn"
-                  onClick={() => {
-                    setShowProfileMenu(false)
-                    onOpenAddOpportunity()
-                  }}
-                  role="menuitem"
-                >
-                  <Plus size={15} />
-                  <span>Submit Opportunity</span>
-                </button>
-
                 <div className="dropdown-divider" />
 
-                {/* Section 2: Account & Tuning */}
-                <div className="dropdown-section-title">ACCOUNT & PREFERENCES</div>
+                {/* Section 2: Account & Calibration */}
+                <div className="dropdown-section-title">STUDENT PORTAL & PREFERENCES</div>
                 <button
                   type="button"
                   className={`dropdown-item-btn ${activeTab === 'Profile' ? 'current' : ''}`}
@@ -302,7 +286,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   role="menuitem"
                 >
                   <User size={15} />
-                  <span>My Profile</span>
+                  <span>Edit Profile</span>
                 </button>
 
                 <button
@@ -312,7 +296,20 @@ export const Navbar: React.FC<NavbarProps> = ({
                   role="menuitem"
                 >
                   <Sparkles size={15} />
-                  <span>Tune Radar Preferences</span>
+                  <span>Tune Radar Matching</span>
+                </button>
+
+                <button
+                  type="button"
+                  className="dropdown-item-btn"
+                  onClick={() => {
+                    setShowProfileMenu(false)
+                    onOpenAuthModal()
+                  }}
+                  role="menuitem"
+                >
+                  <LogIn size={15} style={{ color: 'var(--sage)' }} />
+                  <span>Switch Student Account / Personas</span>
                 </button>
 
                 <button
@@ -322,7 +319,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   role="menuitem"
                 >
                   <Settings2 size={15} />
-                  <span>Settings & System</span>
+                  <span>Settings & Pipeline Ingestion</span>
                 </button>
 
                 <div className="dropdown-divider" />
@@ -364,16 +361,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => handleNavClick('Dashboard')}
               >
                 <LayoutDashboard size={16} />
-                <span>Dashboard / Discover</span>
-              </button>
-
-              <button
-                type="button"
-                className={`mobile-nav-item ${activeTab === 'Explore' ? 'active' : ''}`}
-                onClick={() => handleNavClick('Explore')}
-              >
-                <Compass size={16} />
-                <span>Explore Catalog</span>
+                <span>Radar Feed</span>
                 <span className="mobile-badge">{opportunitiesCount}</span>
               </button>
 
@@ -412,6 +400,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <Settings2 size={16} />
                 <span>Settings</span>
+              </button>
+
+              <button
+                type="button"
+                className="mobile-nav-item"
+                onClick={() => {
+                  setMobileNavOpen(false)
+                  onOpenAuthModal()
+                }}
+              >
+                <LogIn size={16} style={{ color: 'var(--sage)' }} />
+                <span>Switch Student Account</span>
               </button>
 
               <button

@@ -101,11 +101,18 @@ export const WelcomeHero: React.FC<WelcomeHeroProps> = ({
       <div className="summary-actions">
         <button
           className="btn-primary summary-action-btn"
-          onClick={onExploreClick}
-          aria-label="Jump to opportunity feed"
+          onClick={() => {
+            const el = document.getElementById('opportunity-feed')
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            } else {
+              onExploreClick()
+            }
+          }}
+          aria-label="Scroll to opportunity feed"
         >
           <Compass size={14} />
-          <span>Explore Feed</span>
+          <span>View Radar Feed</span>
           <ArrowRight size={13} />
         </button>
 
@@ -116,7 +123,7 @@ export const WelcomeHero: React.FC<WelcomeHeroProps> = ({
           aria-label="Tune profile preferences"
         >
           <Settings2 size={14} />
-          <span>Tune</span>
+          <span>Tune Radar</span>
         </button>
       </div>
     </section>

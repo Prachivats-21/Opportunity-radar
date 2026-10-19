@@ -116,6 +116,113 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
   const catLower = opportunity.category.toLowerCase()
   const normalizedUserSkills = userSkills.map((s) => s.toLowerCase().trim())
 
+  // Dynamic Platform Detection & Outbound Redirection Mapping
+  const getPlatformMeta = (url: string, sourceName?: string) => {
+    const lowerUrl = (url || '').toLowerCase()
+    const lowerSource = (sourceName || '').toLowerCase()
+
+    if (lowerUrl.includes('unstop.com') || lowerSource.includes('unstop')) {
+      return {
+        platform: 'Unstop',
+        buttonText: 'Register on Unstop',
+        badgeClass: 'platform-unstop',
+        iconText: 'Via Unstop',
+        note: 'Redirects to Unstop registration portal',
+      }
+    }
+    if (lowerUrl.includes('cyberhackathon.bihar.gov.in') || lowerUrl.includes('bihar.gov.in')) {
+      return {
+        platform: 'Govt of Bihar',
+        buttonText: 'Register on Cyber Hackathon',
+        badgeClass: 'platform-gov',
+        iconText: 'State Portal',
+        note: 'Redirects to official Government of Bihar portal',
+      }
+    }
+    if (lowerUrl.includes('sih.gov.in')) {
+      return {
+        platform: 'Smart India Hackathon',
+        buttonText: 'Register on SIH Portal',
+        badgeClass: 'platform-gov',
+        iconText: 'National Portal',
+        note: 'Redirects to SIH National portal',
+      }
+    }
+    if (lowerUrl.includes('gov.in') || lowerUrl.includes('pib.gov.in') || lowerUrl.includes('nic.in')) {
+      return {
+        platform: 'Government of India',
+        buttonText: 'Register on Govt Portal',
+        badgeClass: 'platform-gov',
+        iconText: 'Govt Portal',
+        note: 'Redirects to official Government portal',
+      }
+    }
+    if (lowerUrl.includes('summerofcode.withgoogle.com') || lowerUrl.includes('google.com')) {
+      return {
+        platform: 'Google Open Source',
+        buttonText: 'Apply on GSoC Portal',
+        badgeClass: 'platform-google',
+        iconText: 'Google Portal',
+        note: 'Redirects to Google Summer of Code directory',
+      }
+    }
+    if (lowerUrl.includes('mlh.io')) {
+      return {
+        platform: 'Major League Hacking',
+        buttonText: 'Apply on MLH Fellowship',
+        badgeClass: 'platform-mlh',
+        iconText: 'MLH Portal',
+        note: 'Redirects to MLH Fellowship application',
+      }
+    }
+    if (lowerUrl.includes('linuxfoundation.org')) {
+      return {
+        platform: 'Linux Foundation',
+        buttonText: 'Apply on LFX Mentorship',
+        badgeClass: 'platform-lfx',
+        iconText: 'LFX Portal',
+        note: 'Redirects to Linux Foundation LFX portal',
+      }
+    }
+    if (lowerUrl.includes('microsoft.com')) {
+      return {
+        platform: 'Microsoft',
+        buttonText: 'Register on Imagine Cup',
+        badgeClass: 'platform-microsoft',
+        iconText: 'Microsoft',
+        note: 'Redirects to Microsoft Imagine Cup portal',
+      }
+    }
+    if (lowerUrl.includes('devpost.com')) {
+      return {
+        platform: 'Devpost',
+        buttonText: 'Register on Devpost',
+        badgeClass: 'platform-devpost',
+        iconText: 'Devpost',
+        note: 'Redirects to Devpost hackathon directory',
+      }
+    }
+    if (lowerUrl.includes('hackerearth.com')) {
+      return {
+        platform: 'HackerEarth',
+        buttonText: 'Apply on HackerEarth',
+        badgeClass: 'platform-hackerearth',
+        iconText: 'HackerEarth',
+        note: 'Redirects to HackerEarth competition platform',
+      }
+    }
+
+    return {
+      platform: sourceName || 'Official Organizer',
+      buttonText: `Apply on ${sourceName ? sourceName.split(' ')[0] : 'Portal'}`,
+      badgeClass: 'platform-general',
+      iconText: 'Official Portal',
+      note: 'Redirects directly to official application form',
+    }
+  }
+
+  const platformMeta = getPlatformMeta(opportunity.source_url, opportunity.source_name)
+
   return (
     <article className="opportunity-card" aria-labelledby={`opp-title-${opportunity.id}`}>
       {/* 1. Card Topline Header */}
@@ -129,6 +236,9 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
             <div className="card-badge-row">
               <span className={`category-tag-inline cat-${catLower}`}>
                 {opportunity.category}
+              </span>
+              <span className={`platform-pill ${platformMeta.badgeClass}`}>
+                {platformMeta.iconText}
               </span>
               {getVerificationBadge(opportunity.status)}
             </div>
@@ -310,19 +420,25 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
 
       {/* 7. Card Footer with Action */}
       <div className="card-footer">
-        <span className="source-verified-text">
-          Source: {opportunity.source_name || 'Official organizer'} · verified {formatDisplayDate(opportunity.last_verified)}
-        </span>
+        <div className="source-verified-cluster">
+          <span className="source-verified-text">
+            Source: {opportunity.source_name || platformMeta.platform} · verified {formatDisplayDate(opportunity.last_verified)}
+          </span>
+          <span className="redirect-hint-text">
+            {platformMeta.note}
+          </span>
+        </div>
 
         <a
           href={opportunity.source_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-apply-source"
-          aria-label={`Apply or view official details for ${opportunity.title} (opens in new tab)`}
+          className={`btn-apply-source ${platformMeta.badgeClass}`}
+          aria-label={`${platformMeta.buttonText} for ${opportunity.title} (opens in new tab)`}
+          title={`${platformMeta.buttonText} — ${platformMeta.note}`}
         >
-          <span>Apply on Official Portal</span>
-          <ExternalLink size={12} />
+          <span>{platformMeta.buttonText}</span>
+          <ExternalLink size={13} />
         </a>
       </div>
     </article>
