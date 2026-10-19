@@ -5,6 +5,8 @@ import { WelcomeHero } from './components/WelcomeHero'
 import { FiltersBar } from './components/FiltersBar'
 import { OpportunityCard } from './components/OpportunityCard'
 import { OpportunityDetailDrawer } from './components/OpportunityDetailDrawer'
+import { CyberTunnelCanvas } from './components/CyberTunnelCanvas'
+import { CyberFlankRails } from './components/CyberFlankRails'
 import { ProfileModal } from './components/ProfileModal'
 import { AdvancedFilterDrawer } from './components/AdvancedFilterDrawer'
 import { AuthModal } from './components/AuthModal'
@@ -616,6 +618,12 @@ export function App() {
 
   return (
     <div className="app-shell" id="top">
+      {/* 3D WebGL Glowing Tunnel Background */}
+      <CyberTunnelCanvas />
+
+      {/* Screen Flank Rails with Coordinates & Telemetry */}
+      <CyberFlankRails />
+
       {/* Shared Responsive Header */}
       <Navbar
         activeTab={activeTab}

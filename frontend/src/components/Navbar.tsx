@@ -13,6 +13,7 @@ import {
   SlidersHorizontal,
 } from 'lucide-react'
 import { RadarMark } from './RadarMark'
+import { CyberClock } from './CyberClock'
 
 interface NavbarProps {
   activeTab: string
@@ -183,6 +184,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Header Right Actions */}
         <div className="header-actions-group">
+          {/* Real-time Telemetry Cyber Clock */}
+          <CyberClock />
+
           {/* Notification Center Trigger */}
           <button
             type="button"
