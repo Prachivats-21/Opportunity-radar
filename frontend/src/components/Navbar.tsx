@@ -6,15 +6,11 @@ import {
   Settings2,
   User,
   Bookmark,
-  Sparkles,
-  Plus,
   LayoutDashboard,
-  RotateCcw,
-  Wifi,
-  WifiOff,
   ChevronDown,
   LogIn,
   Bell,
+  SlidersHorizontal,
 } from 'lucide-react'
 import { RadarMark } from './RadarMark'
 
@@ -31,12 +27,7 @@ interface NavbarProps {
   unreadNotificationsCount?: number
   onOpenNotifications: () => void
   onOpenAuthModal: () => void
-  onOpenAddOpportunity: () => void
-  onResetProfile: () => void
-  opportunitiesCount: number
   savedCount: number
-  apiConnected?: boolean | null
-  onRetryConnection?: () => void
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -52,12 +43,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   unreadNotificationsCount = 2,
   onOpenNotifications,
   onOpenAuthModal,
-  onOpenAddOpportunity,
-  onResetProfile,
-  opportunitiesCount,
   savedCount,
-  apiConnected,
-  onRetryConnection,
 }) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
@@ -127,14 +113,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
             aria-label="Opportunity Radar Home"
           >
-            <RadarMark size={32} />
+            <RadarMark size={30} />
             <div className="brand-wordmark">
               <span className="brand-name">Opportunity Radar</span>
               <span className="brand-kicker">STUDENT DISCOVERY</span>
             </div>
           </a>
 
-          {/* Primary Desktop Navigation Links (Unified Feed & Views) */}
+          {/* Primary Desktop Navigation Links */}
           <nav className="desktop-nav" aria-label="Main navigation">
             <button
               type="button"
@@ -142,9 +128,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => handleNavClick('Dashboard')}
               aria-current={activeTab === 'Dashboard' ? 'page' : undefined}
             >
-              <LayoutDashboard size={15} />
+              <LayoutDashboard size={14} />
               <span>Radar Feed</span>
-              <span className="header-nav-badge">{opportunitiesCount}</span>
             </button>
 
             <button
@@ -153,32 +138,32 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => handleNavClick('Saved')}
               aria-current={activeTab === 'Saved' ? 'page' : undefined}
             >
-              <Bookmark size={15} />
+              <Bookmark size={14} />
               <span>Saved</span>
               {savedCount > 0 && <span className="header-nav-badge highlight">{savedCount}</span>}
             </button>
 
             <button
               type="button"
-              className={`nav-link-btn ${activeTab === 'Tune' ? 'active' : ''}`}
-              onClick={() => handleNavClick('Tune')}
-              aria-current={activeTab === 'Tune' ? 'page' : undefined}
+              className={`nav-link-btn ${activeTab === 'Profile' ? 'active' : ''}`}
+              onClick={() => handleNavClick('Profile')}
+              aria-current={activeTab === 'Profile' ? 'page' : undefined}
             >
-              <Sparkles size={15} />
-              <span>Tune Radar</span>
+              <SlidersHorizontal size={14} />
+              <span>My Profile & Skills</span>
             </button>
           </nav>
         </div>
 
         {/* Search Bar */}
         <div className="header-search-wrap">
-          <Search size={15} className="search-icon-decor" />
+          <Search size={14} className="search-icon-decor" />
           <input
             ref={searchInputRef}
             type="text"
             value={query}
             onChange={(e) => onQueryChange(e.target.value)}
-            placeholder="Search opportunities, skills, or organizations..."
+            placeholder="Search Unstop, hackathons, skills..."
             aria-label="Search opportunities"
             className="header-search-input"
           />
@@ -189,7 +174,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => onQueryChange('')}
               aria-label="Clear search query"
             >
-              <X size={13} />
+              <X size={12} />
             </button>
           ) : (
             <kbd className="search-kbd-shortcut">⌘K</kbd>
@@ -198,31 +183,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Header Right Actions */}
         <div className="header-actions-group">
-          {/* Add Opportunity CTA */}
-          <button
-            type="button"
-            className="btn-add-opportunity"
-            onClick={onOpenAddOpportunity}
-            aria-label="Submit an opportunity for curation"
-          >
-            <Plus size={14} />
-            <span className="add-opp-text">Add Opportunity</span>
-          </button>
-
-          {/* Backend Connectivity Status Button */}
-          {apiConnected !== null && (
-            <button
-              type="button"
-              className={`connection-status-btn ${apiConnected ? 'connected' : 'disconnected'}`}
-              onClick={onRetryConnection}
-              title={apiConnected ? 'Backend connected (click to verify)' : 'Backend unreachable (click to retry)'}
-              aria-label={apiConnected ? 'Backend connected' : 'Backend unreachable'}
-            >
-              {apiConnected ? <Wifi size={14} /> : <WifiOff size={14} />}
-              <span className="status-label-desktop">{apiConnected ? 'Live Feed' : 'Offline'}</span>
-            </button>
-          )}
-
           {/* Notification Center Trigger */}
           <button
             type="button"
@@ -249,7 +209,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <div className="account-avatar">{initials}</div>
               <span className="account-trigger-name">{profileName.split(/\s+/)[0] || 'Profile'}</span>
-              <ChevronDown size={14} className={`dropdown-chevron ${showProfileMenu ? 'open' : ''}`} />
+              <ChevronDown size={13} className={`dropdown-chevron ${showProfileMenu ? 'open' : ''}`} />
             </button>
 
             {/* Profile Dropdown Popover */}
@@ -278,9 +238,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={() => handleNavClick('Dashboard')}
                   role="menuitem"
                 >
-                  <LayoutDashboard size={15} />
-                  <span>Radar Feed (All Listings)</span>
-                  <span className="dropdown-badge">{opportunitiesCount}</span>
+                  <LayoutDashboard size={14} />
+                  <span>Radar Feed</span>
                 </button>
 
                 <button
@@ -289,7 +248,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={() => handleNavClick('Saved')}
                   role="menuitem"
                 >
-                  <Bookmark size={15} />
+                  <Bookmark size={14} />
                   <span>Saved Opportunities</span>
                   {savedCount > 0 && <span className="dropdown-badge accent">{savedCount}</span>}
                 </button>
@@ -297,25 +256,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <div className="dropdown-divider" />
 
                 {/* Section 2: Account & Calibration */}
-                <div className="dropdown-section-title">STUDENT PORTAL & PREFERENCES</div>
+                <div className="dropdown-section-title">STUDENT SETTINGS</div>
                 <button
                   type="button"
                   className={`dropdown-item-btn ${activeTab === 'Profile' ? 'current' : ''}`}
                   onClick={() => handleNavClick('Profile')}
                   role="menuitem"
                 >
-                  <User size={15} />
-                  <span>Edit Profile</span>
-                </button>
-
-                <button
-                  type="button"
-                  className={`dropdown-item-btn ${activeTab === 'Tune' ? 'current' : ''}`}
-                  onClick={() => handleNavClick('Tune')}
-                  role="menuitem"
-                >
-                  <Sparkles size={15} />
-                  <span>Tune Radar Matching</span>
+                  <User size={14} />
+                  <span>Edit Profile & Preferences</span>
                 </button>
 
                 <button
@@ -327,8 +276,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                   }}
                   role="menuitem"
                 >
-                  <LogIn size={15} style={{ color: 'var(--sage)' }} />
-                  <span>Switch Student Account / Personas</span>
+                  <LogIn size={14} style={{ color: 'var(--sage)' }} />
+                  <span>Switch Student Persona / Sign In</span>
                 </button>
 
                 <button
@@ -337,23 +286,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={() => handleNavClick('Settings')}
                   role="menuitem"
                 >
-                  <Settings2 size={15} />
-                  <span>Settings & Pipeline Ingestion</span>
-                </button>
-
-                <div className="dropdown-divider" />
-
-                <button
-                  type="button"
-                  className="dropdown-item-btn danger"
-                  onClick={() => {
-                    setShowProfileMenu(false)
-                    onResetProfile()
-                  }}
-                  role="menuitem"
-                >
-                  <RotateCcw size={15} />
-                  <span>Reset Profile to Default</span>
+                  <Settings2 size={14} />
+                  <span>System Diagnostics</span>
                 </button>
               </div>
             )}
@@ -379,9 +313,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className={`mobile-nav-item ${activeTab === 'Dashboard' ? 'active' : ''}`}
                 onClick={() => handleNavClick('Dashboard')}
               >
-                <LayoutDashboard size={16} />
+                <LayoutDashboard size={15} />
                 <span>Radar Feed</span>
-                <span className="mobile-badge">{opportunitiesCount}</span>
               </button>
 
               <button
@@ -389,7 +322,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className={`mobile-nav-item ${activeTab === 'Saved' ? 'active' : ''}`}
                 onClick={() => handleNavClick('Saved')}
               >
-                <Bookmark size={16} />
+                <Bookmark size={15} />
                 <span>Saved Opportunities</span>
                 {savedCount > 0 && <span className="mobile-badge accent">{savedCount}</span>}
               </button>
@@ -399,17 +332,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className={`mobile-nav-item ${activeTab === 'Profile' ? 'active' : ''}`}
                 onClick={() => handleNavClick('Profile')}
               >
-                <User size={16} />
-                <span>My Profile</span>
-              </button>
-
-              <button
-                type="button"
-                className={`mobile-nav-item ${activeTab === 'Tune' ? 'active' : ''}`}
-                onClick={() => handleNavClick('Tune')}
-              >
-                <Sparkles size={16} />
-                <span>Tune Radar Preferences</span>
+                <User size={15} />
+                <span>My Profile & Skills</span>
               </button>
 
               <button
@@ -417,7 +341,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className={`mobile-nav-item ${activeTab === 'Settings' ? 'active' : ''}`}
                 onClick={() => handleNavClick('Settings')}
               >
-                <Settings2 size={16} />
+                <Settings2 size={15} />
                 <span>Settings</span>
               </button>
 
@@ -429,20 +353,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onOpenAuthModal()
                 }}
               >
-                <LogIn size={16} style={{ color: 'var(--sage)' }} />
+                <LogIn size={15} style={{ color: 'var(--sage)' }} />
                 <span>Switch Student Account</span>
-              </button>
-
-              <button
-                type="button"
-                className="mobile-nav-item add-btn"
-                onClick={() => {
-                  setMobileNavOpen(false)
-                  onOpenAddOpportunity()
-                }}
-              >
-                <Plus size={16} />
-                <span>Submit Opportunity</span>
               </button>
             </div>
           </div>

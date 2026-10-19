@@ -6,7 +6,6 @@ import { CategoryExplore } from './components/CategoryExplore'
 import { FiltersBar } from './components/FiltersBar'
 import { OpportunityCard } from './components/OpportunityCard'
 import { ProfileModal } from './components/ProfileModal'
-import { AddOpportunityModal } from './components/AddOpportunityModal'
 import { AdvancedFilterDrawer } from './components/AdvancedFilterDrawer'
 import { AuthModal } from './components/AuthModal'
 import { NotificationCenter } from './components/NotificationCenter'
@@ -216,7 +215,6 @@ export function App() {
 
   // Modals & Navigation Drawers
   const [showProfileModal, setShowProfileModal] = useState(false)
-  const [showAddModal, setShowAddModal] = useState(false)
   const [showAdvancedDrawer, setShowAdvancedDrawer] = useState(false)
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
@@ -633,40 +631,15 @@ export function App() {
         unreadNotificationsCount={closingSoonCount > 0 ? closingSoonCount : 2}
         onOpenNotifications={() => setShowNotifications(true)}
         onOpenAuthModal={() => setShowAuthModal(true)}
-        onOpenAddOpportunity={() => setShowAddModal(true)}
-        onResetProfile={() => {
-          setProfile(DEFAULT_PROFILE)
-          setToastMessage('Profile reset to default')
-        }}
-        opportunitiesCount={opportunities.length}
         savedCount={saved.length}
-        apiConnected={apiConnected}
-        onRetryConnection={fetchOpportunitiesFromApi}
       />
 
       {/* Main Single Central Workspace */}
       <main className="central-workspace" role="main">
-        {/* Backend Connectivity Status Banners */}
-        {apiConnected === false && (
-          <div className="error-banner" style={{ backgroundColor: 'var(--terracotta-bg)', borderColor: 'var(--terracotta-border)', color: 'var(--terracotta-dark)', margin: '8px 0 0' }}>
-            <WifiOff size={16} />
-            <span style={{ flex: 1 }}>Backend unreachable — showing verified local listings. Match scoring is running client-side.</span>
-            <button onClick={fetchOpportunitiesFromApi} style={{ color: 'var(--terracotta-dark)', fontWeight: 700, textDecoration: 'underline' }}>
-              Retry connection
-            </button>
-          </div>
-        )}
-        {apiConnected === true && loadingData === false && errorMessage === '' && (
-          <div className="error-banner" style={{ backgroundColor: 'var(--status-eligible-bg)', borderColor: 'var(--sage-border)', color: 'var(--status-eligible)', fontSize: '11px', padding: '8px 16px', margin: '4px 0 0' }}>
-            <Wifi size={14} style={{ marginTop: '1px' }} />
-            <span style={{ flex: 1 }}>Connected to backend — live opportunity data loaded.</span>
-          </div>
-        )}
-
         {/* 1. DASHBOARD / RADAR FEED VIEW */}
         {activeTab === 'Dashboard' && (
           <div className="dashboard-view-content">
-            {/* Student Radar Summary Hero (HUD) */}
+            {/* Interactive Student Match Hero */}
             <WelcomeHero
               userName={profile.name || 'Prachi Vats'}
               academicYear={profile.year}
@@ -674,12 +647,22 @@ export function App() {
               closingSoonCount={closingSoonCount}
               eligibleCount={eligibleCount}
               topMatch={topMatch}
-              totalCount={opportunities.length}
-              onExploreClick={() => {
+              onFilterEligible={() => {
+                handleFilterUpdate({ quickEligibleForMe: true, category: 'All' })
                 const el = document.getElementById('opportunity-feed')
                 if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
               }}
-              onTuneClick={() => setActiveTab('Tune')}
+              onFilterClosingSoon={() => {
+                handleFilterUpdate({ quickClosingSoon: true, category: 'All' })
+                const el = document.getElementById('opportunity-feed')
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              }}
+              onResetFilters={() => {
+                resetFilters()
+                const el = document.getElementById('opportunity-feed')
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              }}
+              onEditProfile={() => setActiveTab('Profile')}
               loading={loadingMatches}
             />
 
@@ -827,16 +810,6 @@ export function App() {
         />
       )}
 
-      {/* Add Opportunity Modal (Curation & Gemma AI Extraction) */}
-      {showAddModal && (
-        <AddOpportunityModal
-          onSuccess={(newOpp) => {
-            setOpportunities((prev) => [newOpp, ...prev.filter((o) => o.id !== newOpp.id)])
-            setToastMessage('Opportunity added to radar feed!')
-          }}
-          onClose={() => setShowAddModal(false)}
-        />
-      )}
 
       {/* Student Portal Login, Onboarding & Persona Switching Modal */}
       {showAuthModal && (
