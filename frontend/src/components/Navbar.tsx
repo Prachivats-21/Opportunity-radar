@@ -15,6 +15,8 @@ import {
 import { RadarMark } from './RadarMark'
 import { CyberClock } from './CyberClock'
 
+import type { Opportunity } from '../types'
+
 interface NavbarProps {
   activeTab: string
   onSelectTab: (tab: string) => void
@@ -29,6 +31,8 @@ interface NavbarProps {
   onOpenNotifications: () => void
   onOpenAuthModal: () => void
   savedCount: number
+  targetOpportunity?: Opportunity | null
+  onClearClockTarget?: () => void
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -45,6 +49,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenNotifications,
   onOpenAuthModal,
   savedCount,
+  targetOpportunity,
+  onClearClockTarget,
 }) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
@@ -184,8 +190,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Header Right Actions */}
         <div className="header-actions-group">
-          {/* Real-time Telemetry Cyber Clock */}
-          <CyberClock />
+          {/* Real-time Telemetry Cyber Clock with Opportunity Deadline Countdown */}
+          <CyberClock
+            targetOpportunity={targetOpportunity}
+            onClearTarget={onClearClockTarget}
+          />
 
           {/* Notification Center Trigger */}
           <button

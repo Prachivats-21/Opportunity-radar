@@ -221,6 +221,7 @@ export function App() {
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
   const [selectedOpportunityForDrawer, setSelectedOpportunityForDrawer] = useState<Opportunity | null>(null)
+  const [clockTargetOpp, setClockTargetOpp] = useState<Opportunity | null>(null)
 
   // Status & Feedback
   const [loadingMatches, setLoadingMatches] = useState(false)
@@ -641,6 +642,8 @@ export function App() {
         onOpenNotifications={() => setShowNotifications(true)}
         onOpenAuthModal={() => setShowAuthModal(true)}
         savedCount={saved.length}
+        targetOpportunity={clockTargetOpp || selectedOpportunityForDrawer}
+        onClearClockTarget={() => setClockTargetOpp(null)}
       />
 
       {/* Main Single Central Workspace */}
@@ -703,7 +706,10 @@ export function App() {
                     isSaved={saved.includes(opp.id)}
                     onToggleSave={toggleSave}
                     userSkills={profile.skills}
-                    onInspect={(opp) => setSelectedOpportunityForDrawer(opp)}
+                    onInspect={(opp) => {
+                      setSelectedOpportunityForDrawer(opp)
+                      setClockTargetOpp(opp)
+                    }}
                   />
                 ))
               ) : (
@@ -735,7 +741,10 @@ export function App() {
             userSkills={profile.skills}
             onNavigateToExplore={() => setActiveTab('Dashboard')}
             onNavigateToDashboard={() => setActiveTab('Dashboard')}
-            onInspect={(opp) => setSelectedOpportunityForDrawer(opp)}
+            onInspect={(opp) => {
+              setSelectedOpportunityForDrawer(opp)
+              setClockTargetOpp(opp)
+            }}
           />
         )}
 
