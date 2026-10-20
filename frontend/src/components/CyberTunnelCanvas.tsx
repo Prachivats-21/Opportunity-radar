@@ -186,12 +186,25 @@ export const CyberTunnelCanvas: React.FC = () => {
       onScroll()
     }
 
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animationFrameId)
+      } else if (!prefersReducedMotion) {
+        cancelAnimationFrame(animationFrameId)
+        animationFrameId = requestAnimationFrame(animate)
+      }
+    }
+
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('mousemove', onMouseMove, { passive: true })
     window.addEventListener('resize', onResize)
+    document.addEventListener('visibilitychange', onVisibilityChange)
 
     // 5. Animation Loop
     const animate = () => {
+      if (document.hidden) return
       animationFrameId = requestAnimationFrame(animate)
 
       const t = performance.now() / 1000
@@ -216,17 +229,23 @@ export const CyberTunnelCanvas: React.FC = () => {
       renderer.render(scene, camera)
     }
 
-    animate()
+    if (prefersReducedMotion) {
+      renderer.render(scene, camera)
+    } else {
+      animate()
+    }
 
     return () => {
       cancelAnimationFrame(animationFrameId)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('resize', onResize)
+      document.removeEventListener('visibilitychange', onVisibilityChange)
 
       starGeo.dispose()
       starMaterial.dispose()
       renderer.dispose()
+      renderer.forceContextLoss()
     }
   }, [])
 

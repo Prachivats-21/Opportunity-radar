@@ -64,6 +64,15 @@ app.add_middleware(
     allow_headers=["Content-Type"],
 )
 
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    return response
+
 @app.exception_handler(RequestValidationError)
 async def handle_request_validation_error(
     request: Request,

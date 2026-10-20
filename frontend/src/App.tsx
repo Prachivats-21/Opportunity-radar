@@ -1,16 +1,10 @@
-import { useEffect, useMemo, useState, useCallback } from 'react'
+import { useEffect, useMemo, useState, useCallback, lazy, Suspense } from 'react'
 import { Navbar } from './components/Navbar'
 import { AppFooter } from './components/AppFooter'
 import { WelcomeHero } from './components/WelcomeHero'
 import { FiltersBar } from './components/FiltersBar'
 import { OpportunityCard } from './components/OpportunityCard'
-import { OpportunityDetailDrawer } from './components/OpportunityDetailDrawer'
-import { CyberTunnelCanvas } from './components/CyberTunnelCanvas'
 import { CyberFlankRails } from './components/CyberFlankRails'
-import { ProfileModal } from './components/ProfileModal'
-import { AdvancedFilterDrawer } from './components/AdvancedFilterDrawer'
-import { AuthModal } from './components/AuthModal'
-import { NotificationCenter } from './components/NotificationCenter'
 import { ProfileView } from './components/ProfileView'
 import { TuneRadarView } from './components/TuneRadarView'
 import { SettingsView } from './components/SettingsView'
@@ -19,6 +13,14 @@ import { ApplicationsView } from './components/ApplicationsView'
 import { getOpportunities, getMatches, healthCheck, syncOpportunities } from './api'
 import type { Opportunity, Profile, MatchResult, FilterState, ApplicationRecord, ApplicationStatus } from './types'
 import { Search, Check, RefreshCw, Wifi, WifiOff, X } from 'lucide-react'
+
+// Code-split heavy 3D canvas and dynamic modal overlays to minimize critical bundle size
+const CyberTunnelCanvas = lazy(() => import('./components/CyberTunnelCanvas').then(m => ({ default: m.CyberTunnelCanvas })))
+const OpportunityDetailDrawer = lazy(() => import('./components/OpportunityDetailDrawer').then(m => ({ default: m.OpportunityDetailDrawer })))
+const ProfileModal = lazy(() => import('./components/ProfileModal').then(m => ({ default: m.ProfileModal })))
+const AdvancedFilterDrawer = lazy(() => import('./components/AdvancedFilterDrawer').then(m => ({ default: m.AdvancedFilterDrawer })))
+const AuthModal = lazy(() => import('./components/AuthModal').then(m => ({ default: m.AuthModal })))
+const NotificationCenter = lazy(() => import('./components/NotificationCenter').then(m => ({ default: m.NotificationCenter })))
 
 const DEFAULT_PROFILE: Profile = {
   name: 'Prachi Vats',
@@ -979,7 +981,9 @@ export function App() {
   return (
     <div className="app-shell" id="top">
       {/* 3D WebGL Glowing Tunnel Background */}
-      <CyberTunnelCanvas />
+      <Suspense fallback={null}>
+        <CyberTunnelCanvas />
+      </Suspense>
 
       {/* Screen Flank Rails with Coordinates & Telemetry */}
       <CyberFlankRails />
@@ -1165,79 +1169,82 @@ export function App() {
       {/* Shared Minimal Footer */}
       <AppFooter />
 
-      {/* Advanced Filter Drawer */}
-      <AdvancedFilterDrawer
-        isOpen={showAdvancedDrawer}
-        onClose={() => setShowAdvancedDrawer(false)}
-        filters={filters}
-        onChange={handleFilterUpdate}
-        onReset={resetFilters}
-        availableSkills={availableSkills}
-        availableLocations={availableLocations}
-        resultCount={filteredOpportunities.length}
-      />
+      {/* Lazy-loaded Dynamic Overlays & Modals */}
+      <Suspense fallback={null}>
+        {showAdvancedDrawer && (
+          <AdvancedFilterDrawer
+            isOpen={showAdvancedDrawer}
+            onClose={() => setShowAdvancedDrawer(false)}
+            filters={filters}
+            onChange={handleFilterUpdate}
+            onReset={resetFilters}
+            availableSkills={availableSkills}
+            availableLocations={availableLocations}
+            resultCount={filteredOpportunities.length}
+          />
+        )}
 
-      {/* Quick Edit Profile Modal (callable from any view) */}
-      {showProfileModal && (
-        <ProfileModal
-          profile={profile}
-          onSave={(updated) => handleProfileUpdate(updated, 'Student profile updated! Redirected to Radar feed.')}
-          onClose={() => setShowProfileModal(false)}
-        />
-      )}
+        {showProfileModal && (
+          <ProfileModal
+            profile={profile}
+            onSave={(updated) => handleProfileUpdate(updated, 'Student profile updated! Redirected to Radar feed.')}
+            onClose={() => setShowProfileModal(false)}
+          />
+        )}
 
+        {showAuthModal && (
+          <AuthModal
+            currentProfile={profile}
+            isLoggedIn={isLoggedIn}
+            userEmail={userEmail}
+            onLoginSuccess={(newProfile, email) => {
+              setIsLoggedIn(true)
+              setUserEmail(email)
+              handleProfileUpdate(newProfile, `Logged in as ${newProfile.name} — Radar calibrated!`)
+            }}
+            onLogout={() => {
+              setIsLoggedIn(false)
+              setShowAuthModal(false)
+              setActiveTab('Dashboard')
+              setToastMessage('Signed out. Browsing as Guest Student.')
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            }}
+            onClose={() => setShowAuthModal(false)}
+          />
+        )}
 
-      {/* Student Portal Login, Onboarding & Persona Switching Modal */}
-      {showAuthModal && (
-        <AuthModal
-          currentProfile={profile}
-          isLoggedIn={isLoggedIn}
-          userEmail={userEmail}
-          onLoginSuccess={(newProfile, email) => {
-            setIsLoggedIn(true)
-            setUserEmail(email)
-            handleProfileUpdate(newProfile, `Logged in as ${newProfile.name} — Radar calibrated!`)
-          }}
-          onLogout={() => {
-            setIsLoggedIn(false)
-            setShowAuthModal(false)
-            setActiveTab('Dashboard')
-            setToastMessage('Signed out. Browsing as Guest Student.')
-            window.scrollTo({ top: 0, behavior: 'smooth' })
-          }}
-          onClose={() => setShowAuthModal(false)}
-        />
-      )}
+        {showNotifications && (
+          <NotificationCenter
+            isOpen={showNotifications}
+            onClose={() => setShowNotifications(false)}
+            onSelectOpportunity={(oppId) => {
+              handleFilterUpdate({ searchQuery: oppId })
+              const el = document.getElementById('opportunity-feed')
+              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }}
+          />
+        )}
 
-      {/* Notification Center Popover */}
-      <NotificationCenter
-        isOpen={showNotifications}
-        onClose={() => setShowNotifications(false)}
-        onSelectOpportunity={(oppId) => {
-          handleFilterUpdate({ searchQuery: oppId })
-          const el = document.getElementById('opportunity-feed')
-          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }}
-      />
-
-      {/* Interactive Opportunity Inspection Drawer */}
-      <OpportunityDetailDrawer
-        opportunity={selectedOpportunityForDrawer}
-        match={selectedOpportunityForDrawer ? matchMap.get(selectedOpportunityForDrawer.id) : undefined}
-        isOpen={!!selectedOpportunityForDrawer}
-        onClose={() => setSelectedOpportunityForDrawer(null)}
-        isSaved={selectedOpportunityForDrawer ? saved.includes(selectedOpportunityForDrawer.id) : false}
-        onToggleSave={toggleSave}
-        userSkills={profile.skills}
-        trackedStatus={selectedOpportunityForDrawer ? applicationStatusMap.get(selectedOpportunityForDrawer.id) : undefined}
-        onTrackApplication={handleTrackApplication}
-        onSelectCategory={(cat) => {
-          handleFilterUpdate({ category: cat })
-          setSelectedOpportunityForDrawer(null)
-          const el = document.getElementById('opportunity-feed')
-          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }}
-      />
+        {selectedOpportunityForDrawer && (
+          <OpportunityDetailDrawer
+            opportunity={selectedOpportunityForDrawer}
+            match={selectedOpportunityForDrawer ? matchMap.get(selectedOpportunityForDrawer.id) : undefined}
+            isOpen={!!selectedOpportunityForDrawer}
+            onClose={() => setSelectedOpportunityForDrawer(null)}
+            isSaved={selectedOpportunityForDrawer ? saved.includes(selectedOpportunityForDrawer.id) : false}
+            onToggleSave={toggleSave}
+            userSkills={profile.skills}
+            trackedStatus={selectedOpportunityForDrawer ? applicationStatusMap.get(selectedOpportunityForDrawer.id) : undefined}
+            onTrackApplication={handleTrackApplication}
+            onSelectCategory={(cat) => {
+              handleFilterUpdate({ category: cat })
+              setSelectedOpportunityForDrawer(null)
+              const el = document.getElementById('opportunity-feed')
+              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }}
+          />
+        )}
+      </Suspense>
 
       {/* Accessible Toast Notification */}
       {toastMessage && (

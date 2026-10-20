@@ -27,7 +27,30 @@ interface OpportunityCardProps {
   onTrackApplication?: (opportunity: Opportunity, status: ApplicationStatus) => void
 }
 
-export const OpportunityCard: React.FC<OpportunityCardProps> = ({
+let sharedCardObserver: IntersectionObserver | null = null
+const cardFocusCallbacks = new Map<Element, (focused: boolean) => void>()
+
+function getSharedCardObserver() {
+  if (!sharedCardObserver && typeof IntersectionObserver !== 'undefined') {
+    sharedCardObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const cb = cardFocusCallbacks.get(entry.target)
+          if (cb) {
+            cb(entry.isIntersecting && entry.intersectionRatio >= 0.45)
+          }
+        }
+      },
+      {
+        threshold: [0.2, 0.45, 0.75],
+        rootMargin: '-12% 0px -12% 0px',
+      }
+    )
+  }
+  return sharedCardObserver
+}
+
+export const OpportunityCardComponent: React.FC<OpportunityCardProps> = ({
   opportunity,
   match,
   isSaved,
@@ -41,27 +64,19 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
   const cardRef = useRef<HTMLElement | null>(null)
   const [isScrollFocused, setIsScrollFocused] = useState(false)
 
-  // Dynamic scroll-aware focus: expands and highlights the hackathon as it centers in the viewport
+  // Dynamic scroll-aware focus with shared IntersectionObserver (O(1) observer overhead)
   useEffect(() => {
     const el = cardRef.current
-    if (!el || typeof IntersectionObserver === 'undefined') return
+    if (!el) return
+    const obs = getSharedCardObserver()
+    if (!obs) return
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.45) {
-          setIsScrollFocused(true)
-        } else {
-          setIsScrollFocused(false)
-        }
-      },
-      {
-        threshold: [0.2, 0.45, 0.75],
-        rootMargin: '-12% 0px -12% 0px',
-      }
-    )
-
-    observer.observe(el)
-    return () => observer.disconnect()
+    cardFocusCallbacks.set(el, setIsScrollFocused)
+    obs.observe(el)
+    return () => {
+      cardFocusCallbacks.delete(el)
+      obs.unobserve(el)
+    }
   }, [])
 
   // Calculate days remaining to deadline
@@ -528,3 +543,6 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
     </article>
   )
 }
+
+export const OpportunityCard = React.memo(OpportunityCardComponent)
+
