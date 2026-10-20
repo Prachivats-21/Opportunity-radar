@@ -90,11 +90,11 @@
   box-sizing: border-box;
 }
 
-html, body {
+html, body, #root {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background-color: var(--bg-main);
+  background-color: #0A0E17 !important;
   color: var(--text-primary);
   font-family: var(--font-sans);
   font-size: 14px;
@@ -2571,15 +2571,7 @@ a {
   to { transform: rotate(360deg); }
 }
 
-/* Reduced Motion Preferences */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
+/* Smooth Motion Baseline */
 
 /* ==========================================================================
    Opportunity Radar — Unified Single-Column Layout & Header Redesign

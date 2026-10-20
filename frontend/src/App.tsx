@@ -4,6 +4,7 @@ import { AppFooter } from './components/AppFooter'
 import { WelcomeHero } from './components/WelcomeHero'
 import { FiltersBar } from './components/FiltersBar'
 import { OpportunityCard } from './components/OpportunityCard'
+import { CyberTunnelCanvas } from './components/CyberTunnelCanvas'
 import { CyberFlankRails } from './components/CyberFlankRails'
 import { ProfileView } from './components/ProfileView'
 import { TuneRadarView } from './components/TuneRadarView'
@@ -14,8 +15,7 @@ import { getOpportunities, getMatches, healthCheck, syncOpportunities } from './
 import type { Opportunity, Profile, MatchResult, FilterState, ApplicationRecord, ApplicationStatus } from './types'
 import { Search, Check, RefreshCw, Wifi, WifiOff, X } from 'lucide-react'
 
-// Code-split heavy 3D canvas and dynamic modal overlays to minimize critical bundle size
-const CyberTunnelCanvas = lazy(() => import('./components/CyberTunnelCanvas').then(m => ({ default: m.CyberTunnelCanvas })))
+// Code-split dynamic modal overlays to minimize critical bundle size
 const OpportunityDetailDrawer = lazy(() => import('./components/OpportunityDetailDrawer').then(m => ({ default: m.OpportunityDetailDrawer })))
 const ProfileModal = lazy(() => import('./components/ProfileModal').then(m => ({ default: m.ProfileModal })))
 const AdvancedFilterDrawer = lazy(() => import('./components/AdvancedFilterDrawer').then(m => ({ default: m.AdvancedFilterDrawer })))
@@ -980,10 +980,8 @@ export function App() {
 
   return (
     <div className="app-shell" id="top">
-      {/* 3D WebGL Glowing Tunnel Background */}
-      <Suspense fallback={null}>
-        <CyberTunnelCanvas />
-      </Suspense>
+      {/* 3D WebGL Glowing Tunnel Background with Dynamic Particle Matrix */}
+      <CyberTunnelCanvas />
 
       {/* Screen Flank Rails with Coordinates & Telemetry */}
       <CyberFlankRails />
