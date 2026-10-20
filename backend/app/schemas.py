@@ -94,3 +94,27 @@ class SyncResponse(BaseModel):
     sources: list[StrictStr] = Field(default_factory=list, strict=True, max_length=50)
     message: StrictStr = Field(default="", max_length=500)
 
+
+class SearchFeedRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    profile: StudentProfile | None = None
+    category: StrictStr = "All"
+    search_query: StrictStr = ""
+    quick_closing_soon: bool = False
+    quick_remote: bool = False
+    quick_eligible_for_me: bool = False
+    quick_free_to_enter: bool = False
+    sort_by: StrictStr = "Best match"
+    limit: StrictInt | None = Field(default=100, ge=1, le=500)
+
+
+class SearchFeedResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    total: StrictInt
+    filtered_count: StrictInt
+    eligible_count: StrictInt
+    closing_soon_count: StrictInt
+    last_synced: StrictStr
+    results: list[MatchResult]
+
+

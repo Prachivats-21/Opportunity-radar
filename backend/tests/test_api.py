@@ -213,3 +213,38 @@ def test_extracted_opportunity_can_be_matched_and_ranked(monkeypatch):
     assert results[0]["score"] >= 60
     assert any("Python" in r or "AI" in r or "overlap" in r.lower() for r in results[0]["reasons"])
 
+
+def test_search_feed_endpoint():
+    response = client.post(
+        "/api/feed",
+        json={
+            "profile": {
+                "year": "1",
+                "field": "Product Management",
+                "skills": ["Product Management", "PRD", "Figma"],
+                "interests": ["Hackathon", "Product Management"],
+                "preferred_categories": ["Hackathon"],
+                "preferred_mode": "Any",
+            },
+            "category": "All",
+            "search_query": "",
+            "quick_closing_soon": False,
+            "quick_remote": False,
+            "quick_eligible_for_me": False,
+            "quick_free_to_enter": False,
+            "sort_by": "Best match",
+            "limit": 10,
+        },
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert "total" in data
+    assert "filtered_count" in data
+    assert "eligible_count" in data
+    assert "results" in data
+    assert len(data["results"]) > 0
+    # Top result should have strong relevance to Product Management
+    top = data["results"][0]
+    assert top["score"] >= 70
+
+

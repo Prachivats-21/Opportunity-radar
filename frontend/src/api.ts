@@ -35,3 +35,46 @@ export async function syncOpportunities(): Promise<{ status: string; total: numb
   return response.json()
 }
 
+export interface SearchFeedParams {
+  profile?: Profile
+  category?: string
+  search_query?: string
+  quick_closing_soon?: boolean
+  quick_remote?: boolean
+  quick_eligible_for_me?: boolean
+  quick_free_to_enter?: boolean
+  sort_by?: string
+  limit?: number
+}
+
+export interface SearchFeedResult {
+  total: number
+  filtered_count: number
+  eligible_count: number
+  closing_soon_count: number
+  last_synced: string
+  results: MatchResult[]
+}
+
+export async function getFeed(params: SearchFeedParams): Promise<SearchFeedResult> {
+  const profilePayload = params.profile ? (({ name, ...rest }) => rest)(params.profile) : undefined
+  const response = await fetch(`${API_URL}/api/feed`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      profile: profilePayload,
+      category: params.category || 'All',
+      search_query: params.search_query || '',
+      quick_closing_soon: !!params.quick_closing_soon,
+      quick_remote: !!params.quick_remote,
+      quick_eligible_for_me: !!params.quick_eligible_for_me,
+      quick_free_to_enter: !!params.quick_free_to_enter,
+      sort_by: params.sort_by || 'Best match',
+      limit: params.limit || 100,
+    }),
+  })
+  if (!response.ok) throw new Error('Could not fetch opportunity feed.')
+  return response.json()
+}
+
+

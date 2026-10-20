@@ -15,7 +15,6 @@ import {
   RefreshCw,
 } from 'lucide-react'
 import { RadarMark } from './RadarMark'
-import { CyberClock } from './CyberClock'
 
 import type { Opportunity } from '../types'
 
@@ -222,13 +221,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="hide-on-mobile">{isSyncing ? 'Syncing...' : 'Sync Feeds'}</span>
             </button>
           )}
-
-          {/* Real-time Telemetry Cyber Clock with Opportunity Deadline Countdown */}
-          <CyberClock
-            targetOpportunity={targetOpportunity}
-            onClearTarget={onClearClockTarget}
-          />
-
 
           {/* Notification Center Trigger */}
           <button

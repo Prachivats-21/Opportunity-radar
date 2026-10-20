@@ -1,3 +1,4 @@
+from datetime import date
 import json
 import logging
 import os
@@ -8,7 +9,16 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from .schemas import Opportunity, MatchRequest, MatchResult, ExtractRequest, ExtractResponse, SyncResponse
+from .schemas import (
+    Opportunity,
+    MatchRequest,
+    MatchResult,
+    ExtractRequest,
+    ExtractResponse,
+    SyncResponse,
+    SearchFeedRequest,
+    SearchFeedResponse,
+)
 from .matcher import rank_opportunities
 from .ai import AIServiceError, extract_opportunity, semantic_match_batch
 from .ingest import sync_all_opportunities
@@ -131,6 +141,99 @@ def match(request: MatchRequest) -> list[MatchResult]:
                 result.reasons = list(dict.fromkeys(result.reasons + extra["reasons"]))
                 result.explanation = " ".join(result.reasons)
     return results
+
+@app.post("/api/feed", response_model=SearchFeedResponse)
+def get_feed(request: SearchFeedRequest) -> SearchFeedResponse:
+    all_opps = load_opportunities()
+    today = date.today()
+
+    if request.profile is not None:
+        ranked = rank_opportunities(all_opps, request.profile, today)
+    else:
+        ranked = [
+            MatchResult(
+                opportunity=opp,
+                score=50,
+                eligibility="potentially_eligible",
+                reasons=["General student opportunity listing."],
+                skill_gaps=[],
+                explanation="General student opportunity listing.",
+            )
+            for opp in all_opps
+        ]
+
+    total = len(ranked)
+    eligible_count = sum(1 for r in ranked if r.eligibility == "eligible")
+    closing_soon_count = sum(
+        1 for r in ranked if r.opportunity.deadline and 0 <= (r.opportunity.deadline - today).days <= 14
+    )
+
+    filtered = ranked
+
+    # 1. Category Filter
+    if request.category and request.category != "All":
+        target_cat = request.category.casefold()
+        filtered = [r for r in filtered if r.opportunity.category.casefold() == target_cat]
+
+    # 2. Search Query Filter
+    if request.search_query.strip():
+        tokens = [t.lower() for t in request.search_query.strip().split() if len(t) > 1]
+        if tokens:
+            def matches_query(opp: Opportunity) -> bool:
+                text = f"{opp.title} {opp.organization} {opp.category} {opp.summary} {opp.description} {' '.join(opp.skills)} {' '.join(opp.eligible_fields)} {opp.location}".lower()
+                return any(token in text for token in tokens)
+            filtered = [r for r in filtered if matches_query(r.opportunity)]
+
+    # 3. Quick Closing Soon
+    if request.quick_closing_soon:
+        filtered = [
+            r for r in filtered
+            if r.opportunity.deadline and 0 <= (r.opportunity.deadline - today).days <= 14
+        ]
+
+    # 4. Quick Remote
+    if request.quick_remote:
+        filtered = [
+            r for r in filtered
+            if any(term in r.opportunity.mode.lower() for term in ("remote", "online", "virtual", "any"))
+        ]
+
+    # 5. Quick Eligible for Me
+    if request.quick_eligible_for_me:
+        filtered = [r for r in filtered if r.eligibility in ("eligible", "potentially_eligible")]
+
+    # 6. Quick Free to Enter
+    if request.quick_free_to_enter:
+        filtered = [
+            r for r in filtered
+            if "fee" not in r.opportunity.summary.lower() and "registration fee" not in r.opportunity.description.lower()
+        ]
+
+    # 7. Sorting
+    if request.sort_by == "Deadline (Soonest)":
+        filtered.sort(
+            key=lambda r: (r.opportunity.deadline is None, r.opportunity.deadline or date.max)
+        )
+    elif request.sort_by == "Newest":
+        filtered.sort(
+            key=lambda r: (r.opportunity.start_date is None, r.opportunity.start_date or date.min),
+            reverse=True,
+        )
+    elif request.sort_by == "Alphabetical":
+        filtered.sort(key=lambda r: r.opportunity.title.lower())
+    # "Best match" is already ordered by rank_opportunities
+
+    limit = request.limit or 100
+    filtered = filtered[:limit]
+
+    return SearchFeedResponse(
+        total=total,
+        filtered_count=len(filtered),
+        eligible_count=eligible_count,
+        closing_soon_count=closing_soon_count,
+        last_synced=today.isoformat(),
+        results=filtered,
+    )
 
 @app.post("/api/extract", response_model=ExtractResponse)
 def extract(request: ExtractRequest) -> ExtractResponse:

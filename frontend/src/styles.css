@@ -6509,3 +6509,564 @@ a {
 
 
 
+
+
+/* ==========================================================================
+   STREAMLINED STUDENT UI — CLEAN HERO & SIMPLIFIED OPPORTUNITY CARDS
+   ========================================================================== */
+
+/* 1. Clean Hero Section */
+.clean-hero-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px 28px;
+  background: rgba(16, 22, 35, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-xl, 18px);
+  backdrop-filter: blur(18px);
+  margin-bottom: 24px;
+}
+
+.clean-hero-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hero-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary, #94A3B8);
+}
+
+.clean-profile-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: var(--text-primary, #E2E8F0);
+  border-radius: var(--radius-full, 9999px);
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clean-profile-badge:hover {
+  background: rgba(16, 185, 129, 0.16);
+  border-color: rgba(16, 185, 129, 0.45);
+}
+
+.clean-edit-link {
+  color: var(--sage, #10B981);
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+.clean-hero-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.clean-hero-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.clean-hero-heading {
+  font-family: var(--font-serif, serif);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary, #E2E8F0);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.clean-hero-heading em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--sage, #10B981);
+}
+
+.clean-hero-subhead {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary, #94A3B8);
+  max-width: 780px;
+  margin: 0;
+}
+
+/* Quick Track Selector Row */
+.hero-track-pills-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.track-pills-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary, #64748B);
+}
+
+.track-pills-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.track-pill-chip {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary, #94A3B8);
+  border-radius: var(--radius-full, 9999px);
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.track-pill-chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary, #E2E8F0);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.track-pill-chip.active {
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #34D399;
+  font-weight: 600;
+}
+
+/* Clean 3-Metric Highlight Strip */
+.clean-hero-metrics-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin-top: 4px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.metric-summary-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(14, 20, 32, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-md, 10px);
+  padding: 10px 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.metric-summary-chip:hover {
+  background: rgba(22, 30, 48, 0.85);
+  border-color: rgba(16, 185, 129, 0.35);
+  transform: translateY(-1px);
+}
+
+.metric-icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary, #E2E8F0);
+}
+
+.metric-summary-chip.eligible .metric-icon-wrap {
+  background: rgba(16, 185, 129, 0.14);
+  color: #10B981;
+}
+
+.metric-summary-chip.urgent .metric-icon-wrap {
+  background: rgba(245, 158, 11, 0.14);
+  color: #F59E0B;
+}
+
+.metric-summary-chip.top-match .metric-icon-wrap {
+  background: rgba(56, 189, 248, 0.14);
+  color: #38BDF8;
+}
+
+.metric-text-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.metric-num {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-primary, #E2E8F0);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.metric-desc {
+  font-size: 11px;
+  color: var(--text-secondary, #94A3B8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 2. Streamlined Opportunity Cards */
+.clean-opportunity-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: rgba(16, 22, 35, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg, 14px);
+  padding: 20px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  cursor: pointer;
+}
+
+.clean-opportunity-card:hover {
+  background: rgba(22, 32, 52, 0.9);
+  border-color: rgba(16, 185, 129, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.1);
+}
+
+.clean-opportunity-card.scroll-focused-card {
+  border-color: rgba(16, 185, 129, 0.6) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 28px rgba(16, 185, 129, 0.2) !important;
+  background: rgba(22, 32, 52, 0.95) !important;
+  transform: scale(1.02);
+  z-index: 5;
+}
+
+.clean-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.clean-card-org-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.clean-org-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary, #E2E8F0);
+  flex-shrink: 0;
+}
+
+.clean-org-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.clean-org-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary, #94A3B8);
+}
+
+.clean-card-tags {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.clean-category-badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(16, 185, 129, 0.12);
+  color: #34D399;
+}
+
+.clean-category-badge.cat-hackathon {
+  background: rgba(56, 189, 248, 0.14);
+  color: #38BDF8;
+}
+
+.clean-category-badge.cat-internship {
+  background: rgba(16, 185, 129, 0.14);
+  color: #10B981;
+}
+
+.clean-category-badge.cat-competition {
+  background: rgba(245, 158, 11, 0.14);
+  color: #F59E0B;
+}
+
+.clean-category-badge.cat-fellowship {
+  background: rgba(168, 85, 247, 0.14);
+  color: #C084FC;
+}
+
+.clean-platform-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-tertiary, #64748B);
+}
+
+.clean-card-top-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.clean-deadline-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary, #94A3B8);
+}
+
+.clean-deadline-pill.critical {
+  background: rgba(239, 68, 68, 0.16);
+  color: #F87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.clean-deadline-pill.warning {
+  background: rgba(245, 158, 11, 0.15);
+  color: #FBBF24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.clean-bookmark-btn {
+  background: none;
+  border: none;
+  color: var(--text-tertiary, #64748B);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.clean-bookmark-btn:hover {
+  color: var(--text-primary, #E2E8F0);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.clean-bookmark-btn.saved {
+  color: #F59E0B;
+}
+
+.clean-card-title {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: var(--text-primary, #E2E8F0);
+  margin: 0;
+  line-height: 1.35;
+  transition: color 0.15s ease;
+}
+
+.clean-opportunity-card:hover .clean-card-title {
+  color: #34D399;
+}
+
+.clean-card-summary {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary, #94A3B8);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.clean-skills-wrap {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.clean-skill-pill {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary, #94A3B8);
+  display: inline-flex;
+  align-items: center;
+}
+
+.clean-skill-pill.matching {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #A7F3D0;
+}
+
+.clean-skill-pill.more {
+  color: var(--text-tertiary, #64748B);
+}
+
+.clean-match-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(16, 185, 129, 0.07);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 6px;
+  font-size: 11.5px;
+}
+
+.clean-match-score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+  color: #34D399;
+  flex-shrink: 0;
+}
+
+.clean-match-reason {
+  color: var(--text-secondary, #94A3B8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.clean-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  flex-wrap: wrap;
+}
+
+.clean-footer-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 11.5px;
+  color: var(--text-tertiary, #64748B);
+}
+
+.clean-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.clean-card-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.clean-track-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary, #94A3B8);
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+
+.clean-track-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary, #E2E8F0);
+}
+
+.clean-track-btn.tracked {
+  background: rgba(16, 185, 129, 0.16);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #6EE7B7;
+}
+
+.clean-details-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary, #E2E8F0);
+  border-radius: 7px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.clean-details-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.clean-apply-btn {
+  background: #10B981;
+  color: #0A0E17;
+  border-radius: 7px;
+  padding: 6px 13px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.clean-apply-btn:hover {
+  background: #34D399;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}

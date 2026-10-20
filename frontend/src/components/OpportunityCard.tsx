@@ -2,17 +2,15 @@ import React, { useState, useRef, useEffect } from 'react'
 import {
   Bookmark,
   Calendar,
-  Globe,
   MapPin,
-  Sparkles,
-  ChevronDown,
-  ChevronUp,
   ExternalLink,
+  Sparkles,
+  CheckCircle2,
+  Globe,
+  Clock,
   ShieldCheck,
   AlertCircle,
   XCircle,
-  Clock,
-  CheckCircle2,
 } from 'lucide-react'
 import type { Opportunity, MatchResult, ApplicationStatus } from '../types'
 
@@ -21,8 +19,8 @@ interface OpportunityCardProps {
   match?: MatchResult
   isSaved: boolean
   onToggleSave: (id: string) => void
-  userSkills?: string[]
   onInspect?: (opportunity: Opportunity) => void
+  userSkills?: string[]
   trackedStatus?: ApplicationStatus
   onTrackApplication?: (opportunity: Opportunity, status: ApplicationStatus) => void
 }
@@ -55,16 +53,15 @@ export const OpportunityCardComponent: React.FC<OpportunityCardProps> = ({
   match,
   isSaved,
   onToggleSave,
-  userSkills = [],
   onInspect,
+  userSkills = [],
   trackedStatus,
   onTrackApplication,
 }) => {
-  const [isAccordionOpen, setIsAccordionOpen] = useState(false)
   const cardRef = useRef<HTMLElement | null>(null)
   const [isScrollFocused, setIsScrollFocused] = useState(false)
 
-  // Dynamic scroll-aware focus with shared IntersectionObserver (O(1) observer overhead)
+  // Dynamic scroll-aware focus with shared IntersectionObserver (O(1) overhead)
   useEffect(() => {
     const el = cardRef.current
     if (!el) return
@@ -82,243 +79,112 @@ export const OpportunityCardComponent: React.FC<OpportunityCardProps> = ({
   // Calculate days remaining to deadline
   const calculateDaysLeft = (deadlineStr: string | null): number | null => {
     if (!deadlineStr) return null
-    const deadline = new Date(`${deadlineStr}T23:59:59`).getTime()
-    const now = Date.now()
-    return Math.ceil((deadline - now) / (1000 * 60 * 60 * 24))
+    try {
+      const deadline = new Date(deadlineStr)
+      const now = new Date()
+      const diffTime = deadline.getTime() - now.getTime()
+      return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    } catch {
+      return null
+    }
   }
 
   const daysRemaining = calculateDaysLeft(opportunity.deadline)
 
-  const formatDisplayDate = (dateStr: string | null) => {
-    if (!dateStr) return 'Not confirmed'
-    return new Date(`${dateStr}T12:00:00`).toLocaleDateString('en-GB', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    })
+  const formatDisplayDate = (dateStr: string | null): string => {
+    if (!dateStr) return 'Ongoing'
+    try {
+      const d = new Date(dateStr)
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    } catch {
+      return dateStr
+    }
   }
 
-  // Consistent Match Score Tier Scale
-  const getMatchTier = (score: number) => {
-    if (score >= 65) return { tier: 'strong', label: 'Strong fit' }
-    if (score >= 40) return { tier: 'moderate', label: 'Moderate fit' }
-    return { tier: 'general', label: 'General fit' }
+  const getInitials = (orgName: string): string => {
+    if (!orgName) return 'OP'
+    const parts = orgName.trim().split(/\s+/)
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase()
+    return (parts[0][0] + parts[1][0]).toUpperCase()
   }
 
-  const matchTierInfo = match ? getMatchTier(match.score) : null
-
-  // Verified Status Display
-  const getVerificationBadge = (status: string) => {
-    if (status === 'verified') {
-      return (
-        <span className="source-status-badge verified" title="Independently verified against organizer portal">
-          <span className="status-indicator-dot verified" />
-          <span>Verified Source</span>
-        </span>
-      )
+  const getPlatformMeta = (sourceUrl: string, sourceName?: string) => {
+    const lowerUrl = (sourceUrl || '').toLowerCase()
+    if (lowerUrl.includes('unstop.com')) {
+      return { platform: 'Unstop', buttonText: 'Apply on Unstop' }
     }
-    if (status === 'community_extracted') {
-      return (
-        <span className="source-status-badge community" title="Extracted by community curator; check source">
-          <span className="status-indicator-dot community" />
-          <span>Curator Extracted</span>
-        </span>
-      )
-    }
-    return (
-      <span className="source-status-badge recheck" title="Preliminary record; verify details before applying">
-        <span className="status-indicator-dot recheck" />
-        <span>Confirm on Portal</span>
-      </span>
-    )
-  }
-
-  // Scannable Primary Fit Reason (directly visible on card)
-  const getConciseFitReason = () => {
-    if (!match) return null
-    if (match.reasons && match.reasons.length > 0) {
-      return match.reasons[0]
-    }
-    if (match.explanation) {
-      return match.explanation
-    }
-    return 'Domain fit with student profile'
-  }
-
-  const conciseReason = getConciseFitReason()
-
-  // Monogram initials for org
-  const getInitials = (text: string) => {
-    return (
-      text
-        .split(/\s+/)
-        .slice(0, 2)
-        .map((s) => s[0])
-        .join('')
-        .toUpperCase() || 'OP'
-    )
-  }
-
-  const catLower = opportunity.category.toLowerCase()
-  const normalizedUserSkills = userSkills.map((s) => s.toLowerCase().trim())
-
-  // Dynamic Platform Detection & Outbound Redirection Mapping
-  const getPlatformMeta = (url: string, sourceName?: string) => {
-    const lowerUrl = (url || '').toLowerCase()
-    const lowerSource = (sourceName || '').toLowerCase()
-
-    if (lowerUrl.includes('unstop.com') || lowerSource.includes('unstop')) {
-      return {
-        platform: 'Unstop',
-        buttonText: 'Register on Unstop',
-        badgeClass: 'platform-unstop',
-        iconText: 'Via Unstop',
-        note: 'Redirects to Unstop registration portal',
-      }
-    }
-    if (lowerUrl.includes('cyberhackathon.bihar.gov.in') || lowerUrl.includes('bihar.gov.in')) {
-      return {
-        platform: 'Govt of Bihar',
-        buttonText: 'Register on Cyber Hackathon',
-        badgeClass: 'platform-gov',
-        iconText: 'State Portal',
-        note: 'Redirects to official Government of Bihar portal',
-      }
-    }
-    if (lowerUrl.includes('sih.gov.in')) {
-      return {
-        platform: 'Smart India Hackathon',
-        buttonText: 'Register on SIH Portal',
-        badgeClass: 'platform-gov',
-        iconText: 'National Portal',
-        note: 'Redirects to SIH National portal',
-      }
-    }
-    if (lowerUrl.includes('gov.in') || lowerUrl.includes('pib.gov.in') || lowerUrl.includes('nic.in')) {
-      return {
-        platform: 'Government of India',
-        buttonText: 'Register on Govt Portal',
-        badgeClass: 'platform-gov',
-        iconText: 'Govt Portal',
-        note: 'Redirects to official Government portal',
-      }
-    }
-    if (lowerUrl.includes('summerofcode.withgoogle.com') || lowerUrl.includes('google.com')) {
-      return {
-        platform: 'Google Open Source',
-        buttonText: 'Apply on GSoC Portal',
-        badgeClass: 'platform-google',
-        iconText: 'Google Portal',
-        note: 'Redirects to Google Summer of Code directory',
-      }
-    }
-    if (lowerUrl.includes('mlh.io')) {
-      return {
-        platform: 'Major League Hacking',
-        buttonText: 'Apply on MLH Fellowship',
-        badgeClass: 'platform-mlh',
-        iconText: 'MLH Portal',
-        note: 'Redirects to MLH Fellowship application',
-      }
-    }
-    if (lowerUrl.includes('linuxfoundation.org')) {
-      return {
-        platform: 'Linux Foundation',
-        buttonText: 'Apply on LFX Mentorship',
-        badgeClass: 'platform-lfx',
-        iconText: 'LFX Portal',
-        note: 'Redirects to Linux Foundation LFX portal',
-      }
-    }
-    if (lowerUrl.includes('microsoft.com')) {
-      return {
-        platform: 'Microsoft',
-        buttonText: 'Register on Imagine Cup',
-        badgeClass: 'platform-microsoft',
-        iconText: 'Microsoft',
-        note: 'Redirects to Microsoft Imagine Cup portal',
-      }
+    if (lowerUrl.includes('gov.in') || lowerUrl.includes('nic.in') || lowerUrl.includes('aicte')) {
+      return { platform: 'Govt Portal', buttonText: 'Apply on Portal' }
     }
     if (lowerUrl.includes('devpost.com')) {
-      return {
-        platform: 'Devpost',
-        buttonText: 'Register on Devpost',
-        badgeClass: 'platform-devpost',
-        iconText: 'Devpost',
-        note: 'Redirects to Devpost hackathon directory',
-      }
+      return { platform: 'Devpost', buttonText: 'View on Devpost' }
     }
     if (lowerUrl.includes('hackerearth.com')) {
-      return {
-        platform: 'HackerEarth',
-        buttonText: 'Apply on HackerEarth',
-        badgeClass: 'platform-hackerearth',
-        iconText: 'HackerEarth',
-        note: 'Redirects to HackerEarth competition platform',
-      }
+      return { platform: 'HackerEarth', buttonText: 'Apply on HackerEarth' }
     }
-
     return {
-      platform: sourceName || 'Official Organizer',
+      platform: sourceName || 'Official Source',
       buttonText: `Apply on ${sourceName ? sourceName.split(' ')[0] : 'Portal'}`,
-      badgeClass: 'platform-general',
-      iconText: 'Official Portal',
-      note: 'Redirects directly to official application form',
     }
   }
 
   const platformMeta = getPlatformMeta(opportunity.source_url, opportunity.source_name)
+  const catLower = (opportunity.category || 'other').toLowerCase()
+  const normalizedUserSkills = userSkills.map((s) => s.toLowerCase().trim())
+
+  // Concise fit reason
+  const conciseReason = match?.reasons?.[0] || (match && match.score >= 70 ? 'High relevance to your target skills.' : null)
 
   return (
     <article
       ref={cardRef}
-      className={`opportunity-card interactive-card ${isScrollFocused ? 'scroll-focused-card' : ''}`}
+      className={`clean-opportunity-card ${isScrollFocused ? 'scroll-focused-card' : ''}`}
       aria-labelledby={`opp-title-${opportunity.id}`}
       onClick={() => onInspect && onInspect(opportunity)}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          onInspect && onInspect(opportunity)
-        }
+        if (e.key === 'Enter') onInspect && onInspect(opportunity)
       }}
     >
-      {/* 1. Card Topline Header */}
-      <div className="card-header">
-        <div className="card-org-row">
-          <div className={`org-monogram-circle c-${catLower}`} aria-hidden="true">
+      {/* 1. Header: Org, Category, Urgency & Bookmark */}
+      <div className="clean-card-header">
+        <div className="clean-card-org-row">
+          <div className={`clean-org-avatar c-${catLower}`} aria-hidden="true">
             {getInitials(opportunity.organization)}
           </div>
-          <div className="org-info">
-            <span className="org-name">{opportunity.organization}</span>
-            <div className="card-badge-row">
-              <span className={`category-tag-inline cat-${catLower}`}>
+          <div className="clean-org-info">
+            <span className="clean-org-name">{opportunity.organization}</span>
+            <div className="clean-card-tags">
+              <span className={`clean-category-badge cat-${catLower}`}>
                 {opportunity.category}
               </span>
-              <span className={`platform-pill ${platformMeta.badgeClass}`}>
-                {platformMeta.iconText}
+              <span className="clean-platform-badge">
+                {platformMeta.platform}
               </span>
-              {getVerificationBadge(opportunity.status)}
             </div>
           </div>
         </div>
 
-        <div className="card-actions-top">
-          {/* Match Score Badge (with consistent documented scale) */}
-          {match && matchTierInfo && (
-            <div
-              className={`match-score-badge tier-${matchTierInfo.tier}`}
-              title={`${match.score}% fit index based on skills, academic year, and category match`}
+        <div className="clean-card-top-right">
+          {daysRemaining !== null && (
+            <span
+              className={`clean-deadline-pill ${
+                daysRemaining <= 7 ? 'critical' : daysRemaining <= 14 ? 'warning' : 'normal'
+              }`}
             >
-              <Sparkles size={12} />
-              <span>{match.score}%</span>
-              <small className="match-tier-text">({matchTierInfo.label})</small>
-            </div>
+              <Clock size={11} />
+              {daysRemaining <= 0
+                ? 'Closing Today'
+                : daysRemaining <= 14
+                ? `${daysRemaining}d left`
+                : `Due ${formatDisplayDate(opportunity.deadline)}`}
+            </span>
           )}
 
-          {/* Bookmark Button */}
           <button
-            className={`bookmark-btn ${isSaved ? 'saved' : ''}`}
+            type="button"
+            className={`clean-bookmark-btn ${isSaved ? 'saved' : ''}`}
             onClick={(e) => {
               e.stopPropagation()
               onToggleSave(opportunity.id)
@@ -331,212 +197,93 @@ export const OpportunityCardComponent: React.FC<OpportunityCardProps> = ({
         </div>
       </div>
 
-      {/* 2. Opportunity Title & Summary */}
-      <h3 className="card-title" id={`opp-title-${opportunity.id}`}>
+      {/* 2. Title & Summary */}
+      <h3 className="clean-card-title" id={`opp-title-${opportunity.id}`}>
         {opportunity.title}
       </h3>
-      <p className="card-summary">{opportunity.summary}</p>
+      <p className="clean-card-summary">{opportunity.summary}</p>
 
-      {/* 3. Skill Tags (High visibility of overlap) */}
+      {/* 3. Skills Pills */}
       {opportunity.skills && opportunity.skills.length > 0 && (
-        <div className="skills-tags-row" aria-label="Required skills">
+        <div className="clean-skills-wrap">
           {opportunity.skills.slice(0, 4).map((skill) => {
             const isOverlap = normalizedUserSkills.includes(skill.toLowerCase().trim())
             return (
-              <span key={skill} className={`skill-pill ${isOverlap ? 'overlap' : ''}`}>
+              <span key={skill} className={`clean-skill-pill ${isOverlap ? 'matching' : ''}`}>
                 {isOverlap && <CheckCircle2 size={10} style={{ marginRight: 3 }} />}
                 {skill}
               </span>
             )
           })}
           {opportunity.skills.length > 4 && (
-            <span className="skill-pill more">+{opportunity.skills.length - 4} more</span>
+            <span className="clean-skill-pill more">+{opportunity.skills.length - 4}</span>
           )}
         </div>
       )}
 
-      {/* 4. Scannable Metadata Bar (Deadline, Location, Format, Eligibility) */}
-      <div className="card-meta-list">
-        {/* Participation Format */}
-        <div className="meta-item">
-          <Globe size={13} />
-          <span>{opportunity.mode === 'Confirm with organizer' ? 'Format unconfirmed' : opportunity.mode}</span>
-        </div>
-
-        {/* Location */}
-        {opportunity.location && opportunity.location !== 'Not specified' && (
-          <div className="meta-item">
-            <MapPin size={13} />
-            <span>{opportunity.location.split(';')[0]}</span>
-          </div>
-        )}
-
-        {/* Deadline with explicit status and non-color-only text */}
-        <div
-          className={`meta-item ${
-            daysRemaining !== null && daysRemaining <= 14 && daysRemaining >= 0 ? 'urgent' : ''
-          }`}
-        >
-          <Calendar size={13} />
-          <span>
-            {daysRemaining === null
-              ? 'Deadline to verify on source'
-              : daysRemaining < 0
-              ? 'Deadline passed'
-              : daysRemaining === 0
-              ? 'Closing today'
-              : daysRemaining <= 14
-              ? `Closing soon: ${daysRemaining} days left (${formatDisplayDate(opportunity.deadline)})`
-              : `Due ${formatDisplayDate(opportunity.deadline)}`}
-          </span>
-        </div>
-      </div>
-
-      {/* 5. Scannable Key Fit Reason (Visible without expanding) */}
+      {/* 4. Match Signal Highlight */}
       {match && (
-        <div className="card-scannable-fit-row">
-          <div className="fit-status-badge-wrap">
-            {match.eligibility === 'eligible' && (
-              <span className="eligibility-pill eligible">
-                <ShieldCheck size={12} />
-                <span>Confirmed Eligible</span>
-              </span>
-            )}
-            {match.eligibility === 'potentially_eligible' && (
-              <span className="eligibility-pill potentially_eligible">
-                <AlertCircle size={12} />
-                <span>Potentially Eligible</span>
-              </span>
-            )}
-            {match.eligibility === 'not_eligible' && (
-              <span className="eligibility-pill not_eligible">
-                <XCircle size={12} />
-                <span>Requirement Conflict</span>
-              </span>
-            )}
-            {match.eligibility === 'expired' && (
-              <span className="eligibility-pill expired">
-                <Clock size={12} />
-                <span>Deadline Passed</span>
-              </span>
-            )}
+        <div className="clean-match-bar">
+          <div className="clean-match-score-badge">
+            <Sparkles size={11} />
+            <span>{match.score}% Fit</span>
           </div>
-
-          {conciseReason && (
-            <p className="concise-fit-reason">
-              <strong>Match signal:</strong> {conciseReason}
-            </p>
-          )}
+          {conciseReason && <span className="clean-match-reason">{conciseReason}</span>}
         </div>
       )}
 
-      {/* 6. Expandable In-Depth Breakdown Accordion */}
-      {match && (
-        <div className="why-match-accordion">
-          <button
-            className="accordion-trigger"
-            onClick={(e) => {
-              e.stopPropagation()
-              setIsAccordionOpen(!isAccordionOpen)
-            }}
-            aria-expanded={isAccordionOpen}
-          >
-            <div className="accordion-trigger-left">
-              <Sparkles size={13} style={{ color: 'var(--sage)' }} />
-              <span>Full match breakdown & skill gap analysis</span>
-            </div>
-            {isAccordionOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-          </button>
-
-          {isAccordionOpen && (
-            <div className="accordion-content">
-              {match.reasons && match.reasons.length > 0 && (
-                <div>
-                  <div className="accordion-sublabel">Evaluation Reasons:</div>
-                  <ul className="reasons-list">
-                    {match.reasons.map((reason, i) => (
-                      <li key={i}>{reason}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {match.skill_gaps && match.skill_gaps.length > 0 && (
-                <div className="skill-gaps-row">
-                  <span className="accordion-sublabel">Skills to develop:</span>
-                  {match.skill_gaps.slice(0, 4).map((gap) => (
-                    <span key={gap} className="gap-pill">
-                      {gap}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {opportunity.notes && (
-                <div className="listing-notes-box">
-                  <strong>Verification notes:</strong> {opportunity.notes}
-                </div>
-              )}
-            </div>
+      {/* 5. Footer: Location, Mode, and Action Buttons */}
+      <div className="clean-card-footer">
+        <div className="clean-footer-meta">
+          <span className="clean-meta-item">
+            <Globe size={12} />
+            {opportunity.mode || 'Online'}
+          </span>
+          {opportunity.location && opportunity.location !== 'Not specified' && (
+            <span className="clean-meta-item">
+              <MapPin size={12} />
+              {opportunity.location.split(';')[0]}
+            </span>
           )}
         </div>
-      )}
 
-      {/* 7. Card Footer with Action */}
-      <div className="card-footer">
-        <div className="source-verified-cluster">
-          <span className="source-verified-text">
-            Source: {opportunity.source_name || platformMeta.platform} · verified {formatDisplayDate(opportunity.last_verified)}
-          </span>
-          <span className="redirect-hint-text">
-            {platformMeta.note}
-          </span>
-        </div>
-
-        <div className="card-footer-actions">
+        <div className="clean-card-actions">
           {onTrackApplication && (
             <button
               type="button"
-              className={`btn-track-action ${trackedStatus ? 'tracked' : ''}`}
+              className={`clean-track-btn ${trackedStatus ? 'tracked' : ''}`}
               onClick={(e) => {
                 e.stopPropagation()
                 onTrackApplication(opportunity, trackedStatus ? 'Under Review' : 'Applied')
               }}
-              title={
-                trackedStatus
-                  ? `Tracked status: ${trackedStatus}. Click to cycle stage.`
-                  : 'Track this opportunity in My Applications'
-              }
+              title="Track application progress"
             >
-              <CheckCircle2 size={13} />
+              <CheckCircle2 size={12} />
               <span>{trackedStatus || 'Track'}</span>
             </button>
           )}
 
           <button
             type="button"
-            className="btn-inspect-signal"
+            className="clean-details-btn"
             onClick={(e) => {
               e.stopPropagation()
               onInspect && onInspect(opportunity)
             }}
-            title="Inspect deep match breakdown & requirements"
           >
-            <span>View Details</span>
+            Details
           </button>
-
 
           <a
             href={opportunity.source_url}
             target="_blank"
             rel="noopener noreferrer"
-            className={`btn-apply-source ${platformMeta.badgeClass}`}
-            aria-label={`${platformMeta.buttonText} for ${opportunity.title} (opens in new tab)`}
-            title={`${platformMeta.buttonText} — ${platformMeta.note}`}
+            className="clean-apply-btn"
             onClick={(e) => e.stopPropagation()}
+            title={`Apply on ${platformMeta.platform}`}
           >
             <span>{platformMeta.buttonText}</span>
-            <ExternalLink size={13} />
+            <ExternalLink size={12} />
           </a>
         </div>
       </div>
@@ -545,4 +292,3 @@ export const OpportunityCardComponent: React.FC<OpportunityCardProps> = ({
 }
 
 export const OpportunityCard = React.memo(OpportunityCardComponent)
-

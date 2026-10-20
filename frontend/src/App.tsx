@@ -5,13 +5,12 @@ import { WelcomeHero } from './components/WelcomeHero'
 import { FiltersBar } from './components/FiltersBar'
 import { OpportunityCard } from './components/OpportunityCard'
 import { CyberTunnelCanvas } from './components/CyberTunnelCanvas'
-import { CyberFlankRails } from './components/CyberFlankRails'
 import { ProfileView } from './components/ProfileView'
 import { TuneRadarView } from './components/TuneRadarView'
 import { SettingsView } from './components/SettingsView'
 import { SavedView } from './components/SavedView'
 import { ApplicationsView } from './components/ApplicationsView'
-import { getOpportunities, getMatches, healthCheck, syncOpportunities } from './api'
+import { getOpportunities, getMatches, getFeed, healthCheck, syncOpportunities } from './api'
 import type { Opportunity, Profile, MatchResult, FilterState, ApplicationRecord, ApplicationStatus } from './types'
 import { Search, Check, RefreshCw, Wifi, WifiOff, X } from 'lucide-react'
 
@@ -983,9 +982,6 @@ export function App() {
       {/* 3D WebGL Glowing Tunnel Background with Dynamic Particle Matrix */}
       <CyberTunnelCanvas />
 
-      {/* Screen Flank Rails with Coordinates & Telemetry */}
-      <CyberFlankRails />
-
       {/* Shared Responsive Header */}
       <Navbar
         activeTab={activeTab}
@@ -1039,6 +1035,16 @@ export function App() {
                 if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
               }}
               onEditProfile={() => setActiveTab('Profile')}
+              onSelectTrack={(track) => {
+                if (track === 'All Tracks') {
+                  handleFilterUpdate({ searchQuery: '', category: 'All' })
+                } else {
+                  handleFilterUpdate({ searchQuery: track, category: 'All' })
+                }
+                const el = document.getElementById('opportunity-feed')
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              }}
+              activeTrack={filters.searchQuery || 'All Tracks'}
               loading={loadingMatches}
             />
 
