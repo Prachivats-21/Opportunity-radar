@@ -58,14 +58,14 @@ export const WelcomeHero: React.FC<WelcomeHeroProps> = ({
           type="button"
           className="clean-profile-badge"
           onClick={onEditProfile}
-          title="Click to change your year, major, or target skills"
+          title="Click to calibrate your target skills or preferences"
           aria-label="Calibrate student profile and matching preferences"
         >
           <UserCheck size={13} className="text-sage" />
           <span>
-            {firstName} · {academicYear !== 'Not specified' ? `Year ${academicYear}` : 'Student'} ({fieldOfStudy})
+            {firstName} · {fieldOfStudy}
           </span>
-          <span className="clean-edit-link">Edit →</span>
+          <span className="clean-edit-link">Calibrate →</span>
         </button>
       </div>
 
@@ -78,7 +78,7 @@ export const WelcomeHero: React.FC<WelcomeHeroProps> = ({
           </h1>
         </div>
         <p className="clean-hero-subhead">
-          Discover verified student hackathons, internships, competitions, and fellowships. Filtered by your college year and technical skillset with direct 1-click external registration.
+          Discover verified student hackathons, internships, competitions, and fellowships. Filtered by your technical skillset and domain ambitions with direct 1-click external registration.
         </p>
 
         {/* 1-Click Quick Track Selector */}
@@ -117,7 +117,7 @@ export const WelcomeHero: React.FC<WelcomeHeroProps> = ({
           </div>
           <div className="metric-text-wrap">
             <span className="metric-num">{eligibleCount > 0 ? eligibleCount : 'Matches Available'}</span>
-            <span className="metric-desc">Eligible for Year {academicYear}</span>
+            <span className="metric-desc">Skill & Merit-First Matching</span>
           </div>
         </button>
 

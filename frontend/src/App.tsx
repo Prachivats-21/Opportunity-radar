@@ -25,7 +25,7 @@ const NotificationCenter = lazy(() => import('./components/NotificationCenter').
 
 const DEFAULT_PROFILE: Profile = {
   name: 'Prachi Vats',
-  year: '1',
+  year: 'All Years',
   field: 'Computer Science & AI',
   skills: ['Python', 'AI', 'Cybersecurity', 'Communication'],
   interests: ['AI', 'Cybersecurity', 'Hackathons', 'Data Science'],

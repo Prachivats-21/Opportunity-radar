@@ -10,7 +10,10 @@ def evaluate_eligibility(opportunity: Opportunity, profile: StudentProfile, toda
     today = today or date.today()
     if opportunity.deadline and opportunity.deadline < today:
         return "expired"
-    year_known = profile.year.strip().casefold() not in {"", "not specified"}
+    year_known = profile.year.strip().casefold() not in {
+        "", "not specified", "all", "any", "open", "all years", "open to all",
+        "all years (skill-first)", "open (all years)", "open to all years"
+    }
     field_known = profile.field.strip().casefold() not in {"", "not specified"}
     allowed_years = {value.strip().casefold() for value in opportunity.eligible_years}
     allowed_fields = {value.strip().casefold() for value in opportunity.eligible_fields}
@@ -75,8 +78,11 @@ def match_opportunity(opportunity: Opportunity, profile: StudentProfile, today: 
         reasons.append("There is not enough profile overlap yet; review the source before deciding.")
     eligibility = evaluate_eligibility(opportunity, profile, today)
     if eligibility == "not_eligible":
-        score = min(score, 15)
-        reasons.append("A known requirement conflicts with the profile you entered.")
+        if phrase_matches or len(overlap) >= 2:
+            reasons.append("Listed requirement specifies certain cohorts, but your technical skills and domain strongly align.")
+        else:
+            score = min(score, 15)
+            reasons.append("A known requirement conflicts with the profile you entered.")
     elif eligibility in {"unknown", "potentially_eligible"}:
         reasons.append("Some eligibility details are missing; confirm them with the organizer.")
     elif eligibility == "expired":

@@ -93,15 +93,15 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           <div className="profile-avatar-large">{initials}</div>
           <h2 className="profile-card-name">{formData.name}</h2>
           <div className="profile-card-meta">
-            <span>{formData.year !== 'Not specified' ? `Year ${formData.year}` : 'Student'}</span>
+            <span>{formData.year && formData.year !== 'Not specified' && formData.year !== 'All Years' ? `Year ${formData.year}` : 'Skill & Merit First'}</span>
             <span className="dot-sep">·</span>
             <span>{formData.field}</span>
           </div>
 
           <div className="profile-stats-list">
             <div className="profile-stat-row">
-              <span className="profile-stat-label"><GraduationCap size={14} /> Academic Year</span>
-              <span className="profile-stat-value">{formData.year !== 'Not specified' ? `Year ${formData.year}` : 'Not set'}</span>
+              <span className="profile-stat-label"><GraduationCap size={14} /> Eligibility Standard</span>
+              <span className="profile-stat-value">{formData.year === 'All Years' ? 'Open to All Years' : formData.year !== 'Not specified' ? `Year ${formData.year}` : 'Open to All Years'}</span>
             </div>
             <div className="profile-stat-row">
               <span className="profile-stat-label"><BookOpen size={14} /> Field / Major</span>
@@ -144,18 +144,19 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               </div>
 
               <div className="form-group">
-                <label htmlFor="pv-year">Academic Year</label>
+                <label htmlFor="pv-year">Academic Standing / Year</label>
                 <select
                   id="pv-year"
                   value={formData.year}
                   onChange={(e) => setFormData({ ...formData, year: e.target.value })}
                 >
-                  <option value="Not specified">Prefer not to say</option>
+                  <option value="All Years">Open to All Years (Skill & Merit-First · Recommended)</option>
                   <option value="1">1st Year Undergraduate</option>
                   <option value="2">2nd Year Undergraduate</option>
                   <option value="3">3rd Year Undergraduate</option>
                   <option value="4">4th Year Undergraduate</option>
                   <option value="Graduate">Postgraduate / Masters</option>
+                  <option value="Not specified">Prefer not to say</option>
                 </select>
               </div>
             </div>

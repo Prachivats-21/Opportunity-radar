@@ -131,11 +131,11 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             type="button"
             className="clean-profile-badge"
             onClick={onEditProfile}
-            title="Click to calibrate your year, major, or target preferences"
+            title="Click to calibrate your target skills or preferences"
           >
             <UserCheck size={13} className="text-sage" />
             <span>
-              {firstName} · {profile.year !== 'Not specified' ? `Year ${profile.year}` : 'Student'} ({profile.field})
+              {firstName} · {profile.field}
             </span>
             <span className="clean-edit-link">Calibrate →</span>
           </button>
@@ -150,7 +150,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             </h1>
           </div>
           <p className="clean-hero-subhead">
-            Your centralized intelligence radar for verified hackathons, internships, competitions, and fellowships. Filtered to your career tracks and college year with direct external registration links.
+            Your centralized intelligence radar for verified hackathons, internships, competitions, and fellowships. Filtered by your technical skillset and domain ambitions with direct external registration links.
           </p>
         </div>
 
@@ -161,8 +161,8 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
               <ShieldCheck size={16} />
             </div>
             <div className="metric-text-wrap">
-              <span className="metric-num">{totalEligibleCount} Eligible</span>
-              <span className="metric-desc">Available for Year {profile.year}</span>
+              <span className="metric-num">{opportunities.length} Open Catalog</span>
+              <span className="metric-desc">Skill & Merit-First (No Year Gate)</span>
             </div>
           </div>
 
@@ -478,9 +478,9 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             </div>
 
             <div className="calibration-meta-item">
-              <span className="calibration-label">Academic Standing</span>
-              <span className="calibration-value">
-                {profile.year !== 'Not specified' ? `Year ${profile.year}` : 'Student'}
+              <span className="calibration-label">Eligibility Model</span>
+              <span className="calibration-value" style={{ color: '#A78BFA' }}>
+                Open to All Years (Merit-First)
               </span>
             </div>
 

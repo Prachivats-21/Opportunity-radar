@@ -82,18 +82,19 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
             </div>
 
             <div className="form-group">
-              <label htmlFor="profile-year">Academic Year</label>
+              <label htmlFor="profile-year">Academic Standing / Year</label>
               <select
                 id="profile-year"
                 value={formData.year}
                 onChange={(e) => setFormData({ ...formData, year: e.target.value })}
               >
-                <option value="Not specified">Prefer not to say</option>
+                <option value="All Years">Open to All Years (Skill & Merit-First · Recommended)</option>
                 <option value="1">1st Year Undergraduate</option>
                 <option value="2">2nd Year Undergraduate</option>
                 <option value="3">3rd Year Undergraduate</option>
                 <option value="4">4th Year Undergraduate</option>
                 <option value="Graduate">Postgraduate / Masters</option>
+                <option value="Not specified">Prefer not to say</option>
               </select>
             </div>
           </div>
