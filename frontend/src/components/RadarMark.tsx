@@ -26,42 +26,42 @@ export const RadarMark: React.FC<RadarMarkProps> = ({
         style={{ width: '100%', height: '100%' }}
       >
         {/* Background circular plate */}
-        <circle cx="50" cy="50" r="48" fill="#F4F8F5" stroke="#D1E2D6" strokeWidth="1.5" />
+        <circle cx="50" cy="50" r="48" fill="rgba(139, 92, 246, 0.08)" stroke="rgba(139, 92, 246, 0.28)" strokeWidth="1.5" />
 
         {/* Concentric distance rings */}
-        <circle cx="50" cy="50" r="35" stroke="#2F5D4D" strokeWidth="1" strokeOpacity="0.22" />
-        <circle cx="50" cy="50" r="22" stroke="#2F5D4D" strokeWidth="1" strokeOpacity="0.32" />
-        <circle cx="50" cy="50" r="9" fill="#2F5D4D" fillOpacity="0.12" stroke="#2F5D4D" strokeWidth="1.2" />
+        <circle cx="50" cy="50" r="35" stroke="#8B5CF6" strokeWidth="1" strokeOpacity="0.28" />
+        <circle cx="50" cy="50" r="22" stroke="#8B5CF6" strokeWidth="1" strokeOpacity="0.38" />
+        <circle cx="50" cy="50" r="9" fill="#8B5CF6" fillOpacity="0.2" stroke="#8B5CF6" strokeWidth="1.2" />
 
         {/* Cardinal crosshairs */}
-        <line x1="50" y1="6" x2="50" y2="94" stroke="#2F5D4D" strokeWidth="0.8" strokeOpacity="0.18" strokeDasharray="2 3" />
-        <line x1="6" y1="50" x2="94" y2="50" stroke="#2F5D4D" strokeWidth="0.8" strokeOpacity="0.18" strokeDasharray="2 3" />
+        <line x1="50" y1="6" x2="50" y2="94" stroke="#8B5CF6" strokeWidth="0.8" strokeOpacity="0.25" strokeDasharray="2 3" />
+        <line x1="6" y1="50" x2="94" y2="50" stroke="#8B5CF6" strokeWidth="0.8" strokeOpacity="0.25" strokeDasharray="2 3" />
 
         {/* Radar Scanner Sweep Sector */}
         <g className="radar-sweep-arm">
           <path
             d="M50 50 L50 4 A46 46 0 0 1 82 18 Z"
             fill={`url(#${gradientId})`}
-            opacity="0.55"
+            opacity="0.6"
           />
-          <line x1="50" y1="50" x2="50" y2="4" stroke="#2F5D4D" strokeWidth="1.5" strokeOpacity="0.8" />
+          <line x1="50" y1="50" x2="50" y2="4" stroke="#A78BFA" strokeWidth="1.5" strokeOpacity="0.85" />
         </g>
 
         {/* Signal Blips (Opportunities) */}
-        <circle cx="68" cy="28" r="3" fill="#2F5D4D" />
-        <circle cx="68" cy="28" r="5" stroke="#2F5D4D" strokeWidth="1" strokeOpacity="0.4" />
+        <circle cx="68" cy="28" r="3" fill="#A78BFA" />
+        <circle cx="68" cy="28" r="5" stroke="#A78BFA" strokeWidth="1" strokeOpacity="0.5" />
 
-        <circle cx="34" cy="62" r="2.5" fill="#C85A32" />
-        <circle cx="72" cy="68" r="2.5" fill="#3A6D88" />
+        <circle cx="34" cy="62" r="2.5" fill="#F59E0B" />
+        <circle cx="72" cy="68" r="2.5" fill="#F43F5E" />
 
         {/* Center Origin Node */}
-        <circle cx="50" cy="50" r="3" fill="#2F5D4D" />
+        <circle cx="50" cy="50" r="3" fill="#8B5CF6" />
 
         {/* Gradient Definition for Sweep */}
         <defs>
           <linearGradient id={gradientId} x1="50" y1="50" x2="82" y2="18" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#2F5D4D" stopOpacity="0.35" />
-            <stop offset="100%" stopColor="#2F5D4D" stopOpacity="0.02" />
+            <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.45" />
+            <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.02" />
           </linearGradient>
         </defs>
       </svg>

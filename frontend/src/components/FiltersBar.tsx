@@ -167,27 +167,7 @@ export const FiltersBar: React.FC<FiltersBarProps> = ({
 
   return (
     <div className="filter-bar-container" id="opportunity-feed">
-      {/* 1. Category Tabs */}
-      <div className="category-tabs" role="tablist">
-        {CATEGORIES.map((tab) => {
-          const isActive = filters.category === tab.id
-          const count = tab.id === 'All' ? totalCount : categoryCounts[tab.id] || 0
-          return (
-            <button
-              key={tab.id}
-              role="tab"
-              aria-selected={isActive}
-              className={`cat-tab-btn ${isActive ? 'active' : ''}`}
-              onClick={() => onFilterChange({ category: tab.id })}
-            >
-              <span>{tab.label}</span>
-              <span className="cat-tab-count">({count})</span>
-            </button>
-          )
-        })}
-      </div>
-
-      {/* 2. Quick Filters Bar & Controls */}
+      {/* Quick Filters Bar & Controls */}
       <div className="quick-and-sort-row">
         {/* Quick Filter Buttons */}
         <div className="quick-filters-wrap" role="group" aria-label="Quick filters">

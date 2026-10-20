@@ -89,9 +89,9 @@ export const CyberTunnelCanvas: React.FC = () => {
       const colors = new Float32Array(COUNT * 3)
       const sizes = new Float32Array(COUNT)
 
-      const colorEmerald = hexToVec3('#10b981')
-      const colorCyan = hexToVec3('#38bdf8')
+      const colorViolet = hexToVec3('#8b5cf6')
       const colorAmber = hexToVec3('#f59e0b')
+      const colorRose = hexToVec3('#f43f5e')
 
       for (let i = 0; i < COUNT; i++) {
         const x = (Math.random() - 0.5) * 50
@@ -105,9 +105,9 @@ export const CyberTunnelCanvas: React.FC = () => {
         sizes[i] = Math.random() < 0.2 ? 14 + Math.random() * 12 : 5 + Math.random() * 8
 
         const dice = Math.random()
-        let c = colorEmerald
-        if (dice > 0.85) c = colorAmber
-        else if (dice > 0.6) c = colorCyan
+        let c = colorViolet
+        if (dice > 0.8) c = colorAmber
+        else if (dice > 0.6) c = colorRose
 
         colors[i * 3] = c.x
         colors[i * 3 + 1] = c.y
@@ -248,7 +248,7 @@ export const CyberTunnelCanvas: React.FC = () => {
       y: Math.random() * curH,
       z: Math.random() * 2 + 0.5,
       radius: Math.random() < 0.2 ? Math.random() * 2.5 + 2 : Math.random() * 1.5 + 0.8,
-      color: Math.random() > 0.8 ? '#f59e0b' : Math.random() > 0.6 ? '#38bdf8' : '#10b981',
+      color: Math.random() > 0.75 ? '#f59e0b' : Math.random() > 0.45 ? '#8b5cf6' : '#ec4899',
       speedX: (Math.random() - 0.5) * 0.35,
       speedY: (Math.random() - 0.5) * 0.35,
       phase: Math.random() * Math.PI * 2,
