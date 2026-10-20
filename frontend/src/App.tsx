@@ -5,6 +5,7 @@ import { WelcomeHero } from './components/WelcomeHero'
 import { FiltersBar } from './components/FiltersBar'
 import { OpportunityCard } from './components/OpportunityCard'
 import { CyberTunnelCanvas } from './components/CyberTunnelCanvas'
+import { CategoryPageView } from './components/CategoryPageView'
 import { ProfileView } from './components/ProfileView'
 import { TuneRadarView } from './components/TuneRadarView'
 import { SettingsView } from './components/SettingsView'
@@ -12,7 +13,7 @@ import { SavedView } from './components/SavedView'
 import { ApplicationsView } from './components/ApplicationsView'
 import { getOpportunities, getMatches, getFeed, healthCheck, syncOpportunities } from './api'
 import type { Opportunity, Profile, MatchResult, FilterState, ApplicationRecord, ApplicationStatus } from './types'
-import { Search, Check, RefreshCw, Wifi, WifiOff, X } from 'lucide-react'
+import { Search, Check, RefreshCw, Wifi, WifiOff, X, Sparkles } from 'lucide-react'
 
 // Code-split dynamic modal overlays to minimize critical bundle size
 const OpportunityDetailDrawer = lazy(() => import('./components/OpportunityDetailDrawer').then(m => ({ default: m.OpportunityDetailDrawer })))
@@ -40,6 +41,7 @@ const INITIAL_FILTERS: FilterState = {
   quickRemote: false,
   quickEligibleForMe: false,
   quickFreeToEnter: false,
+  matchesOnly: false,
   mode: 'All',
   deadlinePreset: 'All',
   deadlineFrom: '',
@@ -413,7 +415,7 @@ export function App() {
   })
 
   const [matches, setMatches] = useState<MatchResult[]>([])
-  const [activeTab, setActiveTab] = useState<'Dashboard' | 'Saved' | 'Applications' | 'Profile' | 'Tune' | 'Settings'>('Dashboard')
+  const [activeTab, setActiveTab] = useState<'Dashboard' | 'Hackathons' | 'Internships' | 'Competitions' | 'Fellowships' | 'Saved' | 'Applications' | 'Profile' | 'Tune' | 'Settings'>('Dashboard')
 
   // Applications Tracker State
   const [applications, setApplications] = useState<ApplicationRecord[]>(() => {
@@ -462,6 +464,15 @@ export function App() {
   const [apiConnected, setApiConnected] = useState<boolean | null>(null)
   const [errorMessage, setErrorMessage] = useState('')
   const [toastMessage, setToastMessage] = useState('')
+
+  // LinkedIn Integration State
+  const [isLinkedInConnected, setIsLinkedInConnected] = useState<boolean>(() => {
+    try {
+      return window.localStorage.getItem('opportunity-radar-linkedin-connected') === 'true'
+    } catch {
+      return false
+    }
+  })
 
   // Debounced search query
   const [debouncedQuery, setDebouncedQuery] = useState(filters.searchQuery)
@@ -569,9 +580,32 @@ export function App() {
     return () => clearTimeout(timer)
   }, [filters.searchQuery])
 
-  // Handle profile / preferences update and immediately redirect to Dashboard
-  const handleProfileUpdate = useCallback((updated: Profile, toastText = 'Profile preferences updated! Redirected to Radar feed.') => {
+  // Connect with LinkedIn & Auto-Calibrate
+  const handleConnectLinkedIn = useCallback(() => {
+    if (!isLinkedInConnected) {
+      setIsLinkedInConnected(true)
+      try {
+        window.localStorage.setItem('opportunity-radar-linkedin-connected', 'true')
+      } catch {}
+      const linkedInSkills = ['Product Management', 'Cybersecurity', 'PRD', 'Wireframing', 'User Research', 'Threat Modeling']
+      const updatedSkills = Array.from(new Set([...profile.skills, ...linkedInSkills]))
+      const updatedProfile: Profile = {
+        ...profile,
+        skills: updatedSkills,
+        interests: Array.from(new Set([...profile.interests, 'Product Management', 'Cybersecurity'])),
+      }
+      setProfile(updatedProfile)
+      setFilters((prev) => ({ ...prev, matchesOnly: true, category: 'All' }))
+      setToastMessage('LinkedIn Connected! Calibrated with Product Management & Cybersecurity profile & jobs.')
+    } else {
+      setToastMessage('LinkedIn profile is already connected and active.')
+    }
+  }, [isLinkedInConnected, profile])
+
+  // Handle profile / preferences update and immediately show matching opportunities
+  const handleProfileUpdate = useCallback((updated: Profile, toastText = 'Profile preferences updated! Showing your matched opportunities.') => {
     setProfile(updated)
+    setFilters((prev) => ({ ...prev, matchesOnly: true, category: 'All' }))
     setActiveTab('Dashboard')
     setShowProfileModal(false)
     setToastMessage(toastText)
@@ -842,6 +876,22 @@ export function App() {
     return count
   }, [filters])
 
+  // Count opportunities strictly matching user's profile preferences
+  const matchedPreferencesCount = useMemo(() => {
+    const userTerms = [
+      profile.field,
+      ...profile.skills,
+      ...profile.interests,
+    ].map((s) => s.toLowerCase().trim()).filter((s) => s && s.length > 2)
+
+    return opportunities.filter((o) => {
+      const m = matchMap.get(o.id)
+      if (m && m.score >= 50) return true
+      const text = `${o.title} ${o.summary} ${o.skills.join(' ')} ${o.category}`.toLowerCase()
+      return userTerms.some((t) => text.includes(t))
+    }).length
+  }, [opportunities, profile, matchMap])
+
   // Filter and sort opportunities
   const filteredOpportunities = useMemo(() => {
     let list = [...opportunities]
@@ -884,6 +934,22 @@ export function App() {
         const text = `${o.description} ${o.notes}`.toLowerCase()
         const hasFee = text.includes('registration fee:') || text.includes('entry fee:') || text.includes('paid registration')
         return !hasFee
+      })
+    }
+
+    // Filter to Matched Profile Preferences
+    if (filters.matchesOnly) {
+      const userTerms = [
+        profile.field,
+        ...profile.skills,
+        ...profile.interests,
+      ].map((s) => s.toLowerCase().trim()).filter((s) => s && s.length > 2)
+
+      list = list.filter((o) => {
+        const m = matchMap.get(o.id)
+        if (m && m.score >= 50) return true
+        const text = `${o.title} ${o.summary} ${o.skills.join(' ')} ${o.category}`.toLowerCase()
+        return userTerms.some((t) => text.includes(t))
       })
     }
 
@@ -1002,6 +1068,8 @@ export function App() {
         applicationsCount={applications.length}
         onSyncFeeds={handleSyncFeeds}
         isSyncing={isSyncing}
+        onConnectLinkedIn={handleConnectLinkedIn}
+        isLinkedInConnected={isLinkedInConnected}
         targetOpportunity={clockTargetOpp || selectedOpportunityForDrawer}
         onClearClockTarget={() => setClockTargetOpp(null)}
       />
@@ -1060,6 +1128,43 @@ export function App() {
               advancedFilterCount={advancedFilterCount}
             />
 
+            {/* View Mode Bar: All vs Matched Preferences */}
+            <div className="feed-scope-bar">
+              <div className="scope-tabs-group">
+                <button
+                  type="button"
+                  className={`scope-tab-btn ${!filters.matchesOnly ? 'active' : ''}`}
+                  onClick={() => handleFilterUpdate({ matchesOnly: false })}
+                >
+                  <span>All Catalog</span>
+                  <span className="scope-pill-count">{opportunities.length}</span>
+                </button>
+
+                <button
+                  type="button"
+                  className={`scope-tab-btn ${filters.matchesOnly ? 'active' : ''}`}
+                  onClick={() => handleFilterUpdate({ matchesOnly: true })}
+                >
+                  <Sparkles size={12} className="text-sage" />
+                  <span>Matched to My Preferences</span>
+                  <span className="scope-pill-count highlight">{matchedPreferencesCount}</span>
+                </button>
+              </div>
+
+              {filters.matchesOnly && (
+                <div className="active-preferences-indicator">
+                  <span>Filtered to <strong>{profile.field}</strong> ({matchedPreferencesCount} matches found)</span>
+                  <button
+                    type="button"
+                    className="clear-scope-btn"
+                    onClick={() => handleFilterUpdate({ matchesOnly: false })}
+                  >
+                    Show all {opportunities.length}
+                  </button>
+                </div>
+              )}
+            </div>
+
             {/* Opportunities Grid */}
             <section className="opportunity-grid" id="opportunity-feed" aria-label="Opportunities list">
               {loadingData && opportunities.length === 0 ? (
@@ -1103,7 +1208,75 @@ export function App() {
           </div>
         )}
 
-        {/* 2. SAVED OPPORTUNITIES VIEW */}
+        {/* DEDICATED HACKATHONS PAGE */}
+        {activeTab === 'Hackathons' && (
+          <CategoryPageView
+            category="Hackathon"
+            opportunities={opportunities}
+            matchMap={matchMap}
+            saved={saved}
+            onToggleSave={toggleSave}
+            onInspect={(opp) => setSelectedOpportunityForDrawer(opp)}
+            userSkills={profile.skills}
+            applicationStatusMap={applicationStatusMap}
+            onTrackApplication={handleTrackApplication}
+            profile={profile}
+            onNavigateHome={() => setActiveTab('Dashboard')}
+          />
+        )}
+
+        {/* DEDICATED INTERNSHIPS PAGE */}
+        {activeTab === 'Internships' && (
+          <CategoryPageView
+            category="Internship"
+            opportunities={opportunities}
+            matchMap={matchMap}
+            saved={saved}
+            onToggleSave={toggleSave}
+            onInspect={(opp) => setSelectedOpportunityForDrawer(opp)}
+            userSkills={profile.skills}
+            applicationStatusMap={applicationStatusMap}
+            onTrackApplication={handleTrackApplication}
+            profile={profile}
+            onNavigateHome={() => setActiveTab('Dashboard')}
+          />
+        )}
+
+        {/* DEDICATED COMPETITIONS PAGE */}
+        {activeTab === 'Competitions' && (
+          <CategoryPageView
+            category="Competition"
+            opportunities={opportunities}
+            matchMap={matchMap}
+            saved={saved}
+            onToggleSave={toggleSave}
+            onInspect={(opp) => setSelectedOpportunityForDrawer(opp)}
+            userSkills={profile.skills}
+            applicationStatusMap={applicationStatusMap}
+            onTrackApplication={handleTrackApplication}
+            profile={profile}
+            onNavigateHome={() => setActiveTab('Dashboard')}
+          />
+        )}
+
+        {/* DEDICATED FELLOWSHIPS PAGE */}
+        {activeTab === 'Fellowships' && (
+          <CategoryPageView
+            category="Fellowship"
+            opportunities={opportunities}
+            matchMap={matchMap}
+            saved={saved}
+            onToggleSave={toggleSave}
+            onInspect={(opp) => setSelectedOpportunityForDrawer(opp)}
+            userSkills={profile.skills}
+            applicationStatusMap={applicationStatusMap}
+            onTrackApplication={handleTrackApplication}
+            profile={profile}
+            onNavigateHome={() => setActiveTab('Dashboard')}
+          />
+        )}
+
+        {/* SAVED OPPORTUNITIES VIEW */}
         {activeTab === 'Saved' && (
           <SavedView
             opportunities={opportunities}

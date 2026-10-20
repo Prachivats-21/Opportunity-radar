@@ -18,6 +18,7 @@ export type FilterState = {
   quickRemote: boolean
   quickEligibleForMe: boolean
   quickFreeToEnter: boolean
+  matchesOnly?: boolean
   mode: string
   deadlinePreset: string
   deadlineFrom: string

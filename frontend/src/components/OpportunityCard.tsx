@@ -110,6 +110,9 @@ export const OpportunityCardComponent: React.FC<OpportunityCardProps> = ({
 
   const getPlatformMeta = (sourceUrl: string, sourceName?: string) => {
     const lowerUrl = (sourceUrl || '').toLowerCase()
+    if (lowerUrl.includes('linkedin.com') || (sourceName || '').toLowerCase().includes('linkedin')) {
+      return { platform: 'LinkedIn', buttonText: 'Apply on LinkedIn' }
+    }
     if (lowerUrl.includes('unstop.com')) {
       return { platform: 'Unstop', buttonText: 'Apply on Unstop' }
     }

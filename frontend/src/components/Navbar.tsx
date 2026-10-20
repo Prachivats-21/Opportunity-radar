@@ -13,6 +13,10 @@ import {
   SlidersHorizontal,
   FileCheck2,
   RefreshCw,
+  Code2,
+  Briefcase,
+  Trophy,
+  GraduationCap,
 } from 'lucide-react'
 import { RadarMark } from './RadarMark'
 
@@ -35,6 +39,8 @@ interface NavbarProps {
   applicationsCount?: number
   onSyncFeeds?: () => void
   isSyncing?: boolean
+  onConnectLinkedIn?: () => void
+  isLinkedInConnected?: boolean
   targetOpportunity?: Opportunity | null
   onClearClockTarget?: () => void
 }
@@ -56,6 +62,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   applicationsCount = 0,
   onSyncFeeds,
   isSyncing = false,
+  onConnectLinkedIn,
+  isLinkedInConnected = false,
   targetOpportunity,
   onClearClockTarget,
 }) => {
@@ -142,8 +150,48 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => handleNavClick('Dashboard')}
               aria-current={activeTab === 'Dashboard' ? 'page' : undefined}
             >
-              <LayoutDashboard size={14} />
-              <span>Radar Feed</span>
+              <LayoutDashboard size={13} />
+              <span>Overview</span>
+            </button>
+
+            <button
+              type="button"
+              className={`nav-link-btn ${activeTab === 'Hackathons' ? 'active' : ''}`}
+              onClick={() => handleNavClick('Hackathons')}
+              aria-current={activeTab === 'Hackathons' ? 'page' : undefined}
+            >
+              <Code2 size={13} />
+              <span>Hackathons</span>
+            </button>
+
+            <button
+              type="button"
+              className={`nav-link-btn ${activeTab === 'Internships' ? 'active' : ''}`}
+              onClick={() => handleNavClick('Internships')}
+              aria-current={activeTab === 'Internships' ? 'page' : undefined}
+            >
+              <Briefcase size={13} />
+              <span>Internships</span>
+            </button>
+
+            <button
+              type="button"
+              className={`nav-link-btn ${activeTab === 'Competitions' ? 'active' : ''}`}
+              onClick={() => handleNavClick('Competitions')}
+              aria-current={activeTab === 'Competitions' ? 'page' : undefined}
+            >
+              <Trophy size={13} />
+              <span>Competitions</span>
+            </button>
+
+            <button
+              type="button"
+              className={`nav-link-btn ${activeTab === 'Fellowships' ? 'active' : ''}`}
+              onClick={() => handleNavClick('Fellowships')}
+              aria-current={activeTab === 'Fellowships' ? 'page' : undefined}
+            >
+              <GraduationCap size={13} />
+              <span>Fellowships</span>
             </button>
 
             <button
@@ -152,7 +200,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => handleNavClick('Saved')}
               aria-current={activeTab === 'Saved' ? 'page' : undefined}
             >
-              <Bookmark size={14} />
+              <Bookmark size={13} />
               <span>Saved</span>
               {savedCount > 0 && <span className="header-nav-badge highlight">{savedCount}</span>}
             </button>
@@ -163,19 +211,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => handleNavClick('Applications')}
               aria-current={activeTab === 'Applications' ? 'page' : undefined}
             >
-              <FileCheck2 size={14} />
+              <FileCheck2 size={13} />
               <span>Applications</span>
               {applicationsCount > 0 && <span className="header-nav-badge highlight">{applicationsCount}</span>}
-            </button>
-
-            <button
-              type="button"
-              className={`nav-link-btn ${activeTab === 'Profile' ? 'active' : ''}`}
-              onClick={() => handleNavClick('Profile')}
-              aria-current={activeTab === 'Profile' ? 'page' : undefined}
-            >
-              <SlidersHorizontal size={14} />
-              <span>My Profile & Skills</span>
             </button>
           </nav>
         </div>
@@ -219,6 +257,21 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <RefreshCw size={13} />
               <span className="hide-on-mobile">{isSyncing ? 'Syncing...' : 'Sync Feeds'}</span>
+            </button>
+          )}
+
+          {/* LinkedIn Profile & Jobs Sync */}
+          {onConnectLinkedIn && (
+            <button
+              type="button"
+              className={`btn-linkedin-header ${isLinkedInConnected ? 'connected' : ''}`}
+              onClick={onConnectLinkedIn}
+              title={isLinkedInConnected ? 'LinkedIn synced: Calibrated with your skills' : 'Connect LinkedIn to import skills & target roles'}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+              </svg>
+              <span className="hide-on-mobile">{isLinkedInConnected ? 'LinkedIn Synced' : 'Sync LinkedIn'}</span>
             </button>
           )}
 

@@ -1978,5 +1978,245 @@
     "last_verified": "2026-10-21",
     "status": "verified",
     "notes": "Over $100k in prizes and incubator fast-tracks."
+  },
+  {
+    "id": "linkedin-apm-summer-2026",
+    "title": "Associate Product Manager Intern (APM 2026)",
+    "organization": "LinkedIn",
+    "category": "Internship",
+    "summary": "12-week summer internship for aspiring student product managers: lead feature specs, run user discovery, build wireframes, and launch customer-facing features.",
+    "description": "Open to undergraduate and graduate students of all years. You will pair with a senior PM mentor to design product requirements (PRDs), run A/B experiments, collaborate with engineering and design, and present product roadmaps to leadership.",
+    "skills": [
+      "Product Management",
+      "PRD",
+      "User Research",
+      "Wireframing",
+      "Product Strategy",
+      "Figma",
+      "Metrics",
+      "Data Analysis"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Engineering",
+      "Business",
+      "Design",
+      "Product Management"
+    ],
+    "location": "Bangalore, India / Hybrid",
+    "mode": "Hybrid",
+    "team_min": 1,
+    "team_max": 1,
+    "deadline": "2026-11-28",
+    "start_date": "2026-05-15",
+    "source_url": "https://www.linkedin.com/jobs/view/linkedin-apm-summer-2026",
+    "source_name": "LinkedIn",
+    "last_verified": "2026-10-21",
+    "status": "verified",
+    "notes": "Direct interview pipelines for full-time return offers upon graduation."
+  },
+  {
+    "id": "linkedin-security-intern-2026",
+    "title": "Cybersecurity & Information Security Engineering Intern",
+    "organization": "LinkedIn Infosec",
+    "category": "Internship",
+    "summary": "Paid cybersecurity internship working with LinkedIn Trust & Safety engineering on threat modeling, application security, and network defenses.",
+    "description": "Collaborate with security researchers to detect vulnerabilities, analyze telemetry, build automated security scanners in Python, and harden cloud infrastructure against zero-day threats.",
+    "skills": [
+      "Cybersecurity",
+      "Network Security",
+      "Threat Modeling",
+      "Python",
+      "Vulnerability Assessment",
+      "Cloud Security",
+      "Ethical Hacking"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Cybersecurity",
+      "Information Technology",
+      "Engineering"
+    ],
+    "location": "Bangalore, India / Remote",
+    "mode": "Remote",
+    "team_min": 1,
+    "team_max": 1,
+    "deadline": "2026-11-22",
+    "start_date": "2026-05-01",
+    "source_url": "https://www.linkedin.com/jobs/view/linkedin-security-intern-2026",
+    "source_name": "LinkedIn",
+    "last_verified": "2026-10-21",
+    "status": "verified",
+    "notes": "Includes competitive stipend, mentorship, and equipment allowance."
+  },
+  {
+    "id": "cisco-cyber-challenge-2026",
+    "title": "Cisco National Campus Cyber Defense Hackathon 2026",
+    "organization": "Cisco & LinkedIn Careers",
+    "category": "Hackathon",
+    "summary": "Premier 36-hour collegiate cyber defense hackathon and CTF: defend vulnerable cloud networks, solve binary exploitation tasks, and patch system flaws.",
+    "description": "National hackathon for undergraduate students interested in ethical hacking, network forensics, and cybersecurity engineering. Finalists gain direct interview rounds for Cisco Security internships.",
+    "skills": [
+      "Cybersecurity",
+      "Network Security",
+      "CTF",
+      "Ethical Hacking",
+      "Python",
+      "Penetration Testing",
+      "Linux"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Cybersecurity",
+      "Engineering"
+    ],
+    "location": "India / Online",
+    "mode": "Online",
+    "team_min": 1,
+    "team_max": 4,
+    "deadline": "2026-11-18",
+    "start_date": "2026-11-25",
+    "source_url": "https://www.linkedin.com/jobs/view/cisco-cyber-challenge-2026",
+    "source_name": "LinkedIn",
+    "last_verified": "2026-10-21",
+    "status": "verified",
+    "notes": "Top 10 student teams receive cash prizes and Cisco networking vouchers."
+  },
+  {
+    "id": "swiggy-product-fellowship-2026",
+    "title": "Swiggy Campus Product Strategy & Management Fellowship",
+    "organization": "Swiggy & LinkedIn",
+    "category": "Fellowship",
+    "summary": "6-month funded product management fellowship: work directly with Swiggy Product VPs on consumer tech, rapid experimentation, PRDs, and user research.",
+    "description": "Open to all college students. Fellows receive a monthly stipend of Rs 45,000, 1-on-1 executive mentorship, and hands-on experience driving real user metrics and live prototypes.",
+    "skills": [
+      "Product Management",
+      "PRD",
+      "Consumer Tech",
+      "User Research",
+      "Metrics",
+      "Wireframing",
+      "Growth Strategy"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Product Management",
+      "Engineering",
+      "Business",
+      "Computer Science"
+    ],
+    "location": "Bangalore / Remote",
+    "mode": "Remote",
+    "team_min": 1,
+    "team_max": 2,
+    "deadline": "2026-12-05",
+    "start_date": "2026-12-15",
+    "source_url": "https://www.linkedin.com/jobs/view/swiggy-product-fellowship-2026",
+    "source_name": "LinkedIn",
+    "last_verified": "2026-10-21",
+    "status": "verified",
+    "notes": "Full placement conversion opportunities for final year students."
+  },
+  {
+    "id": "microsoft-pm-case-challenge-2026",
+    "title": "Microsoft Next-Gen Product Management Challenge 2026",
+    "organization": "Microsoft & LinkedIn University",
+    "category": "Competition",
+    "summary": "Solve futuristic AI product problems: research customer pain points, write comprehensive PRDs, and pitch prototype solutions to Microsoft engineering leaders.",
+    "description": "Annual student competition open to undergraduate students globally. Teams design new Copilot and AI product features, backed by user research and market sizing models.",
+    "skills": [
+      "Product Management",
+      "Product Strategy",
+      "Figma",
+      "PRD",
+      "AI Products",
+      "Market Sizing"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "All"
+    ],
+    "location": "Global / Online",
+    "mode": "Online",
+    "team_min": 1,
+    "team_max": 3,
+    "deadline": "2026-11-25",
+    "start_date": "2026-12-01",
+    "source_url": "https://www.linkedin.com/jobs/view/microsoft-pm-case-challenge-2026",
+    "source_name": "LinkedIn",
+    "last_verified": "2026-10-21",
+    "status": "verified",
+    "notes": "Finalists present live to Microsoft executive judges; fast-track interviews for PM roles."
+  },
+  {
+    "id": "palo-alto-soc-fellowship-2026",
+    "title": "Palo Alto Networks Early Career Cyber Defense Fellowship",
+    "organization": "Palo Alto Networks",
+    "category": "Fellowship",
+    "summary": "Hands-on cyber fellowship training students in threat intelligence, Security Operations Center (SOC) workflows, cloud security, and firewall engineering.",
+    "description": "Intensive 4-month program with industry practitioners. Learn SIEM, cloud telemetry, forensic log analysis, and automated threat hunting with Palo Alto Prisma Cloud.",
+    "skills": [
+      "Cybersecurity",
+      "Cloud Security",
+      "Threat Hunting",
+      "SOC",
+      "Network Defense",
+      "SIEM"
+    ],
+    "eligible_years": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "Graduate"
+    ],
+    "eligible_fields": [
+      "Computer Science",
+      "Cybersecurity",
+      "Engineering"
+    ],
+    "location": "Bangalore / Remote",
+    "mode": "Remote",
+    "team_min": 1,
+    "team_max": 1,
+    "deadline": "2026-12-10",
+    "start_date": "2026-12-20",
+    "source_url": "https://www.linkedin.com/jobs/view/palo-alto-soc-fellowship-2026",
+    "source_name": "LinkedIn",
+    "last_verified": "2026-10-21",
+    "status": "verified",
+    "notes": "Includes full PCNSE certification sponsorship and direct hiring referral."
   }
 ]
