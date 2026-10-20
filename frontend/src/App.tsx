@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, useCallback, lazy, Suspense } from 'react'
 import { Navbar } from './components/Navbar'
 import { AppFooter } from './components/AppFooter'
+import { OverviewDashboard } from './components/OverviewDashboard'
 import { WelcomeHero } from './components/WelcomeHero'
 import { FiltersBar } from './components/FiltersBar'
 import { OpportunityCard } from './components/OpportunityCard'
@@ -1076,136 +1077,24 @@ export function App() {
 
       {/* Main Single Central Workspace */}
       <main className="central-workspace" role="main">
-        {/* 1. DASHBOARD / RADAR FEED VIEW */}
+        {/* 1. DASHBOARD / OVERVIEW COMMAND CENTER */}
         {activeTab === 'Dashboard' && (
-          <div className="dashboard-view-content">
-            {/* Interactive Student Match Hero */}
-            <WelcomeHero
-              userName={profile.name || 'Prachi Vats'}
-              academicYear={profile.year}
-              fieldOfStudy={profile.field}
-              closingSoonCount={closingSoonCount}
-              eligibleCount={eligibleCount}
-              topMatch={topMatch}
-              onFilterEligible={() => {
-                handleFilterUpdate({ quickEligibleForMe: true, category: 'All' })
-                const el = document.getElementById('opportunity-feed')
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              }}
-              onFilterClosingSoon={() => {
-                handleFilterUpdate({ quickClosingSoon: true, category: 'All' })
-                const el = document.getElementById('opportunity-feed')
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              }}
-              onResetFilters={() => {
-                resetFilters()
-                const el = document.getElementById('opportunity-feed')
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              }}
-              onEditProfile={() => setActiveTab('Profile')}
-              onSelectTrack={(track) => {
-                if (track === 'All Tracks') {
-                  handleFilterUpdate({ searchQuery: '', category: 'All' })
-                } else {
-                  handleFilterUpdate({ searchQuery: track, category: 'All' })
-                }
-                const el = document.getElementById('opportunity-feed')
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              }}
-              activeTrack={filters.searchQuery || 'All Tracks'}
-              loading={loadingMatches}
-            />
-
-            {/* Filter Bar */}
-            <FiltersBar
-              filters={filters}
-              onFilterChange={handleFilterUpdate}
-              categoryCounts={categoryCounts}
-              totalCount={opportunities.length}
-              resultCount={filteredOpportunities.length}
-              onResetFilters={resetFilters}
-              onOpenAdvancedDrawer={() => setShowAdvancedDrawer(true)}
-              advancedFilterCount={advancedFilterCount}
-            />
-
-            {/* View Mode Bar: All vs Matched Preferences */}
-            <div className="feed-scope-bar">
-              <div className="scope-tabs-group">
-                <button
-                  type="button"
-                  className={`scope-tab-btn ${!filters.matchesOnly ? 'active' : ''}`}
-                  onClick={() => handleFilterUpdate({ matchesOnly: false })}
-                >
-                  <span>All Catalog</span>
-                  <span className="scope-pill-count">{opportunities.length}</span>
-                </button>
-
-                <button
-                  type="button"
-                  className={`scope-tab-btn ${filters.matchesOnly ? 'active' : ''}`}
-                  onClick={() => handleFilterUpdate({ matchesOnly: true })}
-                >
-                  <Sparkles size={12} className="text-sage" />
-                  <span>Matched to My Preferences</span>
-                  <span className="scope-pill-count highlight">{matchedPreferencesCount}</span>
-                </button>
-              </div>
-
-              {filters.matchesOnly && (
-                <div className="active-preferences-indicator">
-                  <span>Filtered to <strong>{profile.field}</strong> ({matchedPreferencesCount} matches found)</span>
-                  <button
-                    type="button"
-                    className="clear-scope-btn"
-                    onClick={() => handleFilterUpdate({ matchesOnly: false })}
-                  >
-                    Show all {opportunities.length}
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* Opportunities Grid */}
-            <section className="opportunity-grid" id="opportunity-feed" aria-label="Opportunities list">
-              {loadingData && opportunities.length === 0 ? (
-                <div className="loading-indicator">
-                  <div className="spinner-sage" />
-                  <span>Loading verified opportunities...</span>
-                </div>
-              ) : filteredOpportunities.length > 0 ? (
-                filteredOpportunities.map((opp) => (
-                  <OpportunityCard
-                    key={opp.id}
-                    opportunity={opp}
-                    match={matchMap.get(opp.id)}
-                    isSaved={saved.includes(opp.id)}
-                    onToggleSave={toggleSave}
-                    userSkills={profile.skills}
-                    trackedStatus={applicationStatusMap.get(opp.id)}
-                    onTrackApplication={handleTrackApplication}
-                    onInspect={(opp) => {
-                      setSelectedOpportunityForDrawer(opp)
-                      setClockTargetOpp(opp)
-                    }}
-                  />
-                ))
-              ) : (
-                <div className="empty-state-card">
-                  <div className="empty-state-icon">
-                    <Search size={24} />
-                  </div>
-                  <h3 className="empty-state-title">No opportunities found</h3>
-                  <p className="empty-state-text">
-                    No signals match your current combination of filters. Try clearing some filters or searching for broader terms.
-                  </p>
-                  <button className="btn-secondary" onClick={resetFilters}>
-                    <RefreshCw size={14} />
-                    <span>Reset all filters</span>
-                  </button>
-                </div>
-              )}
-            </section>
-          </div>
+          <OverviewDashboard
+            profile={profile}
+            opportunities={opportunities}
+            matchMap={matchMap}
+            saved={saved}
+            applicationStatusMap={applicationStatusMap}
+            onSelectTab={(tab) => setActiveTab(tab as any)}
+            onInspect={(opp) => {
+              setSelectedOpportunityForDrawer(opp)
+              setClockTargetOpp(opp)
+            }}
+            onToggleSave={toggleSave}
+            onEditProfile={() => setActiveTab('Profile')}
+            onConnectLinkedIn={handleConnectLinkedIn}
+            isLinkedInConnected={isLinkedInConnected}
+          />
         )}
 
         {/* DEDICATED HACKATHONS PAGE */}
