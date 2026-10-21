@@ -1,5 +1,5 @@
 import React from 'react'
-import { ArrowUpRight, Sparkles } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { RadarMark } from './RadarMark'
 
 export const AppFooter: React.FC = () => {
@@ -8,19 +8,21 @@ export const AppFooter: React.FC = () => {
   return (
     <footer className="site-footer" role="contentinfo">
       <div className="footer-container">
-        <div className="footer-main-row">
-          <div className="footer-brand-block">
+        <div className="footer-top-row">
+          <div className="footer-brand-section">
             <a className="footer-brand-link" href="#top" aria-label="Opportunity Radar, back to top">
-              <RadarMark size={28} animated={false} />
+              <RadarMark size={24} animated={false} />
               <span className="footer-wordmark">Opportunity Radar</span>
             </a>
-            <span className="footer-subtext">Merit-first student opportunity discovery</span>
+            <p className="footer-tagline">
+              A merit-first intelligence radar discovering verified student hackathons, internships, competitions, and fellowships.
+            </p>
           </div>
 
-          <div className="footer-links-group">
+          <div className="footer-nav-section">
             <a className="footer-nav-link" href="#top">Overview</a>
             <a className="footer-nav-link" href="#portals-section">Portals</a>
-            <a className="footer-nav-link" href="#spotlight-signals-section">Top Signals</a>
+            <a className="footer-nav-link" href="#curated-signals-section">Recommended</a>
             <a className="footer-back-top" href="#top">
               <span>Back to top</span>
               <ArrowUpRight size={13} />
@@ -28,13 +30,19 @@ export const AppFooter: React.FC = () => {
           </div>
         </div>
 
+        {/* Integrated Verification Disclaimer (natural text, not a floating box) */}
+        <div className="footer-disclaimer-row">
+          <p className="footer-disclaimer-text">
+            <strong>Independent Verification Notice:</strong> Records are sourced directly with original links and verification timestamps. Always confirm registration deadlines, fee policies, and eligibility criteria on official organizer portals before applying.
+          </p>
+        </div>
+
         <div className="footer-bottom-row">
           <div className="footer-copy">
-            © {currentYear} Opportunity Radar · Built for ambitious students
+            © {currentYear} Opportunity Radar · Built for students with FastAPI, React & Gemma AI
           </div>
-          <div className="footer-badge-pill">
-            <Sparkles size={12} />
-            <span>100% Free · Open to All Academic Years</span>
+          <div className="footer-meta-pill">
+            <span>Free & Open to All Academic Years</span>
           </div>
         </div>
       </div>

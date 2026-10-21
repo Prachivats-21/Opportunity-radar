@@ -136,109 +136,79 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
   }
 
   return (
-    <div className="overview-command-center" aria-label="Student Radar Overview">
-      {/* 0. WELCOMING VALUE & ONBOARDING STRIP (100% clear for any new visitor) */}
-      <div className="top-linkedin-cta-bar">
-        <div className="top-linkedin-content">
-          <div className="top-linkedin-badge">
-            <Globe size={20} />
-          </div>
-          <div className="top-linkedin-text">
-            <div className="top-bar-title-row">
-              <strong>Opportunity Radar · Unified Student Opportunity Discovery</strong>
-              <span className="top-bar-free-badge">✓ 100% Free · No Login Required to Explore</span>
-            </div>
-            <span>
-              We crawl Unstop, Devpost, LinkedIn Jobs, and Government portals into one verified feed. Filter by skills, track deadlines, and apply directly.
+    <div className="overview-command-center" aria-label="Opportunity Radar Overview">
+      {/* 1. HERO SECTION (Clean, purposeful, high-clarity) */}
+      <section className="dashboard-hero-section">
+        <div className="hero-content-main">
+          <div className="hero-top-badge-row">
+            <span className="hero-status-pill">
+              <span className="live-radar-dot" />
+              <span>Live Radar · Sourced from 10+ student platforms</span>
             </span>
-          </div>
-        </div>
-        <div className="top-linkedin-actions">
-          <button
-            type="button"
-            className={`btn-sync-linkedin-top ${isLinkedInConnected ? 'synced' : ''}`}
-            onClick={onConnectLinkedIn}
-            title="Auto-fill your verified skills and customize match scores"
-          >
-            <Linkedin size={15} />
-            <span>{isLinkedInConnected ? '✓ LinkedIn Synced' : 'Sync LinkedIn (Optional)'}</span>
-          </button>
-        </div>
-      </div>
-
-      {/* 1. Main Welcome & Signal Calibration Hero (Spacious & Crystal Clear) */}
-      <section className="clean-hero-section">
-        {/* Topline Bar */}
-        <div className="clean-hero-topline">
-          <div className="hero-status-pill">
-            <span className="live-radar-dot" />
-            <span>LIVE RADAR · 10+ Student Portals Aggregated Daily</span>
+            <button
+              type="button"
+              className="hero-profile-pill"
+              onClick={onEditProfile}
+              title="Calibrate your domain or skills"
+            >
+              <UserCheck size={13} className="text-accent" />
+              <span>{firstName} · {profile.field}</span>
+              <span className="hero-pill-link">Calibrate →</span>
+            </button>
           </div>
 
-          <button
-            type="button"
-            className="clean-profile-badge"
-            onClick={onEditProfile}
-            title="Click to calibrate your target skills or preferences"
-          >
-            <UserCheck size={13} className="text-sage" />
-            <span>
-              {firstName} · {profile.field}
-            </span>
-            <span className="clean-edit-link">Calibrate Profile →</span>
-          </button>
-        </div>
-
-        {/* Hero Body */}
-        <div className="clean-hero-body">
-          <div className="clean-hero-title-wrap">
-            <RadarMark size={40} />
-            <h1 className="clean-hero-heading">
-              All student opportunities, <em>matched to your skills.</em>
+          <div className="hero-title-group">
+            <h1 className="hero-main-heading">
+              Student opportunities, <em>matched to your skills.</em>
             </h1>
+            <p className="hero-lead-text">
+              A centralized, merit-first radar aggregating verified hackathons, internships, case competitions, and fellowships. Filtered by what you build, open to all academic years with direct official links.
+            </p>
           </div>
-          <p className="clean-hero-subhead">
-            Your centralized intelligence radar for verified hackathons, internships, case competitions, and fellowships. 
-            Filtered by what you can actually build — open to all college years with direct external registration links and zero middlemen.
-          </p>
 
-          {/* Value Badges Row */}
-          <div className="hero-value-badges-row">
-            <span className="hero-value-badge">
-              <ShieldCheck size={14} className="badge-icon-accent" />
-              <span>Zero College-Tier Bias</span>
-            </span>
-            <span className="hero-value-badge">
-              <CheckCircle2 size={14} className="badge-icon-accent" />
-              <span>Open to All Academic Years (1st to Final)</span>
-            </span>
-            <span className="hero-value-badge">
-              <ExternalLink size={14} className="badge-icon-accent" />
-              <span>Direct Official Organizer Links</span>
-            </span>
+          <div className="hero-actions-row">
+            <button
+              type="button"
+              className="btn-primary hero-cta-btn"
+              onClick={() => {
+                const el = document.getElementById('curated-signals-section')
+                el?.scrollIntoView({ behavior: 'smooth' })
+              }}
+            >
+              <span>Explore Recommended Signals</span>
+              <ArrowRight size={14} />
+            </button>
+
+            {onConnectLinkedIn && (
+              <button
+                type="button"
+                className={`btn-secondary hero-secondary-btn ${isLinkedInConnected ? 'synced' : ''}`}
+                onClick={onConnectLinkedIn}
+                title="Sync skills from LinkedIn"
+              >
+                <Linkedin size={14} />
+                <span>{isLinkedInConnected ? 'LinkedIn Profile Connected' : 'Sync LinkedIn (Optional)'}</span>
+              </button>
+            )}
           </div>
         </div>
 
-        {/* 3 Metric Highlight Tiles */}
-        <div className="clean-hero-metrics-bar">
+        {/* Compact Metric Bar */}
+        <div className="hero-metrics-strip">
           <div
-            className="metric-summary-chip eligible"
+            className="hero-metric-tile"
             onClick={() => onSelectTab('all')}
             role="button"
             tabIndex={0}
-            title="View all merit-based opportunities"
+            title="View all opportunities"
           >
-            <div className="metric-icon-wrap">
-              <ShieldCheck size={18} />
-            </div>
-            <div className="metric-text-wrap">
-              <span className="metric-num">{opportunities.length} Open Catalog</span>
-              <span className="metric-desc">Skill & Merit-First (No Year Gate)</span>
-            </div>
+            <span className="metric-tile-val">{opportunities.length}</span>
+            <span className="metric-tile-lbl">Open Opportunities</span>
+            <span className="metric-tile-sub">All Academic Years</span>
           </div>
 
           <div
-            className="metric-summary-chip urgent"
+            className="hero-metric-tile"
             onClick={() => {
               const el = document.getElementById('urgent-radar-section')
               el?.scrollIntoView({ behavior: 'smooth' })
@@ -247,346 +217,241 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             tabIndex={0}
             title="View opportunities closing soon"
           >
-            <div className="metric-icon-wrap">
-              <Calendar size={18} />
-            </div>
-            <div className="metric-text-wrap">
-              <span className="metric-num">{closingSoonList.length} Urgent</span>
-              <span className="metric-desc">Closing in &le; 14 days</span>
-            </div>
+            <span className="metric-tile-val urgent-val">{closingSoonList.length}</span>
+            <span className="metric-tile-lbl">Closing Soon</span>
+            <span className="metric-tile-sub">Within 14 Days</span>
           </div>
 
           <div
-            className="metric-summary-chip top-match"
+            className="hero-metric-tile"
             onClick={() => {
-              const el = document.getElementById('spotlight-signals-section')
+              const el = document.getElementById('curated-signals-section')
               el?.scrollIntoView({ behavior: 'smooth' })
             }}
             role="button"
             tabIndex={0}
-            title="Explore highest matched signals"
+            title="Explore highest matched signal"
           >
-            <div className="metric-icon-wrap">
-              <Sparkles size={18} />
-            </div>
-            <div className="metric-text-wrap">
-              <span className="metric-num">
-                {topSpotlights[0] ? `${matchMap.get(topSpotlights[0].id)?.score || 95}% Best Match` : 'High Affinity'}
-              </span>
-              <span className="metric-desc">
-                {topSpotlights[0] ? topSpotlights[0].organization : 'Top AI Recommendation'}
-              </span>
-            </div>
+            <span className="metric-tile-val match-val">
+              {topSpotlights[0] ? `${matchMap.get(topSpotlights[0].id)?.score || 95}%` : '100%'}
+            </span>
+            <span className="metric-tile-lbl">Top Match Score</span>
+            <span className="metric-tile-sub">Tailored to Your Profile</span>
           </div>
         </div>
       </section>
 
-      {/* 1.5 NEW USER ONBOARDING: HOW OPPORTUNITY RADAR WORKS (IN 3 SIMPLE STEPS) */}
-      <section className="overview-section how-it-works-section" aria-label="How Opportunity Radar works">
-        <div className="overview-section-header">
-          <div className="section-header-title-row">
-            <HelpCircle size={18} className="text-sage" />
-            <h2 className="overview-section-title">How Opportunity Radar Works</h2>
-            <span className="how-it-works-pill">3 Simple Steps</span>
-          </div>
-          <span className="overview-section-subtitle">
-            Understand how opportunities are aggregated, ranked for your skills, and applied to directly.
-          </span>
-        </div>
-
-        <div className="how-it-works-grid">
-          {/* Step 1 */}
-          <div className="how-step-card">
-            <div className="how-step-header">
-              <span className="how-step-badge step-1">STEP 01</span>
-              <div className="how-step-icon-wrap icon-1">
-                <Radio size={18} />
-              </div>
-            </div>
-            <h3 className="how-step-title">We Scan 10+ Portals Daily</h3>
-            <p className="how-step-desc">
-              Instead of browsing Unstop, Devpost, LinkedIn, and Government portals across 10 tabs, we aggregate all verified student challenges in real time.
-            </p>
-            <div className="how-step-footer">
-              <span className="how-tag">🌐 Unstop · LinkedIn · Devpost · Govt</span>
-            </div>
-          </div>
-
-          {/* Step 2 */}
-          <div className="how-step-card">
-            <div className="how-step-header">
-              <span className="how-step-badge step-2">STEP 02</span>
-              <div className="how-step-icon-wrap icon-2">
-                <Target size={18} />
-              </div>
-            </div>
-            <h3 className="how-step-title">Ranked by Skills, Not College</h3>
-            <p className="how-step-desc">
-              Opportunities match against what you can build (Product, AI, Web, Cyber). Compete on merit — whether you are a 1st year at a tier-3 college or a senior.
-            </p>
-            <div className="how-step-footer">
-              <span className="how-tag">⚡ Zero College Bias · All Years</span>
-            </div>
-          </div>
-
-          {/* Step 3 */}
-          <div className="how-step-card">
-            <div className="how-step-header">
-              <span className="how-step-badge step-3">STEP 03</span>
-              <div className="how-step-icon-wrap icon-3">
-                <Zap size={18} />
-              </div>
-            </div>
-            <h3 className="how-step-title">Direct Official 1-Click Apply</h3>
-            <p className="how-step-desc">
-              Inspect prerequisites, team requirements, and deadline countdowns. Click 'View Signal' to open the organizer's official registration form with zero fees.
-            </p>
-            <div className="how-step-footer">
-              <span className="how-tag">🔒 100% Free · Direct Official URLs</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. Category Launchpad (The 4 Dedicated Portals) */}
+      {/* 2. EXPLORE DEDICATED PORTALS (Cohesive 4-card neutral system) */}
       <section className="overview-section" id="portals-section" aria-label="Explore dedicated categories">
         <div className="overview-section-header">
-          <div className="section-header-title-row">
-            <Compass size={18} className="text-sage" />
+          <div className="section-title-wrap">
             <h2 className="overview-section-title">Explore Dedicated Portals</h2>
+            <span className="overview-section-subtitle">
+              Focused tracks across hackathons, internships, competitions, and fellowships
+            </span>
           </div>
-          <span className="overview-section-subtitle">
-            Choose a focused track to filter sub-domains, prizes, and eligibility criteria
-          </span>
         </div>
 
         <div className="category-launchpad-grid">
-          {/* Hackathons Portal Card */}
+          {/* Hackathons */}
           <div
-            className="launchpad-card hackathons"
+            className="portal-card"
             onClick={() => onSelectTab('Hackathons')}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => e.key === 'Enter' && onSelectTab('Hackathons')}
           >
-            <div className="launchpad-card-top">
-              <div className="launchpad-icon-box hackathon">
-                <Code2 size={22} />
+            <div className="portal-card-top">
+              <div className="portal-icon-wrap">
+                <Code2 size={18} />
               </div>
-              <span className="launchpad-count-pill">
-                {categoryStats['Hackathon']?.total || 0} Available
-              </span>
+              <span className="portal-count-tag">{categoryStats['Hackathon']?.total || 0} Available</span>
             </div>
-
-            <div className="launchpad-card-body">
-              <h3 className="launchpad-card-title">Hackathons Arena</h3>
-              <p className="launchpad-card-desc">
-                48 to 72-hour product builds, cyber defense challenges, and open prototype sprints with prizes up to ₹15L.
-              </p>
-              <div className="launchpad-format-chips">
-                <span className="launchpad-chip online">🌐 {categoryStats['Hackathon']?.online || 0} Online</span>
-                <span className="launchpad-chip offline">📍 {categoryStats['Hackathon']?.offline || 0} Offline</span>
-              </div>
-            </div>
-
-            <div className="launchpad-card-footer">
-              <span className="launchpad-match-text">
-                ⭐ {categoryStats['Hackathon']?.matches || 0} match your skills
-              </span>
-              <span className="launchpad-action-btn">
-                Open Hackathons <ArrowRight size={13} />
+            <h3 className="portal-card-title">Hackathons</h3>
+            <p className="portal-card-desc">
+              Sprint builds, developer challenges, and product prototype sprints with cash prizes.
+            </p>
+            <div className="portal-card-footer">
+              <span className="portal-link-text">
+                <span>Explore Hackathons</span>
+                <ArrowRight size={13} />
               </span>
             </div>
           </div>
 
-          {/* Internships Portal Card */}
+          {/* Internships */}
           <div
-            className="launchpad-card internships"
+            className="portal-card"
             onClick={() => onSelectTab('Internships')}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => e.key === 'Enter' && onSelectTab('Internships')}
           >
-            <div className="launchpad-card-top">
-              <div className="launchpad-icon-box internship">
-                <Briefcase size={22} />
+            <div className="portal-card-top">
+              <div className="portal-icon-wrap">
+                <Briefcase size={18} />
               </div>
-              <span className="launchpad-count-pill">
-                {categoryStats['Internship']?.total || 0} Open Roles
-              </span>
+              <span className="portal-count-tag">{categoryStats['Internship']?.total || 0} Open Roles</span>
             </div>
-
-            <div className="launchpad-card-body">
-              <h3 className="launchpad-card-title">Internships Track</h3>
-              <p className="launchpad-card-desc">
-                Summer 2026 APM, cybersecurity, data science, and SWE internships verified directly from LinkedIn HQ & tech giants.
-              </p>
-              <div className="launchpad-format-chips">
-                <span className="launchpad-chip online">🌐 {categoryStats['Internship']?.online || 0} Online</span>
-                <span className="launchpad-chip offline">📍 {categoryStats['Internship']?.offline || 0} Offline</span>
-              </div>
-            </div>
-
-            <div className="launchpad-card-footer">
-              <span className="launchpad-match-text">
-                ⭐ {categoryStats['Internship']?.matches || 0} match your skills
-              </span>
-              <span className="launchpad-action-btn">
-                Open Internships <ArrowRight size={13} />
+            <h3 className="portal-card-title">Internships</h3>
+            <p className="portal-card-desc">
+              Summer 2026 APM, SWE, data science, and cybersecurity roles verified from top teams.
+            </p>
+            <div className="portal-card-footer">
+              <span className="portal-link-text">
+                <span>Explore Internships</span>
+                <ArrowRight size={13} />
               </span>
             </div>
           </div>
 
-          {/* Competitions Portal Card */}
+          {/* Competitions */}
           <div
-            className="launchpad-card competitions"
+            className="portal-card"
             onClick={() => onSelectTab('Competitions')}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => e.key === 'Enter' && onSelectTab('Competitions')}
           >
-            <div className="launchpad-card-top">
-              <div className="launchpad-icon-box competition">
-                <Trophy size={22} />
+            <div className="portal-card-top">
+              <div className="portal-icon-wrap">
+                <Trophy size={18} />
               </div>
-              <span className="launchpad-count-pill">
-                {categoryStats['Competition']?.total || 0} Live Challenges
-              </span>
+              <span className="portal-count-tag">{categoryStats['Competition']?.total || 0} Challenges</span>
             </div>
-
-            <div className="launchpad-card-body">
-              <h3 className="launchpad-card-title">Competitions Hub</h3>
-              <p className="launchpad-card-desc">
-                National business case competitions, product teardowns, and design thinking cups fast-tracking to PPIs.
-              </p>
-              <div className="launchpad-format-chips">
-                <span className="launchpad-chip online">🌐 {categoryStats['Competition']?.online || 0} Online</span>
-                <span className="launchpad-chip offline">📍 {categoryStats['Competition']?.offline || 0} Offline</span>
-              </div>
-            </div>
-
-            <div className="launchpad-card-footer">
-              <span className="launchpad-match-text">
-                ⭐ {categoryStats['Competition']?.matches || 0} match your skills
-              </span>
-              <span className="launchpad-action-btn">
-                Open Competitions <ArrowRight size={13} />
+            <h3 className="portal-card-title">Competitions</h3>
+            <p className="portal-card-desc">
+              National business case cups, product teardowns, and design thinking challenges.
+            </p>
+            <div className="portal-card-footer">
+              <span className="portal-link-text">
+                <span>Explore Competitions</span>
+                <ArrowRight size={13} />
               </span>
             </div>
           </div>
 
-          {/* Fellowships Portal Card */}
+          {/* Fellowships */}
           <div
-            className="launchpad-card fellowships"
+            className="portal-card"
             onClick={() => onSelectTab('Fellowships')}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => e.key === 'Enter' && onSelectTab('Fellowships')}
           >
-            <div className="launchpad-card-top">
-              <div className="launchpad-icon-box fellowship">
-                <GraduationCap size={22} />
+            <div className="portal-card-top">
+              <div className="portal-icon-wrap">
+                <GraduationCap size={18} />
               </div>
-              <span className="launchpad-count-pill">
-                {categoryStats['Fellowship']?.total || 0} Cohorts
-              </span>
+              <span className="portal-count-tag">{categoryStats['Fellowship']?.total || 0} Cohorts</span>
             </div>
-
-            <div className="launchpad-card-body">
-              <h3 className="launchpad-card-title">Fellowships & Cohorts</h3>
-              <p className="launchpad-card-desc">
-                Selective 8 to 12-week fellowship programs offering 1-on-1 industry mentorship, stipends, and peer masterminds.
-              </p>
-              <div className="launchpad-format-chips">
-                <span className="launchpad-chip online">🌐 {categoryStats['Fellowship']?.online || 0} Online</span>
-                <span className="launchpad-chip offline">📍 {categoryStats['Fellowship']?.offline || 0} Offline</span>
-              </div>
-            </div>
-
-            <div className="launchpad-card-footer">
-              <span className="launchpad-match-text">
-                ⭐ {categoryStats['Fellowship']?.matches || 0} match your skills
-              </span>
-              <span className="launchpad-action-btn">
-                Open Fellowships <ArrowRight size={13} />
+            <h3 className="portal-card-title">Fellowships</h3>
+            <p className="portal-card-desc">
+              Selective 8 to 12-week programs offering mentorship, stipends, and peer cohorts.
+            </p>
+            <div className="portal-card-footer">
+              <span className="portal-link-text">
+                <span>Explore Fellowships</span>
+                <ArrowRight size={13} />
               </span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 3. High-Conviction Spotlight: Top 3 Matched Signals (Curated, No Clutter) */}
-      <section className="overview-section" id="spotlight-signals-section" aria-label="Top tailored opportunities">
-        <div className="overview-section-header">
-          <div className="section-header-title-row">
-            <Sparkles size={18} className="text-sage" />
-            <h2 className="overview-section-title">Top 3 Curated Signals for You</h2>
+      {/* 3. TOP 3 CURATED SIGNALS (Clean, compact list/rows for easy scanning) */}
+      <section className="overview-section" id="curated-signals-section" aria-label="Recommended opportunities">
+        <div className="overview-section-header with-action">
+          <div className="section-title-wrap">
+            <h2 className="overview-section-title">Recommended for You</h2>
+            <span className="overview-section-subtitle">
+              Ranked by match compatibility with your field ({profile.field}) and target skills
+            </span>
           </div>
-          <span className="overview-section-subtitle">
-            Ranked by compatibility with your field ({profile.field}) and target skills
-          </span>
+          <button
+            type="button"
+            className="btn-link-action"
+            onClick={() => onSelectTab('all')}
+          >
+            <span>View all opportunities ({opportunities.length})</span>
+            <ArrowRight size={13} />
+          </button>
         </div>
 
-        <div className="spotlight-cards-grid">
+        <div className="curated-opportunity-list">
           {topSpotlights.map((opp, idx) => {
             const match = matchMap.get(opp.id)
             const isSaved = saved.includes(opp.id)
             const score = match?.score || 90
 
             return (
-              <div key={opp.id} className="spotlight-card">
-                <div className="spotlight-card-header">
-                  <div className="spotlight-org-pill">
-                    <span className="spotlight-badge-rank">#{idx + 1}</span>
-                    <span className="spotlight-org-name">{opp.organization}</span>
+              <div key={opp.id} className="opportunity-row-card">
+                {/* Left: Match score badge */}
+                <div className="opportunity-row-badge-col">
+                  <span className="row-match-badge">
+                    <Sparkles size={11} />
+                    <span>{score}% Match</span>
+                  </span>
+                </div>
+
+                {/* Middle: Title, Meta, Summary, Skills */}
+                <div className="opportunity-row-main-col">
+                  <div className="opportunity-row-header">
+                    <h3
+                      className="opportunity-row-title"
+                      onClick={() => onInspect(opp)}
+                    >
+                      {opp.title}
+                    </h3>
+                    <div className="opportunity-row-meta">
+                      <span className="row-org-name">{opp.organization}</span>
+                      <span className="row-bullet">·</span>
+                      <span className="row-cat-name">{opp.category}</span>
+                      <span className="row-bullet">·</span>
+                      <span className="row-mode-name">{opp.mode}</span>
+                    </div>
                   </div>
 
-                  <div className="spotlight-header-actions">
-                    <span className="spotlight-match-score">
-                      <Sparkles size={11} /> {score}% Match
-                    </span>
+                  <p className="opportunity-row-summary">{opp.summary}</p>
+
+                  {/* Skills tags */}
+                  <div className="opportunity-row-skills">
+                    {opp.skills.slice(0, 3).map((sk) => (
+                      <span key={sk} className="row-skill-tag">{sk}</span>
+                    ))}
+                    {opp.skills.length > 3 && (
+                      <span className="row-skill-more">+{opp.skills.length - 3}</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Right: Deadline & Actions */}
+                <div className="opportunity-row-actions-col">
+                  <div className="row-deadline-wrap">
+                    <Clock size={12} />
+                    <span>{formatDaysLeft(opp.deadline)}</span>
+                  </div>
+
+                  <div className="row-buttons-group">
                     <button
                       type="button"
-                      className={`spotlight-save-btn ${isSaved ? 'saved' : ''}`}
+                      className={`row-save-btn ${isSaved ? 'saved' : ''}`}
                       onClick={() => onToggleSave(opp.id)}
-                      title={isSaved ? 'Remove from saved' : 'Save for later'}
+                      title={isSaved ? 'Remove from saved' : 'Save opportunity'}
+                      aria-label="Save opportunity"
                     >
                       <Bookmark size={14} fill={isSaved ? 'currentColor' : 'none'} />
                     </button>
+
+                    <button
+                      type="button"
+                      className="btn-primary row-view-btn"
+                      onClick={() => onInspect(opp)}
+                    >
+                      <span>View Details</span>
+                      <ArrowRight size={12} />
+                    </button>
                   </div>
-                </div>
-
-                <h3 className="spotlight-card-title">{opp.title}</h3>
-                <p className="spotlight-card-summary">{opp.summary}</p>
-
-                {/* Skill Match Tags */}
-                <div className="spotlight-skills-wrap">
-                  {opp.skills.slice(0, 3).map((sk) => (
-                    <span key={sk} className="spotlight-skill-tag">
-                      {sk}
-                    </span>
-                  ))}
-                  {opp.skills.length > 3 && (
-                    <span className="spotlight-skill-more">+{opp.skills.length - 3}</span>
-                  )}
-                </div>
-
-                <div className="spotlight-card-footer">
-                  <div className="spotlight-meta-row">
-                    <Clock size={12} />
-                    <span>{formatDaysLeft(opp.deadline)}</span>
-                    <span className="meta-dot">·</span>
-                    <span>{opp.mode}</span>
-                  </div>
-
-                  <button
-                    type="button"
-                    className="btn-spotlight-inspect"
-                    onClick={() => onInspect(opp)}
-                  >
-                    <span>View Signal</span>
-                    <ArrowRight size={12} />
-                  </button>
                 </div>
               </div>
             )
@@ -594,16 +459,16 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         </div>
       </section>
 
-      {/* 4. Urgent Radar & Student Readiness Dashboard Row */}
+      {/* 4. SECONDARY SECTION: Urgent Deadlines & Target Preferences (Clean, compact 2-panel grid) */}
       <div className="overview-split-grid" id="urgent-radar-section">
         {/* Urgent Deadlines Radar */}
         <section className="overview-card-panel urgent-panel">
           <div className="panel-header">
             <div className="panel-header-title">
-              <Clock size={16} className="text-amber" />
-              <h3>Urgent Radar (Closing Soon)</h3>
+              <Clock size={15} className="text-amber" />
+              <h3>Urgent Deadlines</h3>
             </div>
-            <span className="panel-badge">{closingSoonList.length} closing</span>
+            <span className="panel-badge-subtle">{closingSoonList.length} closing soon</span>
           </div>
 
           <div className="urgent-list">
@@ -615,12 +480,13 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                   onClick={() => onInspect(opp)}
                   role="button"
                   tabIndex={0}
+                  onKeyDown={(e) => e.key === 'Enter' && onInspect(opp)}
                 >
                   <div className="urgent-item-info">
                     <span className="urgent-item-title">{opp.title}</span>
                     <span className="urgent-item-org">{opp.organization} · {opp.category}</span>
                   </div>
-                  <span className="urgent-countdown-pill">
+                  <span className="urgent-countdown-tag">
                     {formatDaysLeft(opp.deadline)}
                   </span>
                 </div>
@@ -631,15 +497,15 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
           </div>
         </section>
 
-        {/* Student Calibration & Skills Matrix */}
+        {/* Target Preferences & Signals */}
         <section className="overview-card-panel calibration-panel">
           <div className="panel-header">
             <div className="panel-header-title">
-              <TrendingUp size={16} className="text-sage" />
-              <h3>Target Preferences & Signals</h3>
+              <TrendingUp size={15} className="text-accent" />
+              <h3>Target Preferences</h3>
             </div>
-            <button type="button" className="panel-link-btn" onClick={onEditProfile}>
-              Edit Preferences →
+            <button type="button" className="panel-text-action" onClick={onEditProfile}>
+              Edit preferences →
             </button>
           </div>
 
@@ -650,38 +516,36 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             </div>
 
             <div className="calibration-meta-item">
-              <span className="calibration-label">Eligibility Model</span>
-              <span className="calibration-value" style={{ color: '#A78BFA' }}>
-                Open to All Years (Merit-First)
+              <span className="calibration-label">Eligibility</span>
+              <span className="calibration-value">
+                {profile.year === 'All Years' ? 'Open to All Years (Merit-First)' : `Year ${profile.year}`}
               </span>
             </div>
 
             <div className="calibration-skills-item">
-              <span className="calibration-label">Active Target Skills</span>
+              <span className="calibration-label">Active Skills</span>
               <div className="calibration-chips-wrap">
                 {(profile.skills && profile.skills.length > 0
                   ? profile.skills
-                  : ['Product Management', 'Wireframing', 'PRD', 'A/B Testing', 'Cybersecurity', 'Threat Hunting']
+                  : ['Product Management', 'Wireframing', 'PRD', 'A/B Testing']
                 ).map((s) => (
-                  <span key={s} className="calibration-chip">
-                    <CheckCircle2 size={11} /> {s}
-                  </span>
+                  <span key={s} className="calibration-chip">{s}</span>
                 ))}
               </div>
             </div>
 
-            <div className="calibration-action-footer">
-              {onConnectLinkedIn && (
+            {onConnectLinkedIn && (
+              <div className="calibration-footer-action">
                 <button
                   type="button"
-                  className={`btn-linkedin-overview ${isLinkedInConnected ? 'connected' : ''}`}
+                  className={`btn-linkedin-subtle ${isLinkedInConnected ? 'connected' : ''}`}
                   onClick={onConnectLinkedIn}
                 >
                   <Linkedin size={13} />
-                  <span>{isLinkedInConnected ? 'LinkedIn Profile Connected' : 'Sync with LinkedIn'}</span>
+                  <span>{isLinkedInConnected ? '✓ LinkedIn Profile Synced' : 'Sync LinkedIn for auto-match'}</span>
                 </button>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </section>
       </div>
