@@ -12,6 +12,7 @@ import { TuneRadarView } from './components/TuneRadarView'
 import { SettingsView } from './components/SettingsView'
 import { SavedView } from './components/SavedView'
 import { ApplicationsView } from './components/ApplicationsView'
+import { CustomCursor } from './components/CustomCursor'
 import { getOpportunities, getMatches, getFeed, healthCheck, syncOpportunities } from './api'
 import type { Opportunity, Profile, MatchResult, FilterState, ApplicationRecord, ApplicationStatus } from './types'
 import { Search, Check, RefreshCw, Wifi, WifiOff, X, Sparkles } from 'lucide-react'
@@ -1046,6 +1047,9 @@ export function App() {
 
   return (
     <div className="app-shell" id="top">
+      {/* Precision Radar Custom Cursor with Dotted Reticle & Touch Borders */}
+      <CustomCursor />
+
       {/* 3D WebGL Glowing Tunnel Background with Dynamic Particle Matrix */}
       <CyberTunnelCanvas />
 
