@@ -206,20 +206,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Header Right Actions */}
         <div className="header-actions-group">
-          {/* Live Sync Trigger */}
-          {onSyncFeeds && (
-            <button
-              type="button"
-              className={`btn-sync-feeds ${isSyncing ? 'spinning' : ''}`}
-              onClick={onSyncFeeds}
-              disabled={isSyncing}
-              title="Sync live opportunities from Unstop, Government Portals & Devpost"
-            >
-              <RefreshCw size={13} />
-              <span className="hide-on-mobile">{isSyncing ? 'Syncing...' : 'Sync Feeds'}</span>
-            </button>
-          )}
-
           {/* LinkedIn Profile & Jobs Sync */}
           {onConnectLinkedIn && (
             <button

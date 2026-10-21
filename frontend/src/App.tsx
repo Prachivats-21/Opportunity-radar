@@ -557,8 +557,36 @@ export function App() {
     }
   }, [])
 
+  // Automatic feed synchronization when the user opens the application
   useEffect(() => {
-    fetchOpportunitiesFromApi()
+    let isMounted = true
+    const autoSyncFeedsOnLoad = async () => {
+      setIsSyncing(true)
+      try {
+        // 1. Initial fast load of current opportunities
+        await fetchOpportunitiesFromApi()
+        // 2. Automatically sync latest feeds from live aggregator
+        const res = await syncOpportunities()
+        if (isMounted) {
+          // 3. Refresh with freshly synced listings
+          await fetchOpportunitiesFromApi()
+          if (res && res.added > 0) {
+            setToastMessage(`Radar auto-synced: ${res.added} new opportunities updated!`)
+          }
+        }
+      } catch {
+        // Gracefully keep cached listings if offline or backend is unreachable
+      } finally {
+        if (isMounted) {
+          setIsSyncing(false)
+        }
+      }
+    }
+
+    autoSyncFeedsOnLoad()
+    return () => {
+      isMounted = false
+    }
   }, [fetchOpportunitiesFromApi])
 
   // Backend connectivity check
@@ -1071,7 +1099,6 @@ export function App() {
         onOpenAuthModal={() => setShowAuthModal(true)}
         savedCount={saved.length}
         applicationsCount={applications.length}
-        onSyncFeeds={handleSyncFeeds}
         isSyncing={isSyncing}
         onConnectLinkedIn={handleConnectLinkedIn}
         isLinkedInConnected={isLinkedInConnected}
