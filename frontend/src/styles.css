@@ -8046,54 +8046,75 @@ a {
   display: none !important;
 }
 
-/* Top LinkedIn Synchronization Bar */
+/* Top Welcoming Value & Onboarding Strip */
 .top-linkedin-cta-bar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 20px !important;
+  background: linear-gradient(135deg, #EFF6FF 0%, #EEF2FF 50%, #ECFDF5 100%) !important;
+  border: 1.5px solid #93C5FD !important;
+  border-radius: 16px !important;
+  padding: 16px 24px !important;
+  margin-bottom: 6px !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08) !important;
+}
+
+.top-bar-title-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  background: linear-gradient(90deg, #EFF6FF 0%, #F5F3FF 50%, #ECFDF5 100%);
-  border: 1px solid #BFDBFE;
-  border-radius: 12px;
-  padding: 12px 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.top-bar-free-badge {
+  background: #DCFCE7 !important;
+  color: #065F46 !important;
+  border: 1px solid #86EFAC !important;
+  border-radius: 9999px !important;
+  padding: 3px 12px !important;
+  font-size: 11.5px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.02em !important;
+  box-shadow: 0 1px 3px rgba(16, 185, 129, 0.15) !important;
 }
 
 .top-linkedin-content {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .top-linkedin-badge {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  background: #0A66C2;
-  color: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(10, 102, 194, 0.25);
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 10px !important;
+  background: #2563EB !important;
+  color: #FFFFFF !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3) !important;
 }
 
 .top-linkedin-text {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 
 .top-linkedin-text strong {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #0F172A;
+  font-size: 14.5px !important;
+  font-weight: 800 !important;
+  color: #0F172A !important;
 }
 
 .top-linkedin-text span {
-  font-size: 12px;
-  color: #475569;
+  font-size: 13px !important;
+  color: #334155 !important;
+  line-height: 1.5 !important;
+  font-weight: 500 !important;
 }
 
 .btn-sync-linkedin-top {
@@ -8102,20 +8123,20 @@ a {
   gap: 8px;
   background: #0A66C2;
   color: #FFFFFF !important;
-  font-size: 12.5px;
-  font-weight: 600;
-  padding: 8px 16px;
-  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 9px 18px;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 6px rgba(10, 102, 194, 0.2);
+  box-shadow: 0 2px 8px rgba(10, 102, 194, 0.25);
 }
 
 .btn-sync-linkedin-top:hover {
   background: #004182;
-  box-shadow: 0 4px 12px rgba(10, 102, 194, 0.35);
+  box-shadow: 0 4px 14px rgba(10, 102, 194, 0.38);
   transform: translateY(-1px);
 }
 
@@ -8548,28 +8569,42 @@ button:active,
   margin-left: 4px !important;
 }
 
-/* HERO SECTION & HIGH-CONTRAST HEADINGS */
+/* HERO SECTION & HIGH-CONTRAST HEADINGS (SPACIOUS & DECOMPRESSED) */
 .clean-hero-section {
   background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%) !important;
-  border: 1px solid #CBD5E1 !important;
-  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.07) !important;
+  border: 2px solid #E2E8F0 !important;
+  border-radius: 20px !important;
+  padding: 38px 44px !important;
+  box-shadow: 0 6px 24px -2px rgba(15, 23, 42, 0.06) !important;
+  position: relative !important;
+  overflow: hidden !important;
 }
 
 .clean-hero-section::before {
   background: radial-gradient(circle, rgba(79, 70, 229, 0.08) 0%, transparent 70%) !important;
 }
 
+.clean-hero-topline {
+  margin-bottom: 22px !important;
+}
+
 .hero-status-pill {
   color: #0F172A !important;
-  font-weight: 750 !important;
+  font-weight: 800 !important;
   font-size: 11.5px !important;
-  letter-spacing: 0.03em !important;
+  letter-spacing: 0.05em !important;
+  background: #F1F5F9 !important;
+  border: 1px solid #CBD5E1 !important;
+  padding: 4px 12px !important;
+  border-radius: 9999px !important;
 }
 
 .clean-hero-heading {
   color: #020617 !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.02em !important;
+  font-weight: 850 !important;
+  font-size: 34px !important;
+  line-height: 1.22 !important;
+  letter-spacing: -0.025em !important;
 }
 
 .clean-hero-heading em {
@@ -8579,23 +8614,228 @@ button:active,
 }
 
 .clean-hero-subhead {
-  color: #0F172A !important;
-  font-size: 14.5px !important;
+  color: #1E293B !important;
+  font-size: 15.5px !important;
   font-weight: 500 !important;
   line-height: 1.65 !important;
+  max-width: 860px !important;
+  margin-top: 10px !important;
+  margin-bottom: 16px !important;
+}
+
+/* Value Badges Row */
+.hero-value-badges-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+  margin-top: 6px !important;
+  margin-bottom: 8px !important;
+}
+
+.hero-value-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  background: #F8FAFC !important;
+  border: 1.5px solid #CBD5E1 !important;
+  color: #0F172A !important;
+  padding: 6px 14px !important;
+  border-radius: 9999px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+}
+
+.hero-value-badge .badge-icon-accent {
+  color: #4F46E5 !important;
 }
 
 /* SECTION TITLES & SUBTITLES */
 .overview-section-title {
   color: #020617 !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.015em !important;
+  font-weight: 850 !important;
+  font-size: 22px !important;
+  letter-spacing: -0.02em !important;
 }
 
 .overview-section-subtitle {
   color: #1E293B !important;
   font-weight: 500 !important;
+  font-size: 14px !important;
+}
+
+/* ==========================================================================
+   3-STEP "HOW OPPORTUNITY RADAR WORKS" ONBOARDING GRID
+   ========================================================================== */
+.how-it-works-section {
+  margin-top: 4px;
+}
+
+.how-it-works-pill {
+  background: #EEF2FF !important;
+  color: #4338CA !important;
+  border: 1.5px solid #818CF8 !important;
+  border-radius: 9999px !important;
+  padding: 3px 12px !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  margin-left: 8px !important;
+}
+
+.how-it-works-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)) !important;
+  gap: 20px !important;
+  margin-top: 8px !important;
+}
+
+.how-step-card {
+  background: #FFFFFF !important;
+  border: 2px solid #E2E8F0 !important;
+  border-radius: 16px !important;
+  padding: 24px 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04) !important;
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.24s ease,
+              box-shadow 0.24s ease !important;
+}
+
+.how-step-card:hover {
+  transform: translateY(-3px) !important;
+  border-color: #818CF8 !important;
+  box-shadow: 0 12px 28px -4px rgba(79, 70, 229, 0.15) !important;
+}
+
+.how-step-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 2px !important;
+}
+
+.how-step-badge {
+  font-size: 11px !important;
+  font-weight: 850 !important;
+  letter-spacing: 0.08em !important;
+  padding: 4px 10px !important;
+  border-radius: 6px !important;
+}
+
+.how-step-badge.step-1 {
+  background: #EEF2FF !important;
+  color: #3730A3 !important;
+  border: 1.5px solid #818CF8 !important;
+}
+
+.how-step-badge.step-2 {
+  background: #FEF3C7 !important;
+  color: #92400E !important;
+  border: 1.5px solid #FBBF24 !important;
+}
+
+.how-step-badge.step-3 {
+  background: #ECFDF5 !important;
+  color: #065F46 !important;
+  border: 1.5px solid #34D399 !important;
+}
+
+.how-step-icon-wrap {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.how-step-icon-wrap.icon-1 {
+  background: #EEF2FF !important;
+  color: #4F46E5 !important;
+  border: 1.5px solid #C7D2FE !important;
+}
+
+.how-step-icon-wrap.icon-2 {
+  background: #FFFBEB !important;
+  color: #D97706 !important;
+  border: 1.5px solid #FDE68A !important;
+}
+
+.how-step-icon-wrap.icon-3 {
+  background: #F0FDF4 !important;
+  color: #059669 !important;
+  border: 1.5px solid #BBF7D0 !important;
+}
+
+.how-step-title {
+  font-size: 16.5px !important;
+  font-weight: 850 !important;
+  color: #020617 !important;
+  margin: 0 !important;
+}
+
+.how-step-desc {
   font-size: 13.5px !important;
+  line-height: 1.62 !important;
+  color: #1E293B !important;
+  margin: 0 !important;
+  flex: 1 !important;
+  font-weight: 450 !important;
+}
+
+.how-step-footer {
+  padding-top: 10px !important;
+  border-top: 1.5px dashed #E2E8F0 !important;
+}
+
+.how-tag {
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  color: #334155 !important;
+  background: #F8FAFC !important;
+  border: 1px solid #CBD5E1 !important;
+  padding: 4px 10px !important;
+  border-radius: 6px !important;
+  display: inline-block !important;
+}
+
+/* OVERVIEW COMMAND CENTER & CENTRAL WORKSPACE DECOMPRESSED */
+.overview-command-center {
+  gap: 44px !important;
+  width: 100% !important;
+}
+
+.central-workspace {
+  max-width: 1360px !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+  padding: 28px 36px 64px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 36px !important;
+}
+
+.category-launchpad-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+  gap: 22px !important;
+}
+
+.overview-split-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)) !important;
+  gap: 28px !important;
+}
+
+.spotlight-cards-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  gap: 22px !important;
 }
 
 /* LAUNCHPAD PORTAL CARDS - VIVID TINTS & BOLD HIGHLIGHTED BORDERS */
@@ -9561,240 +9801,18 @@ button:active,
 }
 
 /* ==========================================================================
-   PRECISION RADAR CUSTOM CURSOR & DOTTED/DASHED TOUCH BORDERS
-   - Radar crosshairs, follower reticle, and targeting brackets
-   - Technical dynamic borders in dots and dashed lines on touch/hover
+   STANDARD NATURAL CURSORS & CLEAN INTERACTION STATES
    ========================================================================== */
-
-/* 1. Global Fine Pointer Setup */
-@media (pointer: fine) {
-  body {
-    cursor: none;
-  }
-  a, button, input, select, textarea, [role="button"] {
-    cursor: none;
-  }
+body {
+  cursor: auto !important;
 }
 
-/* 2. Custom Cursor Root Elements */
-.radar-cursor-root {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 999999;
-  overflow: hidden;
+button, a, select, [role="button"], .launchpad-card, .clean-opportunity-card, .spotlight-card, .metric-summary-chip, .urgent-item-row, .btn-sync-linkedin-top, .clean-profile-badge, .format-toggle-btn, .category-subfilter-btn, .account-menu-trigger {
+  cursor: pointer !important;
 }
 
-/* Precision Center Dot */
-.radar-cursor-dot {
-  position: fixed;
-  top: -4px;
-  left: -4px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #4F46E5;
-  box-shadow: 0 0 10px rgba(79, 70, 229, 0.75), 0 0 2px rgba(255, 255, 255, 0.9);
-  pointer-events: none;
-  transition: width 0.16s ease, height 0.16s ease, background-color 0.16s ease;
-  will-change: transform;
-}
-
-.radar-cursor-dot.hovered {
-  width: 6px;
-  height: 6px;
-  background: #D97706;
-  box-shadow: 0 0 12px rgba(245, 158, 11, 0.9);
-}
-
-.radar-cursor-dot.clicked {
-  transform: scale(0.65);
-  background: #E11D48;
-}
-
-/* Precision Follower Reticle with Ticks */
-.radar-cursor-reticle {
-  position: fixed;
-  top: -15px;
-  left: -15px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1.5px dashed rgba(79, 70, 229, 0.55);
-  pointer-events: none;
-  transition: width 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
-              height 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
-              top 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
-              left 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
-              border-color 0.2s ease,
-              background-color 0.2s ease;
-  will-change: transform;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Reticle Crosshair Cardinal Ticks */
-.reticle-tick {
-  position: absolute;
-  background: #4F46E5;
-  pointer-events: none;
-}
-
-.tick-top {
-  top: -5px;
-  left: 50%;
-  width: 1.5px;
-  height: 5px;
-  transform: translateX(-50%);
-}
-
-.tick-bottom {
-  bottom: -5px;
-  left: 50%;
-  width: 1.5px;
-  height: 5px;
-  transform: translateX(-50%);
-}
-
-.tick-left {
-  left: -5px;
-  top: 50%;
-  width: 5px;
-  height: 1.5px;
-  transform: translateY(-50%);
-}
-
-.tick-right {
-  right: -5px;
-  top: 50%;
-  width: 5px;
-  height: 1.5px;
-  transform: translateY(-50%);
-}
-
-/* Corner Target Dots / Brackets (Appear when touching/hovering) */
-.reticle-corner {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: #4F46E5;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  box-shadow: 0 0 4px rgba(79, 70, 229, 0.6);
-}
-
-.corner-tl { top: -2px; left: -2px; }
-.corner-tr { top: -2px; right: -2px; }
-.corner-bl { bottom: -2px; left: -2px; }
-.corner-br { bottom: -2px; right: -2px; }
-
-/* Sub-target Concentric Dashed Ring */
-.reticle-dashed-ring {
-  position: absolute;
-  inset: 4px;
-  border-radius: 50%;
-  border: 1px dotted rgba(79, 70, 229, 0.35);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-/* Hovered / Touching State for Cursor Reticle */
-.radar-cursor-reticle.hovered {
-  top: -24px;
-  left: -24px;
-  width: 48px;
-  height: 48px;
-  border: 1.8px dashed #4F46E5;
-  background-color: rgba(79, 70, 229, 0.05);
-  box-shadow: 0 0 14px rgba(79, 70, 229, 0.2);
-}
-
-.radar-cursor-reticle.hovered .reticle-corner,
-.radar-cursor-reticle.hovered .reticle-dashed-ring {
-  opacity: 1;
-}
-
-.radar-cursor-reticle.hovered .reticle-dashed-ring {
-  animation: rotateDashedRing 10s linear infinite;
-}
-
-@keyframes rotateDashedRing {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.radar-cursor-reticle.clicked {
-  transform: scale(0.85);
-  border-color: #E11D48;
-}
-
-/* Technical Status Badge Tag */
-.reticle-status-tag {
-  position: absolute;
-  bottom: -18px;
-  font-size: 8px;
-  font-weight: 850;
-  letter-spacing: 0.1em;
-  color: #4F46E5;
-  font-family: var(--font-mono);
-  background: #FFFFFF;
-  padding: 1px 5px;
-  border-radius: 3px;
-  border: 1px solid rgba(79, 70, 229, 0.35);
-  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.1);
-  white-space: nowrap;
-}
-
-/* 3. TECHNICAL DOTTED & DASHED TOUCH BORDERS ON TARGET ELEMENTS */
-.launchpad-card:hover,
-.clean-opportunity-card:hover,
-.spotlight-card:hover,
-.urgent-item-row:hover,
-.metric-summary-chip:hover {
-  outline: 2px dashed rgba(79, 70, 229, 0.55) !important;
-  outline-offset: 4px !important;
-}
-
-/* Corner Dots Appearing at the 4 Edges of Cards on Touch/Hover */
-.launchpad-card::before,
-.spotlight-card::before,
-.clean-opportunity-card::before {
-  content: '';
-  position: absolute;
-  inset: -6px;
-  border-radius: inherit;
-  pointer-events: none;
-  background: 
-    radial-gradient(circle 3.5px at 0% 0%, #4F46E5 100%, transparent 100%),
-    radial-gradient(circle 3.5px at 100% 0%, #4F46E5 100%, transparent 100%),
-    radial-gradient(circle 3.5px at 0% 100%, #4F46E5 100%, transparent 100%),
-    radial-gradient(circle 3.5px at 100% 100%, #4F46E5 100%, transparent 100%);
-  background-repeat: no-repeat;
-  opacity: 0;
-  transition: opacity 0.22s ease;
-  z-index: 10;
-}
-
-.launchpad-card:hover::before,
-.spotlight-card:hover::before,
-.clean-opportunity-card:hover::before {
-  opacity: 1;
-}
-
-/* Dotted Line Borders on Buttons, Tabs and Badges on Touch/Hover */
-.btn-sync-linkedin-top:hover,
-.clean-profile-badge:hover,
-.btn-spotlight-inspect:hover,
-.format-toggle-btn:hover,
-.category-subfilter-btn:hover,
-.account-menu-trigger:hover {
-  outline: 1.8px dashed rgba(79, 70, 229, 0.6) !important;
-  outline-offset: 3px !important;
+input, textarea {
+  cursor: text !important;
 }
 
 /* ==========================================================================

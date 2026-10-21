@@ -16,6 +16,13 @@ import {
   TrendingUp,
   Linkedin,
   Compass,
+  Globe,
+  Layers,
+  Target,
+  HelpCircle,
+  Zap,
+  Info,
+  Radio,
 } from 'lucide-react'
 import { RadarMark } from './RadarMark'
 import type { Opportunity, Profile, MatchResult, ApplicationStatus } from '../types'
@@ -130,34 +137,42 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
 
   return (
     <div className="overview-command-center" aria-label="Student Radar Overview">
-      {/* 0. PROMINENT TOP LINKEDIN SYNC BAR (Directly visible immediately upon loading) */}
+      {/* 0. WELCOMING VALUE & ONBOARDING STRIP (100% clear for any new visitor) */}
       <div className="top-linkedin-cta-bar">
         <div className="top-linkedin-content">
           <div className="top-linkedin-badge">
-            <Linkedin size={20} />
+            <Globe size={20} />
           </div>
           <div className="top-linkedin-text">
-            <strong>Sync with LinkedIn for Instant Domain & Skill Personalization</strong>
-            <span>Auto-populate verified skills, experience & unlock 100% matched APM, Cyber, and Tech listings</span>
+            <div className="top-bar-title-row">
+              <strong>Opportunity Radar · Unified Student Opportunity Discovery</strong>
+              <span className="top-bar-free-badge">✓ 100% Free · No Login Required to Explore</span>
+            </div>
+            <span>
+              We crawl Unstop, Devpost, LinkedIn Jobs, and Government portals into one verified feed. Filter by skills, track deadlines, and apply directly.
+            </span>
           </div>
         </div>
-        <button
-          type="button"
-          className={`btn-sync-linkedin-top ${isLinkedInConnected ? 'synced' : ''}`}
-          onClick={onConnectLinkedIn}
-        >
-          <Linkedin size={15} />
-          <span>{isLinkedInConnected ? '✓ LinkedIn Profile Synced' : 'Sync with LinkedIn'}</span>
-        </button>
+        <div className="top-linkedin-actions">
+          <button
+            type="button"
+            className={`btn-sync-linkedin-top ${isLinkedInConnected ? 'synced' : ''}`}
+            onClick={onConnectLinkedIn}
+            title="Auto-fill your verified skills and customize match scores"
+          >
+            <Linkedin size={15} />
+            <span>{isLinkedInConnected ? '✓ LinkedIn Synced' : 'Sync LinkedIn (Optional)'}</span>
+          </button>
+        </div>
       </div>
 
-      {/* 1. Main Welcome & Signal Calibration Hero */}
+      {/* 1. Main Welcome & Signal Calibration Hero (Spacious & Crystal Clear) */}
       <section className="clean-hero-section">
         {/* Topline Bar */}
         <div className="clean-hero-topline">
           <div className="hero-status-pill">
             <span className="live-radar-dot" />
-            <span>Live Aggregator · Unstop, Govt Portals, LinkedIn & Devpost</span>
+            <span>LIVE RADAR · 10+ Student Portals Aggregated Daily</span>
           </div>
 
           <button
@@ -170,28 +185,51 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             <span>
               {firstName} · {profile.field}
             </span>
-            <span className="clean-edit-link">Calibrate →</span>
+            <span className="clean-edit-link">Calibrate Profile →</span>
           </button>
         </div>
 
         {/* Hero Body */}
         <div className="clean-hero-body">
           <div className="clean-hero-title-wrap">
-            <RadarMark size={36} />
+            <RadarMark size={40} />
             <h1 className="clean-hero-heading">
-              Student opportunities, <em>matched to you.</em>
+              All student opportunities, <em>matched to your skills.</em>
             </h1>
           </div>
           <p className="clean-hero-subhead">
-            Your centralized intelligence radar for verified hackathons, internships, competitions, and fellowships. Filtered by your technical skillset and domain ambitions with direct external registration links.
+            Your centralized intelligence radar for verified hackathons, internships, case competitions, and fellowships. 
+            Filtered by what you can actually build — open to all college years with direct external registration links and zero middlemen.
           </p>
+
+          {/* Value Badges Row */}
+          <div className="hero-value-badges-row">
+            <span className="hero-value-badge">
+              <ShieldCheck size={14} className="badge-icon-accent" />
+              <span>Zero College-Tier Bias</span>
+            </span>
+            <span className="hero-value-badge">
+              <CheckCircle2 size={14} className="badge-icon-accent" />
+              <span>Open to All Academic Years (1st to Final)</span>
+            </span>
+            <span className="hero-value-badge">
+              <ExternalLink size={14} className="badge-icon-accent" />
+              <span>Direct Official Organizer Links</span>
+            </span>
+          </div>
         </div>
 
         {/* 3 Metric Highlight Tiles */}
         <div className="clean-hero-metrics-bar">
-          <div className="metric-summary-chip eligible">
+          <div
+            className="metric-summary-chip eligible"
+            onClick={() => onSelectTab('all')}
+            role="button"
+            tabIndex={0}
+            title="View all merit-based opportunities"
+          >
             <div className="metric-icon-wrap">
-              <ShieldCheck size={16} />
+              <ShieldCheck size={18} />
             </div>
             <div className="metric-text-wrap">
               <span className="metric-num">{opportunities.length} Open Catalog</span>
@@ -199,9 +237,18 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             </div>
           </div>
 
-          <div className="metric-summary-chip urgent">
+          <div
+            className="metric-summary-chip urgent"
+            onClick={() => {
+              const el = document.getElementById('urgent-radar-section')
+              el?.scrollIntoView({ behavior: 'smooth' })
+            }}
+            role="button"
+            tabIndex={0}
+            title="View opportunities closing soon"
+          >
             <div className="metric-icon-wrap">
-              <Calendar size={16} />
+              <Calendar size={18} />
             </div>
             <div className="metric-text-wrap">
               <span className="metric-num">{closingSoonList.length} Urgent</span>
@@ -209,24 +256,100 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             </div>
           </div>
 
-          <div className="metric-summary-chip top-match">
+          <div
+            className="metric-summary-chip top-match"
+            onClick={() => {
+              const el = document.getElementById('spotlight-signals-section')
+              el?.scrollIntoView({ behavior: 'smooth' })
+            }}
+            role="button"
+            tabIndex={0}
+            title="Explore highest matched signals"
+          >
             <div className="metric-icon-wrap">
-              <Sparkles size={16} />
+              <Sparkles size={18} />
             </div>
             <div className="metric-text-wrap">
               <span className="metric-num">
                 {topSpotlights[0] ? `${matchMap.get(topSpotlights[0].id)?.score || 95}% Best Match` : 'High Affinity'}
               </span>
               <span className="metric-desc">
-                {topSpotlights[0] ? topSpotlights[0].organization : 'Curated for you'}
+                {topSpotlights[0] ? topSpotlights[0].organization : 'Top AI Recommendation'}
               </span>
             </div>
           </div>
         </div>
       </section>
 
+      {/* 1.5 NEW USER ONBOARDING: HOW OPPORTUNITY RADAR WORKS (IN 3 SIMPLE STEPS) */}
+      <section className="overview-section how-it-works-section" aria-label="How Opportunity Radar works">
+        <div className="overview-section-header">
+          <div className="section-header-title-row">
+            <HelpCircle size={18} className="text-sage" />
+            <h2 className="overview-section-title">How Opportunity Radar Works</h2>
+            <span className="how-it-works-pill">3 Simple Steps</span>
+          </div>
+          <span className="overview-section-subtitle">
+            Understand how opportunities are aggregated, ranked for your skills, and applied to directly.
+          </span>
+        </div>
+
+        <div className="how-it-works-grid">
+          {/* Step 1 */}
+          <div className="how-step-card">
+            <div className="how-step-header">
+              <span className="how-step-badge step-1">STEP 01</span>
+              <div className="how-step-icon-wrap icon-1">
+                <Radio size={18} />
+              </div>
+            </div>
+            <h3 className="how-step-title">We Scan 10+ Portals Daily</h3>
+            <p className="how-step-desc">
+              Instead of browsing Unstop, Devpost, LinkedIn, and Government portals across 10 tabs, we aggregate all verified student challenges in real time.
+            </p>
+            <div className="how-step-footer">
+              <span className="how-tag">🌐 Unstop · LinkedIn · Devpost · Govt</span>
+            </div>
+          </div>
+
+          {/* Step 2 */}
+          <div className="how-step-card">
+            <div className="how-step-header">
+              <span className="how-step-badge step-2">STEP 02</span>
+              <div className="how-step-icon-wrap icon-2">
+                <Target size={18} />
+              </div>
+            </div>
+            <h3 className="how-step-title">Ranked by Skills, Not College</h3>
+            <p className="how-step-desc">
+              Opportunities match against what you can build (Product, AI, Web, Cyber). Compete on merit — whether you are a 1st year at a tier-3 college or a senior.
+            </p>
+            <div className="how-step-footer">
+              <span className="how-tag">⚡ Zero College Bias · All Years</span>
+            </div>
+          </div>
+
+          {/* Step 3 */}
+          <div className="how-step-card">
+            <div className="how-step-header">
+              <span className="how-step-badge step-3">STEP 03</span>
+              <div className="how-step-icon-wrap icon-3">
+                <Zap size={18} />
+              </div>
+            </div>
+            <h3 className="how-step-title">Direct Official 1-Click Apply</h3>
+            <p className="how-step-desc">
+              Inspect prerequisites, team requirements, and deadline countdowns. Click 'View Signal' to open the organizer's official registration form with zero fees.
+            </p>
+            <div className="how-step-footer">
+              <span className="how-tag">🔒 100% Free · Direct Official URLs</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 2. Category Launchpad (The 4 Dedicated Portals) */}
-      <section className="overview-section" aria-label="Explore dedicated categories">
+      <section className="overview-section" id="portals-section" aria-label="Explore dedicated categories">
         <div className="overview-section-header">
           <div className="section-header-title-row">
             <Compass size={18} className="text-sage" />
@@ -393,7 +516,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
       </section>
 
       {/* 3. High-Conviction Spotlight: Top 3 Matched Signals (Curated, No Clutter) */}
-      <section className="overview-section" aria-label="Top tailored opportunities">
+      <section className="overview-section" id="spotlight-signals-section" aria-label="Top tailored opportunities">
         <div className="overview-section-header">
           <div className="section-header-title-row">
             <Sparkles size={18} className="text-sage" />
@@ -472,7 +595,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
       </section>
 
       {/* 4. Urgent Radar & Student Readiness Dashboard Row */}
-      <div className="overview-split-grid">
+      <div className="overview-split-grid" id="urgent-radar-section">
         {/* Urgent Deadlines Radar */}
         <section className="overview-card-panel urgent-panel">
           <div className="panel-header">
