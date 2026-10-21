@@ -1263,9 +1263,9 @@ export function App() {
             currentProfile={profile}
             isLoggedIn={isLoggedIn}
             userEmail={userEmail}
-            onLoginSuccess={(newProfile, email) => {
+            onLoginSuccess={(newProfile: Profile, email?: string) => {
               setIsLoggedIn(true)
-              setUserEmail(email)
+              if (email) setUserEmail(email)
               handleProfileUpdate(newProfile, `Logged in as ${newProfile.name} — Radar calibrated!`)
             }}
             onLogout={() => {

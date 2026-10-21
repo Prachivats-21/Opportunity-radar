@@ -1,59 +1,100 @@
 import React, { useState } from 'react'
-import { X, Lock, Mail, User, School, Sparkles, CheckCircle2, ArrowRight, ShieldCheck, LogIn } from 'lucide-react'
+import { X, Lock, Mail, User, School, Sparkles, CheckCircle2, ArrowRight, ShieldCheck, LogIn, MapPin, Globe } from 'lucide-react'
 import { RadarMark } from './RadarMark'
 import type { Profile } from '../types'
 
-interface AuthModalProps {
-  currentProfile: Profile
-  isLoggedIn: boolean
-  userEmail?: string
-  onLoginSuccess: (profile: Profile, email: string) => void
-  onLogout: () => void
-  onClose: () => void
-}
+const INDIAN_STATES = [
+  'Delhi NCR',
+  'Maharashtra',
+  'Karnataka',
+  'Tamil Nadu',
+  'Telangana',
+  'Uttar Pradesh',
+  'Uttarakhand',
+  'West Bengal',
+  'Gujarat',
+  'Rajasthan',
+  'Kerala',
+  'Punjab',
+  'Haryana',
+  'Madhya Pradesh',
+  'Bihar',
+  'Odisha',
+  'Assam',
+  'Goa',
+  'Other / Pan-India',
+]
 
-const DEMO_PERSONAS: { name: string; email: string; year: string; field: string; skills: string[]; interests: string[]; preferred_categories: string[]; description: string }[] = [
+const REGIONS = [
+  'North India',
+  'South India',
+  'West India',
+  'East India',
+  'Central India',
+  'Northeast India',
+  'Pan-India / All Regions',
+  'Global / Remote',
+]
+
+const DEMO_PERSONAS: { name: string; email: string; year: string; field: string; state: string; region: string; skills: string[]; interests: string[]; preferred_categories: string[]; description: string }[] = [
   {
     name: 'Prachi Vats',
     email: 'prachi.vats@student.edu.in',
-    year: '1',
+    year: 'All Years',
     field: 'Computer Science & AI',
+    state: 'Uttarakhand',
+    region: 'North India',
     skills: ['Python', 'AI', 'Cybersecurity', 'Communication'],
     interests: ['AI', 'Cybersecurity', 'Hackathons', 'Data Science'],
     preferred_categories: ['Hackathon', 'Internship', 'Competition'],
-    description: '1st Year Undergraduate exploring national cyber hackathons, AI prototype builds, and early fellowships.',
+    description: 'Undergraduate scholar exploring national cyber hackathons, AI prototype builds, and early fellowships.',
   },
   {
     name: 'Devansh Verma',
     email: 'devansh.verma@tech.ac.in',
     year: '3',
     field: 'Computer Science & Engineering',
+    state: 'Karnataka',
+    region: 'South India',
     skills: ['React', 'TypeScript', 'Node.js', 'Go', 'Docker', 'Git'],
     interests: ['Full-stack', 'Open Source', 'Internships', 'DevOps'],
     preferred_categories: ['Internship', 'Hackathon', 'Fellowship'],
-    description: '3rd Year Undergraduate targeting tier-1 software internships (Flipkart GRiD, LFX Mentorship, GSoC).',
+    description: 'Undergraduate targeting tier-1 software internships (Flipkart GRiD, LFX Mentorship, GSoC).',
   },
   {
     name: 'Ananya Sen',
     email: 'ananya.sen@iit.ac.in',
     year: '2',
     field: 'Data Science & Machine Learning',
+    state: 'West Bengal',
+    region: 'East India',
     skills: ['Python', 'Machine Learning', 'Data Analysis', 'SQL', 'PyTorch'],
     interests: ['Machine Learning', 'Research', 'Competitions', 'Data Science'],
     preferred_categories: ['Competition', 'Fellowship', 'Internship'],
-    description: '2nd Year Student focusing on global AI challenges, research fellowships, and Kaggle/Unstop competitions.',
+    description: 'Student focusing on global AI challenges, research fellowships, and Kaggle/Unstop competitions.',
   },
   {
     name: 'Rohan Mehta',
     email: 'rohan.mehta@mgmt.edu.in',
-    year: '3',
+    year: 'All Years',
     field: 'Product Management & Business Analytics',
+    state: 'Maharashtra',
+    region: 'West India',
     skills: ['Product Management', 'Wireframing', 'PRD', 'User Research', 'Figma', 'Metrics'],
     interests: ['Product Management', 'Growth', 'Competitions', 'Case Studies', 'Productathons'],
     preferred_categories: ['Competition', 'Internship', 'Hackathon', 'Fellowship'],
-    description: '3rd Year Undergraduate targeting APM cohorts (Google, Atlassian, Flipkart WiRED), case challenges, and productathons.',
+    description: 'Undergraduate targeting APM cohorts (Google, Atlassian, Flipkart WiRED), case challenges, and productathons.',
   },
 ]
+
+export interface AuthModalProps {
+  currentProfile: Profile
+  isLoggedIn?: boolean
+  userEmail?: string
+  onLoginSuccess: (profile: Profile, email?: string) => void
+  onLogout?: () => void
+  onClose: () => void
+}
 
 export const AuthModal: React.FC<AuthModalProps> = ({
   currentProfile,
@@ -74,8 +115,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [regName, setRegName] = useState(currentProfile.name || '')
   const [regEmail, setRegEmail] = useState('')
   const [regCollege, setRegCollege] = useState('Graphic Era Hill University')
-  const [regYear, setRegYear] = useState(currentProfile.year || '1')
+  const [regYear, setRegYear] = useState(currentProfile.year || 'All Years')
   const [regField, setRegField] = useState(currentProfile.field || 'Computer Science & AI')
+  const [regState, setRegState] = useState(currentProfile.state || 'Uttarakhand')
+  const [regRegion, setRegRegion] = useState(currentProfile.region || 'North India')
   const [regSkills, setRegSkills] = useState(currentProfile.skills.join(', '))
   const [regInterests, setRegInterests] = useState(currentProfile.interests.join(', '))
 
@@ -102,7 +145,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       onLoginSuccess(
         {
           ...currentProfile,
-          name: emailInput.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) || 'Student',
+          name: emailInput.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) || 'Student',
         },
         emailInput,
       )
@@ -111,18 +154,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault()
-    const parsedSkills = regSkills.split(',').map((s) => s.trim()).filter(Boolean)
-    const parsedInterests = regInterests.split(',').map((s) => s.trim()).filter(Boolean)
+    const parsedSkills = regSkills.split(',').map((s: string) => s.trim()).filter(Boolean)
+    const parsedInterests = regInterests.split(',').map((s: string) => s.trim()).filter(Boolean)
 
     const newProfile: Profile = {
       name: regName.trim() || 'Student',
       year: regYear,
       field: regField.trim() || 'Computer Science',
+      state: regState,
+      region: regRegion,
       skills: parsedSkills.length > 0 ? parsedSkills : ['Python', 'Problem Solving'],
       interests: parsedInterests.length > 0 ? parsedInterests : ['Hackathons', 'Tech'],
       preferred_categories: ['Hackathon', 'Internship', 'Competition'],
       preferred_mode: 'Any',
-      location: 'India',
+      location: `${regState}, India`,
       team_size: null,
     }
 
@@ -135,11 +180,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         name: persona.name,
         year: persona.year,
         field: persona.field,
+        state: persona.state,
+        region: persona.region,
         skills: persona.skills,
         interests: persona.interests,
         preferred_categories: persona.preferred_categories,
         preferred_mode: 'Any',
-        location: 'India',
+        location: `${persona.state}, India`,
         team_size: null,
       },
       persona.email,
@@ -147,8 +194,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   }
 
   return (
-    <div className="modal-backdrop" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
-      <div className="modal-window auth-modal-card" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+      <div className="modal-dialog auth-modal-card" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="auth-modal-header">
           <div className="auth-brand-badge">
@@ -370,6 +417,51 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 />
               </div>
 
+              {/* State & Region Geographic Category */}
+              <div className="auth-grid-2col">
+                <div className="form-field-group">
+                  <label className="field-label" htmlFor="reg-state">
+                    State / Union Territory
+                  </label>
+                  <div className="input-with-icon">
+                    <MapPin size={15} className="input-icon" />
+                    <select
+                      id="reg-state"
+                      value={regState}
+                      onChange={(e) => setRegState(e.target.value)}
+                      className="styled-select"
+                    >
+                      {INDIAN_STATES.map((st) => (
+                        <option key={st} value={st}>
+                          {st}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div className="form-field-group">
+                  <label className="field-label" htmlFor="reg-region">
+                    Target Region / Zone
+                  </label>
+                  <div className="input-with-icon">
+                    <Globe size={15} className="input-icon" />
+                    <select
+                      id="reg-region"
+                      value={regRegion}
+                      onChange={(e) => setRegRegion(e.target.value)}
+                      className="styled-select"
+                    >
+                      {REGIONS.map((rg) => (
+                        <option key={rg} value={rg}>
+                          {rg}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
               <div className="form-field-group">
                 <label className="field-label" htmlFor="reg-skills">
                   Technical Skills (comma separated)
@@ -432,7 +524,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                         </div>
                         <div className="persona-info">
                           <strong className="persona-name">{persona.name}</strong>
-                          <span className="persona-tag">Year {persona.year} · {persona.field}</span>
+                          <span className="persona-tag">{persona.field} · {persona.state} ({persona.region})</span>
                         </div>
                         {isCurrent && (
                           <span className="current-badge">

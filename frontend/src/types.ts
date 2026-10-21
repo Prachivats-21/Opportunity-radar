@@ -8,6 +8,7 @@ export type Profile = {
   name?: string;
   year: string; field: string; skills: string[]; interests: string[]; preferred_categories: string[];
   preferred_mode: string; location: string; team_size: number | null;
+  state?: string; region?: string;
 }
 export type MatchResult = { opportunity: Opportunity; score: number; eligibility: string; reasons: string[]; skill_gaps: string[]; explanation: string }
 

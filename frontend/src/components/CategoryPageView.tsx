@@ -13,6 +13,8 @@ import {
   ArrowLeft,
   X,
   ExternalLink,
+  MapPin,
+  Building,
 } from 'lucide-react'
 import { OpportunityCard } from './OpportunityCard'
 import type { Opportunity, MatchResult, Profile, ApplicationStatus } from '../types'
@@ -79,6 +81,7 @@ export const CategoryPageView: React.FC<CategoryPageViewProps> = ({
   const IconComponent = meta.icon
 
   const [activeSubfilter, setActiveSubfilter] = useState('All')
+  const [modeFilter, setModeFilter] = useState<'All' | 'Online' | 'Offline' | 'Hybrid'>('All')
   const [searchQuery, setSearchQuery] = useState('')
   const [matchesOnly, setMatchesOnly] = useState(false)
 
@@ -86,6 +89,27 @@ export const CategoryPageView: React.FC<CategoryPageViewProps> = ({
   const categoryOpportunities = useMemo(() => {
     return opportunities.filter((o) => o.category.toLowerCase() === category.toLowerCase())
   }, [opportunities, category])
+
+  // Calculate format breakdown (Online vs Offline vs Hybrid)
+  const formatStats = useMemo(() => {
+    let online = 0
+    let offline = 0
+    let hybrid = 0
+    categoryOpportunities.forEach((opp) => {
+      const m = opp.mode.toLowerCase()
+      if (m.includes('hybrid')) hybrid++
+      else if (
+        m.includes('offline') ||
+        m.includes('in-person') ||
+        m.includes('on-site') ||
+        m.includes('on-campus') ||
+        opp.location.toLowerCase().includes('in-person')
+      )
+        offline++
+      else online++
+    })
+    return { online, offline, hybrid }
+  }, [categoryOpportunities])
 
   // Subfilter and search within this category
   const filteredList = useMemo(() => {
@@ -105,6 +129,30 @@ export const CategoryPageView: React.FC<CategoryPageViewProps> = ({
         const match = matchMap.get(o.id)
         return match && match.score >= 50
       })
+    }
+
+    // Attendance mode subcategorization: Online vs Offline vs Hybrid
+    if (modeFilter === 'Online') {
+      list = list.filter((o) => {
+        const m = o.mode.toLowerCase()
+        return (
+          !m.includes('hybrid') &&
+          (m.includes('online') || m.includes('virtual') || m.includes('remote') || !m.includes('offline'))
+        )
+      })
+    } else if (modeFilter === 'Offline') {
+      list = list.filter((o) => {
+        const m = o.mode.toLowerCase()
+        return (
+          m.includes('offline') ||
+          m.includes('in-person') ||
+          m.includes('on-site') ||
+          m.includes('on-campus') ||
+          o.location.toLowerCase().includes('in-person')
+        )
+      })
+    } else if (modeFilter === 'Hybrid') {
+      list = list.filter((o) => o.mode.toLowerCase().includes('hybrid'))
     }
 
     if (activeSubfilter === 'Product Management') {
@@ -191,6 +239,46 @@ export const CategoryPageView: React.FC<CategoryPageViewProps> = ({
               <h1 className="category-page-title">{meta.title}</h1>
               <p className="category-page-subhead">{meta.subtitle}</p>
             </div>
+          </div>
+        </div>
+
+        {/* Domain Attendance Subcategorization: Online vs Offline */}
+        <div className="category-format-bar" role="group" aria-label="Format filter: Online vs Offline">
+          <span className="format-bar-label">Attendance Format:</span>
+          <div className="format-toggle-group">
+            <button
+              type="button"
+              className={`format-toggle-btn ${modeFilter === 'All' ? 'active' : ''}`}
+              onClick={() => setModeFilter('All')}
+            >
+              All Formats ({categoryOpportunities.length})
+            </button>
+            <button
+              type="button"
+              className={`format-toggle-btn online ${modeFilter === 'Online' ? 'active' : ''}`}
+              onClick={() => setModeFilter('Online')}
+            >
+              <Globe size={13} />
+              <span>🌐 Online / Virtual ({formatStats.online})</span>
+            </button>
+            <button
+              type="button"
+              className={`format-toggle-btn offline ${modeFilter === 'Offline' ? 'active' : ''}`}
+              onClick={() => setModeFilter('Offline')}
+            >
+              <MapPin size={13} />
+              <span>📍 Offline / In-Person ({formatStats.offline})</span>
+            </button>
+            {formatStats.hybrid > 0 && (
+              <button
+                type="button"
+                className={`format-toggle-btn hybrid ${modeFilter === 'Hybrid' ? 'active' : ''}`}
+                onClick={() => setModeFilter('Hybrid')}
+              >
+                <Building size={13} />
+                <span>🏢 Hybrid ({formatStats.hybrid})</span>
+              </button>
+            )}
           </div>
         </div>
 

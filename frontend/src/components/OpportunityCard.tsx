@@ -135,6 +135,13 @@ export const OpportunityCardComponent: React.FC<OpportunityCardProps> = ({
   const catLower = (opportunity.category || 'other').toLowerCase()
   const normalizedUserSkills = userSkills.map((s) => s.toLowerCase().trim())
 
+  const isHybrid = (opportunity.mode || '').toLowerCase().includes('hybrid')
+  const isOffline =
+    (opportunity.mode || '').toLowerCase().includes('offline') ||
+    (opportunity.mode || '').toLowerCase().includes('in-person') ||
+    (opportunity.mode || '').toLowerCase().includes('on-campus') ||
+    (opportunity.mode || '').toLowerCase().includes('on-site')
+
   // Concise fit reason
   const conciseReason = match?.reasons?.[0] || (match && match.score >= 70 ? 'High relevance to your target skills.' : null)
 
@@ -161,6 +168,9 @@ export const OpportunityCardComponent: React.FC<OpportunityCardProps> = ({
             <div className="clean-card-tags">
               <span className={`clean-category-badge cat-${catLower}`}>
                 {opportunity.category}
+              </span>
+              <span className={`clean-format-pill ${isOffline ? 'offline' : isHybrid ? 'hybrid' : 'online'}`}>
+                {isOffline ? '📍 Offline' : isHybrid ? '🏢 Hybrid' : '🌐 Online'}
               </span>
               <span className="clean-platform-badge">
                 {platformMeta.platform}

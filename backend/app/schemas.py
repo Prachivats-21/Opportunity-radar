@@ -45,6 +45,8 @@ class StudentProfile(BaseModel):
     preferred_categories: list[OpportunityCategory] = Field(default_factory=list, max_length=20)
     preferred_mode: StrictStr = Field(default="Any", max_length=80)
     location: StrictStr = Field(default="India", max_length=240)
+    state: StrictStr = Field(default="", max_length=120)
+    region: StrictStr = Field(default="", max_length=120)
     team_size: StrictInt | None = Field(default=None, ge=1, le=100)
 
 

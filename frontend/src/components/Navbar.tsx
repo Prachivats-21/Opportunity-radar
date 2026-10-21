@@ -156,46 +156,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               type="button"
-              className={`nav-link-btn ${activeTab === 'Hackathons' ? 'active' : ''}`}
-              onClick={() => handleNavClick('Hackathons')}
-              aria-current={activeTab === 'Hackathons' ? 'page' : undefined}
-            >
-              <Code2 size={13} />
-              <span>Hackathons</span>
-            </button>
-
-            <button
-              type="button"
-              className={`nav-link-btn ${activeTab === 'Internships' ? 'active' : ''}`}
-              onClick={() => handleNavClick('Internships')}
-              aria-current={activeTab === 'Internships' ? 'page' : undefined}
-            >
-              <Briefcase size={13} />
-              <span>Internships</span>
-            </button>
-
-            <button
-              type="button"
-              className={`nav-link-btn ${activeTab === 'Competitions' ? 'active' : ''}`}
-              onClick={() => handleNavClick('Competitions')}
-              aria-current={activeTab === 'Competitions' ? 'page' : undefined}
-            >
-              <Trophy size={13} />
-              <span>Competitions</span>
-            </button>
-
-            <button
-              type="button"
-              className={`nav-link-btn ${activeTab === 'Fellowships' ? 'active' : ''}`}
-              onClick={() => handleNavClick('Fellowships')}
-              aria-current={activeTab === 'Fellowships' ? 'page' : undefined}
-            >
-              <GraduationCap size={13} />
-              <span>Fellowships</span>
-            </button>
-
-            <button
-              type="button"
               className={`nav-link-btn ${activeTab === 'Saved' ? 'active' : ''}`}
               onClick={() => handleNavClick('Saved')}
               aria-current={activeTab === 'Saved' ? 'page' : undefined}

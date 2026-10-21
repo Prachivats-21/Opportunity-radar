@@ -51,11 +51,11 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
 
   // Calculate Category Counts & Matches
   const categoryStats = useMemo(() => {
-    const stats: Record<string, { total: number; matches: number }> = {
-      Hackathon: { total: 0, matches: 0 },
-      Internship: { total: 0, matches: 0 },
-      Competition: { total: 0, matches: 0 },
-      Fellowship: { total: 0, matches: 0 },
+    const stats: Record<string, { total: number; matches: number; online: number; offline: number }> = {
+      Hackathon: { total: 0, matches: 0, online: 0, offline: 0 },
+      Internship: { total: 0, matches: 0, online: 0, offline: 0 },
+      Competition: { total: 0, matches: 0, online: 0, offline: 0 },
+      Fellowship: { total: 0, matches: 0, online: 0, offline: 0 },
     }
 
     opportunities.forEach((opp) => {
@@ -65,6 +65,18 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         const match = matchMap.get(opp.id)
         if (match && match.score >= 50) {
           stats[cat].matches += 1
+        }
+        const m = (opp.mode || '').toLowerCase()
+        if (
+          m.includes('offline') ||
+          m.includes('in-person') ||
+          m.includes('on-site') ||
+          m.includes('on-campus') ||
+          (opp.location || '').toLowerCase().includes('in-person')
+        ) {
+          stats[cat].offline += 1
+        } else {
+          stats[cat].online += 1
         }
       }
     })
@@ -118,6 +130,27 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
 
   return (
     <div className="overview-command-center" aria-label="Student Radar Overview">
+      {/* 0. PROMINENT TOP LINKEDIN SYNC BAR (Directly visible immediately upon loading) */}
+      <div className="top-linkedin-cta-bar">
+        <div className="top-linkedin-content">
+          <div className="top-linkedin-badge">
+            <Linkedin size={20} />
+          </div>
+          <div className="top-linkedin-text">
+            <strong>Sync with LinkedIn for Instant Domain & Skill Personalization</strong>
+            <span>Auto-populate verified skills, experience & unlock 100% matched APM, Cyber, and Tech listings</span>
+          </div>
+        </div>
+        <button
+          type="button"
+          className={`btn-sync-linkedin-top ${isLinkedInConnected ? 'synced' : ''}`}
+          onClick={onConnectLinkedIn}
+        >
+          <Linkedin size={15} />
+          <span>{isLinkedInConnected ? '✓ LinkedIn Profile Synced' : 'Sync with LinkedIn'}</span>
+        </button>
+      </div>
+
       {/* 1. Main Welcome & Signal Calibration Hero */}
       <section className="clean-hero-section">
         {/* Topline Bar */}
@@ -227,6 +260,10 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
               <p className="launchpad-card-desc">
                 48 to 72-hour product builds, cyber defense challenges, and open prototype sprints with prizes up to ₹15L.
               </p>
+              <div className="launchpad-format-chips">
+                <span className="launchpad-chip online">🌐 {categoryStats['Hackathon']?.online || 0} Online</span>
+                <span className="launchpad-chip offline">📍 {categoryStats['Hackathon']?.offline || 0} Offline</span>
+              </div>
             </div>
 
             <div className="launchpad-card-footer">
@@ -261,6 +298,10 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
               <p className="launchpad-card-desc">
                 Summer 2026 APM, cybersecurity, data science, and SWE internships verified directly from LinkedIn HQ & tech giants.
               </p>
+              <div className="launchpad-format-chips">
+                <span className="launchpad-chip online">🌐 {categoryStats['Internship']?.online || 0} Online</span>
+                <span className="launchpad-chip offline">📍 {categoryStats['Internship']?.offline || 0} Offline</span>
+              </div>
             </div>
 
             <div className="launchpad-card-footer">
@@ -295,6 +336,10 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
               <p className="launchpad-card-desc">
                 National business case competitions, product teardowns, and design thinking cups fast-tracking to PPIs.
               </p>
+              <div className="launchpad-format-chips">
+                <span className="launchpad-chip online">🌐 {categoryStats['Competition']?.online || 0} Online</span>
+                <span className="launchpad-chip offline">📍 {categoryStats['Competition']?.offline || 0} Offline</span>
+              </div>
             </div>
 
             <div className="launchpad-card-footer">
@@ -329,6 +374,10 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
               <p className="launchpad-card-desc">
                 Selective 8 to 12-week fellowship programs offering 1-on-1 industry mentorship, stipends, and peer masterminds.
               </p>
+              <div className="launchpad-format-chips">
+                <span className="launchpad-chip online">🌐 {categoryStats['Fellowship']?.online || 0} Online</span>
+                <span className="launchpad-chip offline">📍 {categoryStats['Fellowship']?.offline || 0} Offline</span>
+              </div>
             </div>
 
             <div className="launchpad-card-footer">
